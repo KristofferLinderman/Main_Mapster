@@ -12,8 +12,64 @@
     tools:context="se.mah.mapster.mapster_02.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <TextView
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logo" />
+
+    <GridLayout
+        android:id="@+id/searchGrid"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:columnCount="4"
+        android:rowCount="1">
+
+        <Spinner
+            android:id="@+id/buildingSpinner"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            android:touchscreenBlocksFocus="false" />
+
+        <Spinner
+            android:id="@+id/levelSpinner"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/roomSpinner"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown" />
+
+        <Button
+            android:id="@+id/search_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="3"
+            android:layout_row="0"
+            android:text="Go" />
+    </GridLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_height="250dp"
+        android:layout_below="@+id/searchGrid"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:id="@+id/previousSearchScroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
 </RelativeLayout>
