@@ -1,13 +1,10 @@
 package se.mah.mapster.mapster_02;
 
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,13 +13,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private Spinner buildingSpinner, levelSpinner, roomSpinner;
-    private MenuItem orkanen,niagara;
+    private SearchListener listener;
+    private Button searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +32,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        orkanen = (MenuItem)findViewById(R.id.orkanen_maps);
-
         addBuildingSpinner();
         addLevelSpinner();
         addRoomSpinner();
+
+        listener = new SearchListener();
+
+        searchButton = (Button) findViewById(R.id.search_Button);
+        searchButton.setOnClickListener(listener);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -56,6 +60,15 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
+    //@Override
+    //Removes the three dots in the top right corner
+  /*  public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem settingsItem = menu.findItem(R.id.action_settings);
+        settingsItem.setVisible(false);
+        return false;
+    }*/
+
     private void addLevelSpinner() {
         levelSpinner = (Spinner) findViewById(R.id.levelSpinner);
 
@@ -97,36 +110,38 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if(id == R.id.gaddan_map){
-            Log.d("TEST","Gäddan vald");
-        } else if(id == R.id.orkanen_maps){
-           String title = orkanen.getTitle().toString();
-            Log.d("TEST","Orkanen vald");
+        if (id == R.id.nav_about) {
+            startActivity(new Intent("Mapster_0.22.AboutActivity"));
+        } else if (id == R.id.nav_find) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mah.se/kartor-mah"));
+            startActivity(browserIntent);
+        } else if (id == R.id.nav_dumb) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/anton.lagerlof.3?fref=ts"));
+            startActivity(browserIntent);
+        } else if (id == R.id.maps) {
+            startActivity(new Intent("Mapster_0.22.MapsActivity"));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private class SearchListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            int id = v.getId();
+
+            if(id == R.id.search_Button){
+                Toast.makeText(getApplicationContext(),"Searching...",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
