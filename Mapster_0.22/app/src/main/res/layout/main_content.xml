@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="se.mah.mapster.mapster_02.MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    tools:showIn="@layout/main_app_bar">
 
     <ImageView
         android:id="@+id/imageView"
@@ -18,39 +18,61 @@
         android:layout_height="150dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/logo"/>
+        android:src="@drawable/logo" />
+
+    <LinearLayout
+        android:id="@+id/searchInfo"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@+id/imageView"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:text="Building" />
+
+        <TextView
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:text="Level" />
+
+        <TextView
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:text="Room" />
+
+    </LinearLayout>
+
 
     <GridLayout
         android:id="@+id/searchGrid"
         android:layout_width="match_parent"
         android:layout_height="75dp"
-        android:layout_below="@+id/imageView"
+        android:layout_below="@+id/searchInfo"
         android:layout_centerHorizontal="true"
         android:columnCount="4"
         android:rowCount="1">
 
         <Spinner
             android:id="@+id/buildingSpinner"
-            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:spinnerMode="dropdown"
             android:touchscreenBlocksFocus="false" />
 
         <Spinner
             android:id="@+id/levelSpinner"
-            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:spinnerMode="dropdown" />
 
         <Spinner
             android:id="@+id/roomSpinner"
-            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:spinnerMode="dropdown" />
 
         <Button
             android:id="@+id/search_Button"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="3"
             android:layout_row="0"
@@ -71,4 +93,6 @@
             android:layout_height="match_parent" />
 
     </LinearLayout>
+
+
 </RelativeLayout>

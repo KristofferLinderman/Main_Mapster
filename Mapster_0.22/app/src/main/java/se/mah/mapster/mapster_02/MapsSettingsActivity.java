@@ -11,32 +11,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
+import android.view.View;
+import android.widget.CheckedTextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity
+/**
+ * Created by Kristoffer on 31/03/16.
+ */
+public class MapsSettingsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private Spinner buildingSpinner, levelSpinner, roomSpinner;
-    private SearchListener listener;
-    private Button searchButton;
+    private CheckedTextView orkanenCheckTV, niagaraCheckTV, gaddanCheckTV;
+    private Listener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.maps_settings_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        addBuildingSpinner();
-        addLevelSpinner();
-        addRoomSpinner();
-
-        listener = new SearchListener(this,buildingSpinner,levelSpinner,roomSpinner);
-        listener.setMainActivity(this);
-
-        searchButton = (Button) findViewById(R.id.search_Button);
-        searchButton.setOnClickListener(listener);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -46,6 +38,42 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        listener = new Listener();
+        createCheckedTextView();
+    }
+
+    private void createCheckedTextView(){
+        orkanenCheckTV = (CheckedTextView) findViewById(R.id.checked_orkanen);
+        niagaraCheckTV = (CheckedTextView) findViewById(R.id.checked_niagara);
+        gaddanCheckTV = (CheckedTextView) findViewById(R.id.checked_gaddan);
+
+        orkanenCheckTV.setOnClickListener(listener);
+        niagaraCheckTV.setOnClickListener(listener);
+        gaddanCheckTV.setOnClickListener(listener);
+    }
+
+    private class Listener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            int id = v.getId();
+
+            if (id == R.id.checked_orkanen) {
+                orkanenCheckTV.toggle();
+                if (orkanenCheckTV.isChecked())
+                    Toast.makeText(getApplicationContext(), "Downloading...", Toast.LENGTH_SHORT).show();
+
+            } else if (id == R.id.checked_gaddan) {
+                gaddanCheckTV.toggle();
+                if (gaddanCheckTV.isChecked())
+                    Toast.makeText(getApplicationContext(), "Downloading...", Toast.LENGTH_SHORT).show();
+
+            } else if (id == R.id.checked_niagara) {
+                niagaraCheckTV.toggle();
+                if (niagaraCheckTV.isChecked())
+                    Toast.makeText(getApplicationContext(), "Downloading...", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
@@ -56,40 +84,6 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-    }
-
-    private void addLevelSpinner() {
-        levelSpinner = (Spinner) findViewById(R.id.levelSpinner);
-
-        //Create a ArrayAdapter using the StringArray "level_list" in strings.xml
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.level_list, android.R.layout.simple_spinner_item);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        levelSpinner.setAdapter(adapter);
-    }
-
-    private void addRoomSpinner() {
-        roomSpinner = (Spinner) findViewById(R.id.roomSpinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.room_list, android.R.layout.simple_spinner_item);
-
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Apply the adapter to the spinner
-        roomSpinner.setAdapter(adapter);
-    }
-
-    private void addBuildingSpinner() {
-        buildingSpinner = (Spinner) findViewById(R.id.buildingSpinner);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.building_list, android.R.layout.simple_spinner_item);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        buildingSpinner.setAdapter(adapter);
     }
 
     @Override
@@ -105,20 +99,21 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_about) {
-            startActivity(new Intent("Mapster_0.22.AboutActivity"));
+        if (id == R.id.nav_home) {
+            startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         } else if (id == R.id.nav_find) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mah.se/kartor-mah"));
             startActivity(browserIntent);
         } else if (id == R.id.nav_dumb) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/anton.lagerlof.3?fref=ts"));
             startActivity(browserIntent);
-        } else if (id == R.id.maps_settings) {
-            startActivity(new Intent("Mapster_0.22.MapsSettingsActivity"));
+        } else if (id == R.id.nav_about) {
+            startActivity(new Intent(this, AboutActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
