@@ -48,10 +48,10 @@
 
     <GridLayout
         android:id="@+id/searchGrid"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="75dp"
-        android:layout_below="@+id/searchInfo"
         android:layout_centerHorizontal="true"
+        android:layout_below="@+id/searchInfo"
         android:columnCount="4"
         android:rowCount="1">
 
@@ -79,20 +79,20 @@
             android:text="Go" />
     </GridLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="250dp"
-        android:layout_below="@+id/searchGrid"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"
-        android:orientation="vertical">
+    <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="250dp"-->
+        <!--android:layout_below="@+id/searchGrid"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="75dp"-->
+        <!--android:orientation="vertical">-->
 
-        <ScrollView
-            android:id="@+id/previousSearchScroll"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <!--<ScrollView-->
+            <!--android:id="@+id/previousSearchScroll"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
 
 </RelativeLayout>

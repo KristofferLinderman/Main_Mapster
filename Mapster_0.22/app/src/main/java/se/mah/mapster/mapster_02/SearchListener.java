@@ -34,7 +34,9 @@ public class SearchListener implements View.OnClickListener, AdapterView.OnItemS
     }
 
     private void openView() {
-        activity.startActivity(new Intent(context, MapViewActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        Intent i = new Intent(context, MapViewActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.putExtra("file_name",level);
+        activity.startActivity(i);
     }
 
     private void getSearch() {
