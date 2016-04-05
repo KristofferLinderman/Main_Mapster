@@ -15,8 +15,10 @@ import android.widget.Toast;
 public class SearchListener implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private Context context;
     private Spinner buildingSpinner, levelSpinner, roomSpinner;
-    private Activity activity;
+    private MainActivity activity;
     private String building,level,room;
+    private int[] dotPosition = new int[3];
+
 
     public SearchListener(Context context, Spinner building, Spinner level, Spinner room) {
         this.context = context;
@@ -29,14 +31,15 @@ public class SearchListener implements View.OnClickListener, AdapterView.OnItemS
         roomSpinner.setOnItemSelectedListener(this);
     }
 
-    public void setMainActivity(Activity activity) {
+    public void setMainActivity(MainActivity activity) {
         this.activity = activity;
     }
 
     private void openView() {
-        Intent i = new Intent(context, MapViewActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.putExtra("file_name",level);
+        Intent i = new Intent(context,MapViewActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.putExtra("Positions", dotPosition);
         activity.startActivity(i);
+//        activity.startActivity(new Intent(context, MapViewActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     private void getSearch() {
@@ -51,8 +54,19 @@ public class SearchListener implements View.OnClickListener, AdapterView.OnItemS
         int id = v.getId();
 
         if (id == R.id.search_Button) {
+            try {
+
+                //Get X/Y
+                dotPosition[0] = activity.getX();
+                dotPosition[1] = activity.getY();
+                dotPosition[2] = activity.getImageID();
+
+            } catch(NumberFormatException numberFormatException) {
+                makeToast("Input X/Y value");
+            }
+
             getSearch();
-             makeToast("Searching for " + building + ":" + level + room);
+            makeToast("Searching for " + building + ":" + level + room);
             openView();
         }
     }

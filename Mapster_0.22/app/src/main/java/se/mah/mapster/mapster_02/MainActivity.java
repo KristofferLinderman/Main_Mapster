@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity
     private Spinner buildingSpinner, levelSpinner, roomSpinner;
     private SearchListener listener;
     private Button searchButton;
+    private EditText editX, editY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        editX = (EditText) findViewById(R.id.editX);
+        editY = (EditText) findViewById(R.id.editY);
     }
 
     @Override
@@ -57,6 +62,18 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    public int getX() {
+        return Integer.parseInt(editX.getText().toString());
+    }
+
+    public int getY() {
+        return Integer.parseInt(editY.getText().toString());
+    }
+
+    public int getImageID(){
+        return R.drawable.orkanenhigh;
     }
 
     private void addLevelSpinner() {

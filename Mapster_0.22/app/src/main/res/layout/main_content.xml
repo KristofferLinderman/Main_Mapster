@@ -79,6 +79,24 @@
             android:text="Go" />
     </GridLayout>
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editX"
+        android:hint="Type X"
+        android:layout_below="@+id/searchGrid"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editY"
+        android:hint="Type Y"
+        android:layout_below="@+id/editX"/>
+
     <!--<LinearLayout-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="250dp"-->
