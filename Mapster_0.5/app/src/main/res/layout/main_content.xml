@@ -22,7 +22,7 @@
 
     <LinearLayout
         android:id="@+id/searchInfo"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_below="@+id/imageView"
         android:layout_marginLeft="10dp"
@@ -48,69 +48,84 @@
 
     <GridLayout
         android:id="@+id/searchGrid"
-        android:layout_width="wrap_content"
-        android:layout_height="75dp"
-        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/searchInfo"
-        android:columnCount="4"
+        android:columnCount="5"
         android:rowCount="1">
 
         <Spinner
             android:id="@+id/buildingSpinner"
-            android:layout_height="wrap_content"
             android:spinnerMode="dropdown"
             android:touchscreenBlocksFocus="false" />
 
         <Spinner
+            android:id="@+id/sectionSpinner"
+            android:spinnerMode="dropdown"
+            android:layout_width="50dp"
+            android:touchscreenBlocksFocus="false" />
+
+        <Spinner
             android:id="@+id/levelSpinner"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
             android:spinnerMode="dropdown" />
 
         <Spinner
             android:id="@+id/roomSpinner"
-            android:layout_height="wrap_content"
             android:spinnerMode="dropdown" />
 
         <Button
             android:id="@+id/search_Button"
-            android:layout_height="wrap_content"
-            android:layout_column="3"
-            android:layout_row="0"
             android:text="Go" />
     </GridLayout>
 
-    <EditText
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editX"
-        android:hint="Type X"
-        android:layout_below="@+id/searchGrid"/>
+        android:layout_below="@+id/searchGrid"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="50dp">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editY"
-        android:hint="Type Y"
-        android:layout_below="@+id/editX"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="250dp"-->
-        <!--android:layout_below="@+id/searchGrid"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginTop="75dp"-->
-        <!--android:orientation="vertical">-->
+            <Button
+                android:id="@+id/previous_search_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/previous_search_1" />
 
-        <!--<ScrollView-->
-            <!--android:id="@+id/previousSearchScroll"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent" />-->
+            <Button
+                android:id="@+id/previous_search_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/previous_search_2" />
 
-    <!--</LinearLayout>-->
+            <Button
+                android:id="@+id/previous_search_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/previous_search_3" />
+
+            <Button
+                android:id="@+id/previous_search_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/previous_search_4" />
+
+            <Button
+                android:id="@+id/previous_search_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/previous_search_5" />
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </RelativeLayout>

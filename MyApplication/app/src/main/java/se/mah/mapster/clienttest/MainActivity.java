@@ -13,7 +13,6 @@ public class MainActivity extends AppCompatActivity {
     private Button connect,send;
     private ClientThread clientThread;
     private EditText toSend;
-    private TextView response;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
         connect = (Button) findViewById(R.id.connectButton);
         send = (Button) findViewById(R.id.button);
         toSend = (EditText) findViewById(R.id.toSend);
-        response = (TextView) findViewById(R.id.serverTV);
 
         connect.setOnClickListener(new View.OnClickListener() {
 
@@ -46,10 +44,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    public void display(String toDisplay){
-        response.setText(toDisplay);
     }
 }
 

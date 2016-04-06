@@ -19,10 +19,17 @@ import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private Spinner buildingSpinner, levelSpinner, roomSpinner;
-    private SearchListener listener;
-    private Button searchButton;
-    private EditText editX, editY;
+    private Spinner buildingSpinner, sectionSpinner, levelSpinner, roomSpinner;
+    private SearchListener searchListener;
+    private PreviousSearchListener previousSearchListener;
+    private Button searchButton, previousSearch1Button, previousSearch2Button, previousSearch3Button, previousSearch4Button, previousSearch5Button;
+    private int[] dotPosition;
+
+    /*TODO Edit X/Y pos
+       Make these get information from server/Database instead
+        */
+    private int xPosition = 350;
+    private int yPosition = 400;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +41,10 @@ public class MainActivity extends AppCompatActivity
         addBuildingSpinner();
         addLevelSpinner();
         addRoomSpinner();
+        addSectionSpinner();
 
-        listener = new SearchListener(this,buildingSpinner,levelSpinner,roomSpinner);
-        listener.setMainActivity(this);
-
-        searchButton = (Button) findViewById(R.id.search_Button);
-        searchButton.setOnClickListener(listener);
+        initiatePreviousSearch();
+        initiateSearchButton();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -49,9 +54,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        editX = (EditText) findViewById(R.id.editX);
-        editY = (EditText) findViewById(R.id.editY);
     }
 
     @Override
@@ -64,15 +66,46 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private void initiatePreviousSearch() {
+        previousSearch1Button = (Button) findViewById(R.id.previous_search_1);
+        previousSearch2Button = (Button) findViewById(R.id.previous_search_2);
+        previousSearch3Button = (Button) findViewById(R.id.previous_search_3);
+        previousSearch4Button = (Button) findViewById(R.id.previous_search_4);
+        previousSearch5Button = (Button) findViewById(R.id.previous_search_5);
+
+        previousSearchListener = new PreviousSearchListener();
+        previousSearchListener.setMainActivity(this);
+
+        previousSearch1Button.setOnClickListener(previousSearchListener);
+        previousSearch2Button.setOnClickListener(previousSearchListener);
+        previousSearch3Button.setOnClickListener(previousSearchListener);
+        previousSearch4Button.setOnClickListener(previousSearchListener);
+        previousSearch5Button.setOnClickListener(previousSearchListener);
+    }
+
+    private void initiateSearchButton() {
+        searchListener = new SearchListener(this, buildingSpinner, levelSpinner, roomSpinner);
+        searchListener.setMainActivity(this);
+
+        searchButton = (Button) findViewById(R.id.search_Button);
+        searchButton.setOnClickListener(searchListener);
+    }
+
+    public void search(String[] search, int[] dotPosition) {
+        Intent i = new Intent(getApplicationContext(), MapViewActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.putExtra("Positions", dotPosition);
+        startActivity(i);
+    }
+
     public int getX() {
-        return Integer.parseInt(editX.getText().toString());
+        return xPosition;
     }
 
     public int getY() {
-        return Integer.parseInt(editY.getText().toString());
+        return yPosition;
     }
 
-    public int getImageID(){
+    public int getImageID() {
         return R.drawable.orkanenhigh;
     }
 
@@ -108,6 +141,16 @@ public class MainActivity extends AppCompatActivity
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         buildingSpinner.setAdapter(adapter);
+    }
+
+    private void addSectionSpinner() {
+        sectionSpinner = (Spinner) findViewById(R.id.sectionSpinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.section_list, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        sectionSpinner.setAdapter(adapter);
     }
 
     @Override
