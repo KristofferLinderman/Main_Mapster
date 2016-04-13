@@ -1,9 +1,13 @@
 package se.mah.mapster.mapster_06;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,19 +16,20 @@ import android.support.v7.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.NumberPicker;
-import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
     private NumberPicker buildingPicker, sectionPicker, levelPicker, roomPicker;
     private SearchListener searchListener;
     private PreviousSearchListener previousSearchListener;
     private Button searchButton, previousSearch1Button, previousSearch2Button, previousSearch3Button, previousSearch4Button, previousSearch5Button;
-
-    /*TODO Edit X/Y pos
+    private ClientThread clientThread;
+    private Bitmap map;
+    /*
+    TODO Edit X/Y pos
        Make these get information from server/Database instead
         */
     private int xPosition = 350;
@@ -34,9 +39,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setElevation(3);
+
+        verifyStoragePermissions();
 
         addBuildingPicker();
         addLevelPicker();
@@ -45,6 +49,13 @@ public class MainActivity extends AppCompatActivity
 
         initiatePreviousSearch();
         initiateSearchButton();
+        initiateNavigationDrawer();
+    }
+
+    private void initiateNavigationDrawer() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setElevation(3);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -54,6 +65,32 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    // Storage Permissions for API 23+
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    /**
+     * Checks if the app has permission to write to device storage (API 23+)
+     * <p/>
+     * If the app does not has permission then the user will be prompted to grant permissions
+     */
+    private void verifyStoragePermissions() {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    this,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
     }
 
     @Override
@@ -91,13 +128,19 @@ public class MainActivity extends AppCompatActivity
         searchButton.setOnClickListener(searchListener);
     }
 
-    public void search(String[] search,int[] dotPosition) {
+    public void search(String[] search, int[] dotPosition, Bitmap map) {
+        MapViewActivity.setMain(this);
+        this.map = map;
+
         Intent i = new Intent(getApplicationContext(), MapViewActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.putExtra("Positions", dotPosition);
-        i.putExtra("Search",search);
+        i.putExtra("Search", search);
         startActivity(i);
     }
 
+    public Bitmap getBitmap() {
+        return map;
+    }
 
     public int getX() {
         return xPosition;
@@ -108,7 +151,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public int getImageID() {
-        return R.drawable.orkanenhigh;
+        return R.drawable.niggafifteen;
     }
 
 

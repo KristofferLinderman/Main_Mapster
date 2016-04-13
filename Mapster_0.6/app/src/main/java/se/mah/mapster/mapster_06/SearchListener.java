@@ -1,10 +1,10 @@
 package se.mah.mapster.mapster_06;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.NumberPicker;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 /**
@@ -16,6 +16,8 @@ public class SearchListener implements View.OnClickListener {
     private MainActivity activity;
     private String[] search = new String[4];
     private int[] dotPosition = new int[3];
+    private ClientThread clientThread;
+    private Bitmap map;
 
 
     public SearchListener(Context context, NumberPicker buildingPicker, NumberPicker sectionPicker, NumberPicker levelPicker, NumberPicker roomPicker) {
@@ -34,6 +36,10 @@ public class SearchListener implements View.OnClickListener {
         Toast.makeText(context, messageToDisplay, Toast.LENGTH_SHORT).show();
     }
 
+    public void setBitmap(Bitmap map) {
+        this.map = map;
+    }
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -48,7 +54,17 @@ public class SearchListener implements View.OnClickListener {
             getSearch();
             makeToast("Searching for " + search[0] + ":" + search[1] + search[2] + search[3]);
 
-            activity.search(search, dotPosition);
+            clientThread = new ClientThread("10.2.15.25", 9999, this);
+            clientThread.start();
+
+            try {
+                Log.d("EVAL", "Sleep brah");
+                Thread.sleep(400);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            activity.search(search, dotPosition, map);
         }
     }
 
@@ -72,5 +88,4 @@ public class SearchListener implements View.OnClickListener {
             search[3] = "0" + roomPicker.getValue();
         }
     }
-
 }

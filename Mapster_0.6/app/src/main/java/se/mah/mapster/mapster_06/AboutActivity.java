@@ -12,9 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-/**
- * Created by Kristoffer on 31/03/16.
- */
 public class AboutActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

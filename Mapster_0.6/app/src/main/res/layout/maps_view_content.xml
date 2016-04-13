@@ -13,11 +13,4 @@
     tools:showIn="@layout/maps_view_app_bar">
 
 
-    <!--<fragment-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:name="se.mah.mapster.mapster_06.TouchFragment"-->
-        <!--android:id="@+id/fragment"-->
-        <!--tools:layout="@layout/touch_fragment" />-->
-
 </RelativeLayout>

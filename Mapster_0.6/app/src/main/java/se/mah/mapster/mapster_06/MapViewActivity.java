@@ -1,18 +1,14 @@
 package se.mah.mapster.mapster_06;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Button;
 
-
-/**
- * Created by Kristoffer on 01/04/16.
- */
 public class MapViewActivity extends AppCompatActivity {
 
     //    private ImageView imageView;
@@ -23,32 +19,34 @@ public class MapViewActivity extends AppCompatActivity {
     private final int radius = 10;
     private int[] dotPosition;
     private String[] searchQuery;
+    private static MainActivity main;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maps_view_activity);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
+        bitmap = main.getBitmap();
+
+        try {
+            Log.d("EVAL", bitmap.toString());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        //get positions for the dot to indicate choosen room
         dotPosition = getIntent().getIntArrayExtra("Positions");
-        paint(dotPosition[0], dotPosition[1], dotPosition[2]);
-
+        //get the search made
         searchQuery = getIntent().getStringArrayExtra("Search");
-        String search = createSearchString();
-        setTitle(search);
 
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawer.setDrawerListener(toggle);
-//        toggle.syncState();
-//
-//
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(this);
+        paint(dotPosition[0], dotPosition[1]);
+        setTitle(createSearchString());
     }
 
+    /**
+     * Generates a string based on the search. String is generated in format "Building Level X - ZYQW"
+     *
+     * @return string of search
+     */
     private String createSearchString() {
         String temp = "";
 
@@ -56,103 +54,61 @@ public class MapViewActivity extends AppCompatActivity {
             temp += "Orkanen ";
         } else if (searchQuery[0].equals("NI")) {
             temp += "Niagara ";
+            temp += searchQuery[0] + ":" + searchQuery[1] + "0" + searchQuery[2] + searchQuery[3];
+            return temp;
         } else if (searchQuery[0].equals("G8")) {
             temp += "Gäddan ";
         }
 
         temp += "Level " + searchQuery[2] + " - ";
 
-        temp += searchQuery[0] + searchQuery[1] + searchQuery[2] + searchQuery[3];
-
+        temp += searchQuery[0] + ":" + searchQuery[1] + searchQuery[2] + searchQuery[3];
 
         return temp;
     }
 
-    public void paint(int x, int y, int id) {
+    public static void setMain(MainActivity main) {
+        MapViewActivity.main = main;
+    }
+
+    public void paint(int x, int y) {
         //Bitmap settings
-        BitmapFactory.Options myOptions = new BitmapFactory.Options();
-        myOptions.inDither = true;
-        myOptions.inScaled = false;
-        myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        myOptions.inPurgeable = true;
-
-        if (id == 0)
-            id = R.drawable.orkanenhigh;
-
-        //Paint and create bitmap from image
-        bitmap = BitmapFactory.decodeResource(getResources(), id, myOptions);
-        paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setColor(Color.RED);
-
-        Bitmap workingBitmap = Bitmap.createBitmap(bitmap);
-        Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
-
-        //Create canvas from bitmap and draw
-//        canvas = new Canvas(mutableBitmap);
-//        canvas.drawCircle(x, y, 15, paint);
+//        BitmapFactory.Options myOptions = new BitmapFactory.Options();
+//        myOptions.inDither = true;
+//        myOptions.inScaled = false;
+//        myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+//        myOptions.inPurgeable = true;
 //
-//        TouchImageView img = new TouchImageView(this);
-//        img.setImageBitmap(mutableBitmap);
-//        img.setMaxZoom(4f);
-//        setContentView(img);
-
-        //animation
-        canvas = new Canvas(mutableBitmap);
-        canvas.drawCircle(x, y, radius, paint);
-
-//        TouchFragment fragment = new TouchFragment();
-//        fragment.setActivity(this);
-//        fragment.setBitmap(mutableBitmap);
-//        fragment.setContext(getApplicationContext());
+////        if (id == 0)
+////            id = R.drawable.orkanenhigh;
+//
+//        //Paint and create bitmap from image
+////        bitmap = BitmapFactory.decodeResource(getResources(), id, myOptions);
+//
+//        paint = new Paint();
+//        paint.setAntiAlias(true);
+//        paint.setColor(Color.RED);
+//
+//        Bitmap workingBitmap = Bitmap.createBitmap(bitmap);
+//        Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
+//
+//        //Create canvas from bitmap and draw
+////        canvas = new Canvas(mutableBitmap);
+////        canvas.drawCircle(x, y, 15, paint);
+//
+//        //animation
+//        canvas = new Canvas(mutableBitmap);
+//        canvas.drawCircle(x, y, radius, paint);
+//
+//        if(bitmap == null){
+//            bitmap = main.getBitmap();
+//            bitmap.toString();
+//        }
 
         TouchImageView img = new TouchImageView(this);
-        img.setImageBitmap(mutableBitmap);
+        img.setImageBitmap(bitmap);
         img.setMaxZoom(4f);
         setContentView(img);
 
     }
-
-//    @Override
-//    public void onBackPressed() {
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-//
-//    @SuppressWarnings("StatementWithEmptyBody")
-//    @Override
-//    public boolean onNavigationItemSelected(MenuItem item) {
-//        // Handle navigation view item clicks here.
-//        int id = item.getItemId();
-//
-//        if (id == R.id.nav_home) {
-//            startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-//        } else if (id == R.id.nav_find) {
-//            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mah.se/kartor-mah"));
-//            startActivity(browserIntent);
-//        } else if (id == R.id.nav_dumb) {
-//            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/anton.lagerlof.3?fref=ts"));
-//            startActivity(browserIntent);
-//        } else if (id == R.id.nav_about) {
-//            startActivity(new Intent(this, AboutActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-//        }else if(id == R.id.maps_settings){
-//            startActivity(new Intent(this, MapsSettingsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-//        }
-//
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        drawer.closeDrawer(GravityCompat.START);
-//        return true;
-//    }
-
 }
