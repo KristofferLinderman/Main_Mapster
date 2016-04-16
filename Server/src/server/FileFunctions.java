@@ -6,8 +6,18 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * Class with functions for sending files
+ * Created by Gustav on 2016-04-09.
+ */
 public class FileFunctions {
 
+	/**
+	 * Deconstructs a file and sends it with the OutputStream
+	 * @param os
+	 * @param fileName
+	 * @throws Exception
+     */
 	public void sendFile(OutputStream os, String fileName) throws Exception {
 		// File to send
 		File myFile = new File(fileName);
@@ -50,5 +60,4 @@ public class FileFunctions {
 			bis.close();
 		}
 	}
-
 }

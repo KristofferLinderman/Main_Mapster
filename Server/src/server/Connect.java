@@ -1,13 +1,15 @@
 package server;
 
-import sun.applet.Main;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Class for connecting to a database and get information
+ * Created by Gustav on 2016-04-06.
+ */
 public class Connect {
 
 	private Connection conn;
@@ -15,8 +17,12 @@ public class Connect {
 	private ResultSet rs;
 	private Room room;
 
+	/**
+	 * Connects to the given database
+	 */
 	public Connect() {
-		try {
+
+		try {//
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mysql://10.2.13.227:3306/mapster", "Gustav1993", "password");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mapster", "Guest", "mapster");
@@ -29,12 +35,13 @@ public class Connect {
 
 	}
 
+	/**
+	 * Prints all the data in the selected database
+	 */
 	public void printAllData() {
+
 		try {
 			String query = "select * from niagara";
-			
-//			String query1 = "SELECT map FROM Orkanen WHERE ID = D313";
-//			String query2 = "SELECT koordinates FROM Orkanen WHERE ID = D313";
 			rs = st.executeQuery(query);
 			System.out.println("Records from database:");
 			while (rs.next()) {
@@ -50,8 +57,15 @@ public class Connect {
 			System.out.println(e.toString());
 		}
 	}
-	
+
+	/**
+	 * Search for a room in the database with the given string, creates a room object
+	 * from the values in the database and returns the room.
+	 * @param searchFor
+	 * @return
+     */
 	public Room searchedRoom(String searchFor) {
+
 		String query = "select * FROM niagara WHERE name = '" + searchFor + "'";
 		
 		try {
