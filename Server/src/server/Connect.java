@@ -62,7 +62,7 @@ public class Connect {
 	 * Search for a room in the database with the given string, creates a room object
 	 * from the values in the database and returns the room.
 	 * @param searchFor
-	 * @return
+	 * @return room
      */
 	public Room searchedRoom(String searchFor) {
 
