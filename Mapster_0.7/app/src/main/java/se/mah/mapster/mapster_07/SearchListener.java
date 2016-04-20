@@ -1,4 +1,4 @@
-package se.mah.mapster.mapster_06;
+package se.mah.mapster.mapster_07;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -38,6 +38,10 @@ public class SearchListener implements View.OnClickListener {
 
     public void setBitmap(Bitmap map) {
         this.map = map;
+    }
+
+    public String getMapName() {
+        return search[0] + search[2] + ".png";
     }
 
     @Override

@@ -1,15 +1,13 @@
-package se.mah.mapster.mapster_06;
+package se.mah.mapster.mapster_07;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -31,33 +29,31 @@ public class ClientThread extends Thread {
 
     public void run() {
         try {
-            Log.d("EVAL", "1");
             socket = new Socket(ip, port);
-            Log.d("EVAL", "Connected");
 
             ois = new ObjectInputStream(socket.getInputStream());
 
-            Log.d("EVAL", "3");
-            map = receiveFile(ois, "map.png");
+            String map_name = searchListener.getMapName();
+            map = receiveFile(ois, map_name);
             searchListener.setBitmap(map);
 
-
-            Log.d("EVAL", map.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private Bitmap receiveFile(InputStream is, String fileName) throws Exception {
-        String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String fileInES = baseDir + File.separator + fileName;
+    private Bitmap receiveFile(ObjectInputStream ois, String fileName) throws Exception {
+//        String baseDir = Environment.getExternalStorageDirectory()+File.separator+"Mapster";
+//        String fileInES = baseDir + File.separator + fileName;
+        File directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
+        File fileInDir = new File(directory + File.separator + fileName);
 
         // read 4 bytes containing the file size
         byte[] bSize = new byte[4];
         int offset = 0;
 
         while (offset < bSize.length) {
-            int bRead = is.read(bSize, offset, bSize.length - offset);
+            int bRead = ois.read(bSize, offset, bSize.length - offset);
             offset += bRead;
         }
 
@@ -73,14 +69,18 @@ public class ClientThread extends Thread {
         byte[] data = new byte[8 * 1024];
 
         int bToRead;
-        FileOutputStream fos = new FileOutputStream(fileInES);
+        FileOutputStream fos = new FileOutputStream(fileInDir);
         BufferedOutputStream bos = new BufferedOutputStream(fos);
 
         while (fileSize > 0) {
             // make sure not to read more bytes than filesize
-            if (fileSize > data.length) bToRead = data.length;
-            else bToRead = fileSize;
-            int bytesRead = is.read(data, 0, bToRead);
+            if (fileSize > data.length) {
+                bToRead = data.length;
+            } else {
+                bToRead = fileSize;
+            }
+
+            int bytesRead = ois.read(data, 0, bToRead);
             if (bytesRead > 0) {
                 bos.write(data, 0, bytesRead);
                 fileSize -= bytesRead;
@@ -89,10 +89,8 @@ public class ClientThread extends Thread {
         bos.close();
 
         // Convert the received image to a Bitmap
-        // If you do not want to return a bitmap comment/delete the folowing lines
-        // and make the function to return void or whatever you prefer.
         Bitmap bmp = null;
-        FileInputStream fis = new FileInputStream(fileInES);
+        FileInputStream fis = new FileInputStream(fileInDir);
         try {
             bmp = BitmapFactory.decodeStream(fis);
             return bmp;

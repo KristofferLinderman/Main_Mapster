@@ -1,4 +1,4 @@
-package se.mah.mapster.mapster_06;
+package se.mah.mapster.mapster_07;
 
 import android.Manifest;
 import android.content.Intent;
@@ -43,6 +43,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            Log.d("MAPSTER", "No SDCARD");
+        } else {
+            File directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
+            directory.mkdirs();
+        }
+
+        Toast.makeText(MainActivity.this, "Welcome to the first Mapster", Toast.LENGTH_SHORT).show();
 
         setContentView(R.layout.main_activity);
 
