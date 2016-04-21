@@ -19,10 +19,16 @@ public class ClientThread extends Thread {
     private Socket socket;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
-    private Bitmap map;
+    private DataOutputStream dos;
+    private Bitmap map, btm;
     private String ip;
     private int port;
     private SearchListener searchListener;
+    private String search;
+    private int x, y;
+
+    File directory;
+    File fileInDir;
 
     public ClientThread(String ip, int port, SearchListener searchListener) {
         this.ip = ip;
@@ -32,10 +38,36 @@ public class ClientThread extends Thread {
 
     public void run() {
         try {
-            socket = new Socket(ip, port);
+
+            search = searchListener.getSearch();
+            Log.d("EVAL", "Got search string " + search);
+            socket = new Socket(ip, 9999);
+            Log.d("EVAL", "Connected to server " + socket.getInetAddress());
+
+            dos = new DataOutputStream(socket.getOutputStream());
+            Log.d("EVAL", "Got OutputStream");
+
+            dos.writeUTF(search);
+            Log.d("EVAL", "Wrote search to server");
+            dos.flush();
 
             Log.d("TEST-NET", "1");
             ois = new ObjectInputStream(socket.getInputStream());
+<<<<<<< HEAD
+            Log.d("EVAL", "Got InputStream");
+
+
+            Log.d("EVAL", "Loading file...");
+            while (true) {
+                btm = receiveFile(ois, "test.png");
+                Log.d("EVAL", "Image received!");
+
+                searchListener.setX(ois.readInt());
+                searchListener.setY(ois.readInt());
+                Log.d("EVAL", "Coordinates; X " + x + ", Y " + y);
+
+            }
+=======
             Log.d("TEST-NET", "2");
 
             String map_name = searchListener.getMapName();
@@ -48,6 +80,7 @@ public class ClientThread extends Thread {
             dos.writeUTF("OR:D131");
             Log.d("TEST-NET", "5");
             searchListener.setBitmap(map);
+>>>>>>> 9d8e09c0141676fed9d1865e9efe55e805c9dee5
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,8 +88,13 @@ public class ClientThread extends Thread {
     }
 
     private Bitmap receiveFile(ObjectInputStream ois, String fileName) throws Exception {
+<<<<<<< HEAD
+        directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
+        fileInDir = new File(directory + File.separator + fileName);
+=======
         File directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
         File fileInDir = new File(directory + File.separator + fileName);
+>>>>>>> 9d8e09c0141676fed9d1865e9efe55e805c9dee5
 
         // read 4 bytes containing the file size
         byte[] bSize = new byte[4];
