@@ -2,6 +2,7 @@ package se.mah.mapster.mapster_07;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.NumberPicker;
@@ -55,7 +56,7 @@ public class SearchListener implements View.OnClickListener {
             dotPosition[1] = activity.getY();
             dotPosition[2] = activity.getImageID();
 
-            getSearch();
+            getSearchValues();
             makeToast("Searching for " + search[0] + ":" + search[1] + search[2] + search[3]);
 
             clientThread = new ClientThread("10.2.15.25", 9999, this);
@@ -63,7 +64,7 @@ public class SearchListener implements View.OnClickListener {
 
             try {
                 Log.d("EVAL", "Sleep brah");
-                Thread.sleep(700);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -72,8 +73,13 @@ public class SearchListener implements View.OnClickListener {
         }
     }
 
+
+    public String getSearch() {
+        return search[0] + ":" + search[1] + search[2] + search[3];
+    }
+
     // Gets the values from the pickers on MainActivity and adds them to a string[]
-    private void getSearch() {
+    private void getSearchValues() {
         String[] temp;
         temp = buildingPicker.getDisplayedValues();
         search[0] = temp[buildingPicker.getValue()];

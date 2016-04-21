@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity
     private SearchListener searchListener;
     private PreviousSearchListener previousSearchListener;
     private Button searchButton, previousSearch1Button, previousSearch2Button, previousSearch3Button, previousSearch4Button, previousSearch5Button;
-    private ClientThread clientThread;
+    private String searchQuery;
     private Bitmap map;
     /*
     TODO Edit X/Y pos
@@ -146,11 +146,17 @@ public class MainActivity extends AppCompatActivity
     public void search(String[] search, int[] dotPosition, Bitmap map) {
         MapViewActivity.setMain(this);
         this.map = map;
+        searchQuery = searchListener.getSearch();
+        updatePreviousSearch();
 
         Intent i = new Intent(getApplicationContext(), MapViewActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.putExtra("Positions", dotPosition);
         i.putExtra("Search", search);
         startActivity(i);
+    }
+
+    private void updatePreviousSearch(){
+
     }
 
     public Bitmap getBitmap() {
