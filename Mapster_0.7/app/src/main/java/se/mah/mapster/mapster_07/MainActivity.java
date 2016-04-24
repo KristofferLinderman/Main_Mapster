@@ -149,15 +149,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void updatePreviousSearch(){
-<<<<<<< HEAD
-=======
-
-    }
-
-    public Bitmap getBitmap() {
-        return map;
-    }
->>>>>>> 9d8e09c0141676fed9d1865e9efe55e805c9dee5
 
     }
 

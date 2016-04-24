@@ -1,9 +1,5 @@
 package server;
 
-/**
- * Room class that stores information about a room
- * Created by Gustav on 2016-04-08.
- */
 public class Room {
 
 	private int floor;

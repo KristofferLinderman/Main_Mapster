@@ -19,8 +19,9 @@ public class SearchListener implements View.OnClickListener {
     private int[] dotPosition = new int[2];
     private ClientThread clientThread;
     private Bitmap map;
-    private String ip = "10.2.17.104";
-
+//    private String ip = "10.2.17.104"; //mah wifi
+    private String ip = "192.168.0.104"; //gustav xps
+//    private String ip = "178.78.249.239";
 
     public SearchListener(Context context, NumberPicker buildingPicker, NumberPicker sectionPicker, NumberPicker levelPicker, NumberPicker roomPicker) {
         this.context = context;
@@ -70,10 +71,6 @@ public class SearchListener implements View.OnClickListener {
             try {
                 Thread.sleep(1500);
                 Log.d("EVAL", "Sleep brah");
-<<<<<<< HEAD
-=======
-                Thread.sleep(1000);
->>>>>>> 9d8e09c0141676fed9d1865e9efe55e805c9dee5
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
