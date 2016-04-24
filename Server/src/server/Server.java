@@ -1,11 +1,13 @@
 package server;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-
+/**
+ * Starts a server that receives a room and returns an image (map)
+ * Created by Gustav on 2016-04-05.
+ */
 public class Server implements Runnable {
 	private ServerSocket serverSocket;
 	private Thread serverThread;
@@ -21,11 +23,12 @@ public class Server implements Runnable {
 		}
 	}
 
+	/**
+	 * Creates a new thread (ClientListener) for each accepted connection made
+	 */
 	public void run() {
-		System.out.println("Server B started");
+		System.out.println("Server started");
 
-		// creates a new thread (ClientListener) for each accepted connection
-		// made
 		while (true) {
 			try {
 				Socket socket = serverSocket.accept();
@@ -37,42 +40,49 @@ public class Server implements Runnable {
 		}
 	}
 
-	// A tread that listens for requests without closing the connection between
-	// requests.
+	/**
+	 * A tread that listens for requests without closing the connection between
+	 * requests.
+	 */
 	private class ClientListener extends Thread {
 		private Socket socket;
 		private ObjectOutputStream outputStream;
+        private DataInputStream inputStream;
 
 		public ClientListener(Socket socket) {
 			this.socket = socket;
 		}
 
+		/**
+		 * Receives room-string from android client, search room via connect class and gets info
+		 * from database, returns the path of the file stored on the server.
+		 */
 		public void run() {
 			try {
-				
-//				String request = fromAndroidGetRoomName
-				String request = "A0312";
+                inputStream = new DataInputStream(socket.getInputStream());
+                String request = inputStream.readUTF();
 
-				// String strImage = "/home/gustav/Downloads/beluga.jpg";
-				// String strImage =
-				// "D:/Gustav/Dokument/Dropbox/Dropbox/Dropbox/Skola/ASO8c.jpg";
-				String strImage = connect.searchedRoom(request).getPath();
+				fh.splitRoom(request);
+                System.out.println("Input from client: " + fh.getRoomString() + " " + fh.getBuildingString());
 
+                Room room = connect.searchedRoom(fh.getRoomString(), fh.getBuildingString());
+				String strImage = room.getPath();
 
+//				Send file to clientx
 				outputStream = new ObjectOutputStream(socket.getOutputStream());
-				// inputStream = new ObjectInputStream(socket.getInputStream());
-
 				fh.sendFile(outputStream, strImage);
 				System.out.println("Picture sent to " + socket.getInetAddress() + "!" +  " [" + strImage + "]");
 
+				//Get coordinates
+                fh.splitCoor(room.getCoor());
+                System.out.println("X: " + fh.getX() + " Y: " + fh.getY());
+                outputStream.writeInt(fh.getX());
+                outputStream.writeInt(fh.getY());
+                outputStream.flush();
+
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public static void main(String[] args) {
-		new Server(9999);
 	}
 }
