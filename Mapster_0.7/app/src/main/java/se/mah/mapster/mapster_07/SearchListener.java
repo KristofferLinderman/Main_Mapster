@@ -16,10 +16,12 @@ public class SearchListener implements View.OnClickListener {
     private NumberPicker buildingPicker, sectionPicker, levelPicker, roomPicker;
     private MainActivity activity;
     private String[] search = new String[4];
-    private int[] dotPosition = new int[3];
+    private int[] dotPosition = new int[2];
     private ClientThread clientThread;
     private Bitmap map;
-
+//    private String ip = "10.2.17.104"; //mah wifi
+    private String ip = "192.168.0.104"; //gustav xps
+//    private String ip = "178.78.249.239";
 
     public SearchListener(Context context, NumberPicker buildingPicker, NumberPicker sectionPicker, NumberPicker levelPicker, NumberPicker roomPicker) {
         this.context = context;
@@ -45,26 +47,30 @@ public class SearchListener implements View.OnClickListener {
         return search[0] + search[2] + ".png";
     }
 
+    public void setX(int xPos){
+        dotPosition[0] = xPos;
+    }
+
+    public void setY(int yPos){
+        dotPosition[1] = yPos;
+    }
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
 
         if (id == R.id.search_Button) {
 
-            //Get X/Y
-            dotPosition[0] = activity.getX();
-            dotPosition[1] = activity.getY();
-            dotPosition[2] = activity.getImageID();
 
             getSearchValues();
             makeToast("Searching for " + search[0] + ":" + search[1] + search[2] + search[3]);
 
-            clientThread = new ClientThread("10.2.15.25", 9999, this);
+            clientThread = new ClientThread(ip, 9999, this);
             clientThread.start();
 
             try {
+                Thread.sleep(1500);
                 Log.d("EVAL", "Sleep brah");
-                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -85,9 +91,19 @@ public class SearchListener implements View.OnClickListener {
         search[0] = temp[buildingPicker.getValue()];
 
         temp = sectionPicker.getDisplayedValues();
-        search[1] = temp[sectionPicker.getValue()];
+        //Om gäddan ta bort ABCD
+        if(search[0].equals("G8")) {
+            search[1] = "";
+        } else {
+            search[1] = temp[sectionPicker.getValue()];
+        }
 
-        search[2] = "" + levelPicker.getValue();
+        //Lägg till 0 om niagara
+        if(search[0].equals("NI")) {
+            search[2] = "0" + levelPicker.getValue();
+        } else {
+            search[2] = "" + levelPicker.getValue();
+        }
 
         int room = roomPicker.getValue();
 
@@ -97,5 +113,7 @@ public class SearchListener implements View.OnClickListener {
         } else {
             search[3] = "0" + roomPicker.getValue();
         }
+
+
     }
 }

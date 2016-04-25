@@ -64,9 +64,9 @@ public class Connect {
 	 * @param searchFor
 	 * @return room
      */
-	public Room searchedRoom(String searchFor) {
+	public Room searchedRoom(String searchFor, String building) {
 
-		String query = "select * FROM niagara WHERE name = '" + searchFor + "'";
+		String query = "select * FROM " + building + " WHERE name = '" + searchFor + "'";
 		
 		try {
 			rs = st.executeQuery(query);

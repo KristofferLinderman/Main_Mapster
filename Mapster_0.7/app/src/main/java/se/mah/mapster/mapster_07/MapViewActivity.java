@@ -6,21 +6,26 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
+
+import java.io.File;
 
 public class MapViewActivity extends AppCompatActivity {
 
-    //    private ImageView imageView;
-    private Button button;
-    private Bitmap bitmap;
-    private Canvas canvas;
-    private Paint paint;
     private final int radius = 10;
     private int[] dotPosition;
     private String[] searchQuery;
     private static MainActivity main;
+
+    private Bitmap bitmap, mutableBitmap;
+    private Canvas canvas;
+    private Paint paint;
+    private File sd = Environment.getExternalStorageDirectory();
+    private File image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,7 @@ public class MapViewActivity extends AppCompatActivity {
         //get the search made
         searchQuery = getIntent().getStringArrayExtra("Search");
 
+
         paint(dotPosition[0], dotPosition[1]);
         setTitle(createSearchString());
     }
@@ -55,7 +61,7 @@ public class MapViewActivity extends AppCompatActivity {
             temp += "Orkanen ";
         } else if (searchQuery[0].equals("NI")) {
             temp += "Niagara ";
-            temp += searchQuery[0] + ":" + searchQuery[1] + "0" + searchQuery[2] + searchQuery[3];
+            temp += searchQuery[0] + ":" + searchQuery[1] + searchQuery[2] + searchQuery[3];
             return temp;
         } else if (searchQuery[0].equals("G8")) {
             temp += "Gäddan ";
@@ -67,50 +73,36 @@ public class MapViewActivity extends AppCompatActivity {
 
         return temp;
     }
-
-    public static void setMain(MainActivity main) {
-        MapViewActivity.main = main;
-    }
-
     public void paint(int x, int y) {
         //Bitmap settings
-//        BitmapFactory.Options myOptions = new BitmapFactory.Options();
-//        myOptions.inDither = true;
-//        myOptions.inScaled = false;
-//        myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
-//        myOptions.inPurgeable = true;
-//
-////        if (id == 0)
-////            id = R.drawable.orkanenhigh;
-//
-//        //Paint and create bitmap from image
-////        bitmap = BitmapFactory.decodeResource(getResources(), id, myOptions);
-//
-//        paint = new Paint();
-//        paint.setAntiAlias(true);
-//        paint.setColor(Color.RED);
-//
-//        Bitmap workingBitmap = Bitmap.createBitmap(bitmap);
-//        Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
-//
-//        //Create canvas from bitmap and draw
-////        canvas = new Canvas(mutableBitmap);
-////        canvas.drawCircle(x, y, 15, paint);
-//
-//        //animation
-//        canvas = new Canvas(mutableBitmap);
-//        canvas.drawCircle(x, y, radius, paint);
-//
-//        if(bitmap == null){
-//            bitmap = main.getBitmap();
-//            bitmap.toString();
-//        }
+        BitmapFactory.Options myOptions = new BitmapFactory.Options();
+        myOptions.inDither = true;
+        myOptions.inScaled = false;
+        myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        myOptions.inPurgeable = true;
+
+        image = new File(sd + File.separator + "Mapster", "test.png");
+        bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),myOptions);
+
+        paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.RED);
+
+        Bitmap workingBitmap = Bitmap.createBitmap(bitmap);
+        mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
+
+        //Create canvas from bitmap and draw
+        canvas = new Canvas(mutableBitmap);
+        canvas.drawCircle(x, y, 15, paint);
 
         TouchImageView img = new TouchImageView(this);
-        img.setImageBitmap(bitmap);
+        img.setImageBitmap(mutableBitmap);
         img.setBackgroundColor(Color.WHITE);
         img.setMaxZoom(4f);
         setContentView(img);
+    }
 
+    public static void setMain(MainActivity main) {
+        MapViewActivity.main = main;
     }
 }

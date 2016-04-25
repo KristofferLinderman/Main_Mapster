@@ -7,10 +7,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Class with functions for sending files
+ * Class with functions for sending files and splitting string
  * Created by Gustav on 2016-04-09.
  */
 public class FileFunctions {
+
+	private String building, room;
+    private int x, y;
 
 	/**
 	 * Deconstructs a file and sends it with the OutputStream
@@ -60,4 +63,52 @@ public class FileFunctions {
 			bis.close();
 		}
 	}
+
+	public void splitRoom (String str) {
+		try {
+			String[] parts = str.split(":");
+
+			String temp = parts[0];
+			room = parts[1];
+
+
+//      *************
+//      TODO: Ändra så att databaserna heter NI, G8 och OR?? då slipper vi konverta strings
+//      *************
+            if(temp.equals("G8")){
+                building = "gaddan";
+            } else if(temp.equals("NI")) {
+                building = "niagara";
+            } else if(temp.equals("OR")){
+                building = "orkanen";
+            }
+		} catch (ArrayIndexOutOfBoundsException e){
+			System.out.println("Error: " + e);
+		}
+	}
+
+	public String getBuildingString() {
+		return building;
+    }
+
+	public String getRoomString() {
+		return room;
+	}
+
+
+
+	public void splitCoor(String str) {
+		String[] parts = str.split("\\.");
+
+        x = Integer.parseInt(parts[0]);
+		y = Integer.parseInt(parts[1]);
+	}
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }

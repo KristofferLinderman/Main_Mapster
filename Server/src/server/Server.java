@@ -1,7 +1,6 @@
 package server;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -48,30 +47,38 @@ public class Server implements Runnable {
 	private class ClientListener extends Thread {
 		private Socket socket;
 		private ObjectOutputStream outputStream;
+        private DataInputStream inputStream;
 
 		public ClientListener(Socket socket) {
 			this.socket = socket;
 		}
 
 		/**
-		 * Receives room-string from android client, search room via connect class and get info
-		 * from database, returns the path om the file stored on the server.
+		 * Receives room-string from android client, search room via connect class and gets info
+		 * from database, returns the path of the file stored on the server.
 		 */
 		public void run() {
 			try {
-//				String request = fromAndroidGetRoomName
-				String request = "A0312";
+                inputStream = new DataInputStream(socket.getInputStream());
+                String request = inputStream.readUTF();
 
-				// String strImage = "/home/gustav/Downloads/beluga.jpg";
-				// "D:/Gustav/Dokument/Dropbox/Dropbox/Dropbox/Skola/ASO8c.jpg";
-				String strImage = connect.searchedRoom(request).getPath();
+				fh.splitRoom(request);
+                System.out.println("Input from client: " + fh.getRoomString() + " " + fh.getBuildingString());
 
+                Room room = connect.searchedRoom(fh.getRoomString(), fh.getBuildingString());
+				String strImage = room.getPath();
 
+//				Send file to clientx
 				outputStream = new ObjectOutputStream(socket.getOutputStream());
-				// inputStream = new ObjectInputStream(socket.getInputStream());
-
 				fh.sendFile(outputStream, strImage);
 				System.out.println("Picture sent to " + socket.getInetAddress() + "!" +  " [" + strImage + "]");
+
+				//Get coordinates
+                fh.splitCoor(room.getCoor());
+                System.out.println("X: " + fh.getX() + " Y: " + fh.getY());
+                outputStream.writeInt(fh.getX());
+                outputStream.writeInt(fh.getY());
+                outputStream.flush();
 
 			} catch (Exception e) {
 				e.printStackTrace();

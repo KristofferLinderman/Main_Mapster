@@ -33,12 +33,7 @@ public class MainActivity extends AppCompatActivity
     private Button searchButton, previousSearch1Button, previousSearch2Button, previousSearch3Button, previousSearch4Button, previousSearch5Button;
     private String searchQuery;
     private Bitmap map;
-    /*
-    TODO Edit X/Y pos
-       Make these get information from server/Database instead
-        */
-    private int xPosition = 350;
-    private int yPosition = 400;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +45,6 @@ public class MainActivity extends AppCompatActivity
             File directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
             directory.mkdirs();
         }
-
-        Toast.makeText(MainActivity.this, "Welcome to the first Mapster", Toast.LENGTH_SHORT).show();
 
         setContentView(R.layout.main_activity);
 
@@ -161,14 +154,6 @@ public class MainActivity extends AppCompatActivity
 
     public Bitmap getBitmap() {
         return map;
-    }
-
-    public int getX() {
-        return xPosition;
-    }
-
-    public int getY() {
-        return yPosition;
     }
 
     public int getImageID() {
