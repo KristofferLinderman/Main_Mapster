@@ -25,6 +25,7 @@ public class MapViewActivity extends AppCompatActivity {
     private Canvas canvas;
     private Paint paint;
     private File sd = Environment.getExternalStorageDirectory();
+    private String filename;
     private File image;
 
     @Override
@@ -34,16 +35,12 @@ public class MapViewActivity extends AppCompatActivity {
 
         bitmap = main.getBitmap();
 
-        try {
-            Log.d("EVAL", bitmap.toString());
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
         //get positions for the dot to indicate choosen room
         dotPosition = getIntent().getIntArrayExtra("Positions");
         //get the search made
         searchQuery = getIntent().getStringArrayExtra("Search");
-
+        //Get filename
+        filename = getIntent().getStringExtra("Filename");
 
         paint(dotPosition[0], dotPosition[1]);
         setTitle(createSearchString());
@@ -81,7 +78,7 @@ public class MapViewActivity extends AppCompatActivity {
         myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
         myOptions.inPurgeable = true;
 
-        image = new File(sd + File.separator + "Mapster", "test.png");
+        image = new File(sd + File.separator + "Mapster", filename);
         bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),myOptions);
 
         paint = new Paint();

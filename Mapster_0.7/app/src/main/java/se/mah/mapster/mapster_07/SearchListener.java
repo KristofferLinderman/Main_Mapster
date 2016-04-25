@@ -2,7 +2,6 @@ package se.mah.mapster.mapster_07;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.NumberPicker;
@@ -19,8 +18,9 @@ public class SearchListener implements View.OnClickListener {
     private int[] dotPosition = new int[2];
     private ClientThread clientThread;
     private Bitmap map;
-//    private String ip = "10.2.17.104"; //mah wifi
-    private String ip = "192.168.0.104"; //gustav xps
+
+    private String ip = "10.2.17.104"; //mah wifi
+//    private String ip = "192.168.0.104"; //gustav xps
 //    private String ip = "178.78.249.239";
 
     public SearchListener(Context context, NumberPicker buildingPicker, NumberPicker sectionPicker, NumberPicker levelPicker, NumberPicker roomPicker) {
@@ -47,11 +47,11 @@ public class SearchListener implements View.OnClickListener {
         return search[0] + search[2] + ".png";
     }
 
-    public void setX(int xPos){
+    public void setX(int xPos) {
         dotPosition[0] = xPos;
     }
 
-    public void setY(int yPos){
+    public void setY(int yPos) {
         dotPosition[1] = yPos;
     }
 
@@ -60,16 +60,15 @@ public class SearchListener implements View.OnClickListener {
         int id = v.getId();
 
         if (id == R.id.search_Button) {
-
+            makeToast("Searching for " + getSearch());
 
             getSearchValues();
-            makeToast("Searching for " + search[0] + ":" + search[1] + search[2] + search[3]);
 
             clientThread = new ClientThread(ip, 9999, this);
             clientThread.start();
 
             try {
-                Thread.sleep(1500);
+                Thread.sleep(2000);
                 Log.d("EVAL", "Sleep brah");
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -79,9 +78,12 @@ public class SearchListener implements View.OnClickListener {
         }
     }
 
-
     public String getSearch() {
         return search[0] + ":" + search[1] + search[2] + search[3];
+    }
+
+    public String getFilename() {
+        return search[0] + ":" + search[2] + ".png";
     }
 
     // Gets the values from the pickers on MainActivity and adds them to a string[]
@@ -92,14 +94,14 @@ public class SearchListener implements View.OnClickListener {
 
         temp = sectionPicker.getDisplayedValues();
         //Om gäddan ta bort ABCD
-        if(search[0].equals("G8")) {
+        if (search[0].equals("G8")) {
             search[1] = "";
         } else {
             search[1] = temp[sectionPicker.getValue()];
         }
 
         //Lägg till 0 om niagara
-        if(search[0].equals("NI")) {
+        if (search[0].equals("NI")) {
             search[2] = "0" + levelPicker.getValue();
         } else {
             search[2] = "" + levelPicker.getValue();

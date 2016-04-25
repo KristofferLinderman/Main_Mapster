@@ -10,7 +10,6 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -56,14 +55,16 @@ public class ClientThread extends Thread {
 
 
             Log.d("EVAL", "Loading file...");
+
+            String filename = searchListener.getFilename();
+
             while (true) {
-                btm = receiveFile(ois, "test.png");
+                btm = receiveFile(ois, filename);
                 Log.d("EVAL", "Image received!");
 
                 searchListener.setX(ois.readInt());
                 searchListener.setY(ois.readInt());
                 Log.d("EVAL", "Coordinates; X " + x + ", Y " + y);
-
             }
 
         } catch (Exception e) {

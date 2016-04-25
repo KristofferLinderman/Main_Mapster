@@ -14,15 +14,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -118,8 +117,7 @@ public class MainActivity extends AppCompatActivity
         previousSearch4Button = (Button) findViewById(R.id.previous_search_4);
         previousSearch5Button = (Button) findViewById(R.id.previous_search_5);
 
-        previousSearchListener = new PreviousSearchListener();
-        previousSearchListener.setMainActivity(this);
+        previousSearchListener = new PreviousSearchListener(this);
 
         previousSearch1Button.setOnClickListener(previousSearchListener);
         previousSearch2Button.setOnClickListener(previousSearchListener);
@@ -140,16 +138,33 @@ public class MainActivity extends AppCompatActivity
         MapViewActivity.setMain(this);
         this.map = map;
         searchQuery = searchListener.getSearch();
-        updatePreviousSearch();
+        updatePreviousSearch(search, dotPosition);
 
-        Intent i = new Intent(getApplicationContext(), MapViewActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.putExtra("Positions", dotPosition);
-        i.putExtra("Search", search);
-        startActivity(i);
+        Intent mapViewIntent = new Intent(getApplicationContext(), MapViewActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        mapViewIntent.putExtra("Positions", dotPosition);
+        mapViewIntent.putExtra("Search", search);
+        mapViewIntent.putExtra("Filename", searchListener.getFilename());
+        startActivity(mapViewIntent);
     }
 
-    private void updatePreviousSearch(){
+    public void search(Search seachInput) {
 
+    }
+
+    private void updatePreviousSearch(String[] search, int[] dotPosition) {
+        previousSearchListener.addPreviousSearch(search, dotPosition);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Search> listOfPrevSearches = previousSearchListener.getList();
+                previousSearch1Button.setText(listOfPrevSearches.get(0).getSearchQuery());
+                previousSearch2Button.setText(listOfPrevSearches.get(1).getSearchQuery());
+                previousSearch3Button.setText(listOfPrevSearches.get(2).getSearchQuery());
+                previousSearch4Button.setText(listOfPrevSearches.get(3).getSearchQuery());
+                previousSearch5Button.setText(listOfPrevSearches.get(4).getSearchQuery());
+            }
+        });
     }
 
     public Bitmap getBitmap() {
