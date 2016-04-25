@@ -330,5 +330,4 @@ public class TouchImageView extends ImageView {
         fixTrans();
 
     }
-
 } 

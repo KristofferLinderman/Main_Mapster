@@ -3,11 +3,14 @@ package se.mah.mapster.mapster_07;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -31,10 +34,19 @@ public class ClientThread extends Thread {
         try {
             socket = new Socket(ip, port);
 
+            Log.d("TEST-NET", "1");
             ois = new ObjectInputStream(socket.getInputStream());
+            Log.d("TEST-NET", "2");
 
             String map_name = searchListener.getMapName();
+            Log.d("TEST-NET", "3");
             map = receiveFile(ois, map_name);
+
+            Log.d("TEST-NET", "4");
+            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+
+            dos.writeUTF("OR:D131");
+            Log.d("TEST-NET", "5");
             searchListener.setBitmap(map);
 
         } catch (Exception e) {
@@ -43,8 +55,6 @@ public class ClientThread extends Thread {
     }
 
     private Bitmap receiveFile(ObjectInputStream ois, String fileName) throws Exception {
-//        String baseDir = Environment.getExternalStorageDirectory()+File.separator+"Mapster";
-//        String fileInES = baseDir + File.separator + fileName;
         File directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
         File fileInDir = new File(directory + File.separator + fileName);
 
