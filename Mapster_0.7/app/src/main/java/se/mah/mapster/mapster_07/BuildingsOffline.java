@@ -1,7 +1,6 @@
 package se.mah.mapster.mapster_07;
 
 import android.graphics.BitmapFactory;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
@@ -11,47 +10,38 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-
 import android.graphics.Bitmap;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Environment;
+import android.view.View;
 
 /**
  * Created by Anton on 21/04/2016.
  */
-public class BuildingsOffline {
+public class BuildingsOffline extends Thread {
     ClientThread clientThread;
-    HashMap<String, String > buildings = new HashMap<String, String>();
+    private HashMap<String, String > buildings = new HashMap<String, String>();
 
 
+    public BuildingsOffline(ClientThread clientThread) throws IOException{
+        this.clientThread = clientThread;
 
-
-
+    }
 
     public void requestBuilding(String building){
         try{
         clientThread.oos.writeChars(building);
         clientThread.oos.flush();
-    }catch(IOException e ){
+            start();
+
+        } catch(IOException e ){
             e.printStackTrace();
         }}
 
-    public void retrieveBuilding(){
-        try{
-        Object o = clientThread.ois.readObject();
 
-
-
-
-        }catch (IOException e ){ e.printStackTrace();}
+    public void run(){
+        buildings = ClientThread.ois.readObject();
     }
-
-    private Class BuildingListener implements WifiP2pManager.ActionListener{
-
-    }
-
-
-
 
 
 

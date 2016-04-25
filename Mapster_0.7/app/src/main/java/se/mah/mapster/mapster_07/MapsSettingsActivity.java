@@ -22,6 +22,7 @@ public class MapsSettingsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private CheckedTextView orkanenCheckTV, niagaraCheckTV, gaddanCheckTV;
     private Listener listener;
+    private BuildingsOffline buildingsOffline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,16 +63,19 @@ public class MapsSettingsActivity extends AppCompatActivity
                 orkanenCheckTV.toggle();
                 if (orkanenCheckTV.isChecked())
                     Toast.makeText(getApplicationContext(), "Downloading...", Toast.LENGTH_SHORT).show();
+                    buildingsOffline.requestBuilding("orkanen");
 
             } else if (id == R.id.checked_gaddan) {
                 gaddanCheckTV.toggle();
                 if (gaddanCheckTV.isChecked())
                     Toast.makeText(getApplicationContext(), "Downloading...", Toast.LENGTH_SHORT).show();
+                    buildingsOffline.requestBuilding("gaddan");
 
             } else if (id == R.id.checked_niagara) {
                 niagaraCheckTV.toggle();
                 if (niagaraCheckTV.isChecked())
                     Toast.makeText(getApplicationContext(), "Downloading...", Toast.LENGTH_SHORT).show();
+                    buildingsOffline.requestBuilding("niagara");
             }
         }
     }
