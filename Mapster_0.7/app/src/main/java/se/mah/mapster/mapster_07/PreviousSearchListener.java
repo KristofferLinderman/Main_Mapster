@@ -1,5 +1,6 @@
 package se.mah.mapster.mapster_07;
 
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -12,14 +13,14 @@ public class PreviousSearchListener implements View.OnClickListener {
     private String[] search;
     private int[] dotPosition;
     private ArrayList<Search> previousSearchList;
+    private Search[] prevSearches;
+    private int counter = 0;
 
     public PreviousSearchListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        previousSearchList = new ArrayList<Search>();
+        prevSearches = new Search[5];
 
-        for (int i = 0; i < 5; i++) {
-            previousSearchList.add(new Search(search, dotPosition, ""));
-        }
+        previousSearchList = new ArrayList<Search>();
     }
 
     @Override
@@ -50,14 +51,19 @@ public class PreviousSearchListener implements View.OnClickListener {
 //        }
     }
 
-    public void addPreviousSearch(String[] search, int[] dotPosition) {
-        String mapDir = "";
+    public void addPreviousSearch(String[] searchInput, int[] dotPosition) {
+        String mapDir = searchInput[0] + ":" + searchInput[2] + ".png";
+        Search temp = new Search(searchInput, dotPosition, mapDir);
+        Log.d("PREV", mapDir + " " + searchInput[2]);
 
-        mapDir = search[0] + ":" + search[2] + ".png";
-        previousSearchList.add(0, new Search(search, dotPosition, mapDir));
+        previousSearchList.add(0, temp);
+
+        for (Search s : previousSearchList) {
+            Log.d("PREV", s.getSearchQuery());
+        }
 
         if (previousSearchList.size() > 5) {
-            previousSearchList.remove(5);
+            Log.d("EVAL", previousSearchList.remove(5).toString());
         }
     }
 

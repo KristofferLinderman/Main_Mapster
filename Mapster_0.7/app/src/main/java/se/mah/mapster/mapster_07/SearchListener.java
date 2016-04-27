@@ -61,6 +61,7 @@ public class SearchListener implements View.OnClickListener {
 
         if (id == R.id.search_Button) {
             makeToast("Searching for " + getSearch());
+            search = new String[4];
 
             getSearchValues();
 

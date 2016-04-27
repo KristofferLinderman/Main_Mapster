@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
-
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -58,14 +57,17 @@ public class ClientThread extends Thread {
 
             String filename = searchListener.getFilename();
 
-            while (true) {
+//            while (true) {
                 btm = receiveFile(ois, filename);
                 Log.d("EVAL", "Image received!");
+
+
 
                 searchListener.setX(ois.readInt());
                 searchListener.setY(ois.readInt());
                 Log.d("EVAL", "Coordinates; X " + x + ", Y " + y);
-            }
+//            }
+
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -110,32 +110,27 @@
             <Button
                 android:id="@+id/previous_search_1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/previous_search_1" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/previous_search_2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/previous_search_2" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/previous_search_3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/previous_search_3" />
+                android:layout_height="wrap_content"/>
 
             <Button
                 android:id="@+id/previous_search_4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/previous_search_4" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/previous_search_5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/previous_search_5" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </ScrollView>
