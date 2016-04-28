@@ -9,6 +9,10 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.HashMap;
 import android.graphics.Bitmap;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -18,30 +22,116 @@ import android.view.View;
 /**
  * Created by Anton on 21/04/2016.
  */
-public class BuildingsOffline extends Thread {
-    ClientThread clientThread;
-    private HashMap<String, String > buildings = new HashMap<String, String>();
-
-
-    public BuildingsOffline(ClientThread clientThread) throws IOException{
-        this.clientThread = clientThread;
+public class BuildingsOffline{
+    ObjectOutputStream oos;
+    ObjectInputStream ois;
+    Socket socket;
+    String ip = "";
+    int port;
+    ClientThread cThread;
+    HashMap<String, String> values = new HashMap<String, String>();
+    public BuildingsOffline() throws IOException{
+        socket = new Socket(ip, port);
 
     }
 
-    public void requestBuilding(String building){
-        try{
-        clientThread.oos.writeChars(building);
-        clientThread.oos.flush();
-            start();
+ public void requestBuilding(String building){
 
-        } catch(IOException e ){
-            e.printStackTrace();
-        }}
+     oos = new ObjectOutputStream(socket.getOutputStream());
+     ois = new ObjectInputStream(socket.getInputStream());
+
+     try{
+         oos.writeUTF(building);
+         oos.flush();
+
+           Object o = ois.readObject();
+           values = (HashMap<String, String>) o;
+           whichBuilding(values);
+
+            while(o != -1){
+
+                o = ois.readObject();
+                import java.io.File;
+                File folder = new File(Environment.getExternalStorageDirectory() + "/TollCulator");
+                boolean success = true;
+                if (!folder.exists()) {
+                    //Toast.makeText(MainActivity.this, "Directory Does Not Exist, Create It", Toast.LENGTH_SHORT).show();
+                    success = folder.mkdir();
+                }
+                if (success) {
+                    //Toast.makeText(MainActivity.this, "Directory Created", Toast.LENGTH_SHORT).show();
+                } else {
+                    //Toast.makeText(MainActivity.this, "Failed - Error", Toast.LENGTH_SHORT).show();
+                }
+
+            }
 
 
-    public void run(){
-        buildings = ClientThread.ois.readObject();
+
+
+
+     }catch(IOException e){
+         e.toString();
+     }
+
     }
+
+    public void whichBuilding(HashMap values){
+
+        if(values.containsValue("OR:131")){
+            saveHashmap(values);
+
+        }
+
+        else if (values.containsValue("NIA0305")) {
+            //do something
+        }
+
+
+    }
+
+
+
+    public void saveHashmap(HashMap<String, String> values){}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    try
+    {
+        FileOutputStream fos = context.openFileOutput("YourInfomration.ser", Context.MODE_PRIVATE);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(myHashMap);
+        oos.close();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+} catch (IOException e) {
+        e.printStackTrace();
+        }
+
+
+
+
+
+
+
+
+
+
 
 
 
