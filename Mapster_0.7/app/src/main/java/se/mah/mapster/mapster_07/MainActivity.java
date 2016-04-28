@@ -14,15 +14,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity
     private SearchListener searchListener;
     private PreviousSearchListener previousSearchListener;
     private Button searchButton, previousSearch1Button, previousSearch2Button, previousSearch3Button, previousSearch4Button, previousSearch5Button;
-    private String searchQuery;
+    private ArrayList<Button> previousSearchBtnList;
     private Bitmap map;
 
 
@@ -118,8 +117,14 @@ public class MainActivity extends AppCompatActivity
         previousSearch4Button = (Button) findViewById(R.id.previous_search_4);
         previousSearch5Button = (Button) findViewById(R.id.previous_search_5);
 
-        previousSearchListener = new PreviousSearchListener();
-        previousSearchListener.setMainActivity(this);
+        previousSearchListener = new PreviousSearchListener(this);
+
+        previousSearchBtnList = new ArrayList<>();
+        previousSearchBtnList.add(previousSearch1Button);
+        previousSearchBtnList.add(previousSearch2Button);
+        previousSearchBtnList.add(previousSearch3Button);
+        previousSearchBtnList.add(previousSearch4Button);
+        previousSearchBtnList.add(previousSearch5Button);
 
         previousSearch1Button.setOnClickListener(previousSearchListener);
         previousSearch2Button.setOnClickListener(previousSearchListener);
@@ -139,25 +144,31 @@ public class MainActivity extends AppCompatActivity
     public void search(String[] search, int[] dotPosition, Bitmap map) {
         MapViewActivity.setMain(this);
         this.map = map;
-        searchQuery = searchListener.getSearch();
+        previousSearchListener.addPreviousSearch(search, dotPosition);
         updatePreviousSearch();
 
-        Intent i = new Intent(getApplicationContext(), MapViewActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.putExtra("Positions", dotPosition);
-        i.putExtra("Search", search);
-        startActivity(i);
+        Intent mapViewIntent = new Intent(getApplicationContext(), MapViewActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        mapViewIntent.putExtra("Positions", dotPosition);
+        mapViewIntent.putExtra("Search", search);
+        mapViewIntent.putExtra("Filename", searchListener.getFilename());
+        startActivity(mapViewIntent);
     }
 
-    private void updatePreviousSearch(){
+    private void updatePreviousSearch() {
 
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Search> listOfPrevSearches = previousSearchListener.getList();
+                for (int i = 0; i < listOfPrevSearches.size(); i++) {
+                    previousSearchBtnList.get(i).setText(listOfPrevSearches.get(i).getSearchQuery());
+                }
+            }
+        });
     }
 
     public Bitmap getBitmap() {
         return map;
-    }
-
-    public int getImageID() {
-        return R.drawable.niggafive;
     }
 
     private void addBuildingPicker() {
