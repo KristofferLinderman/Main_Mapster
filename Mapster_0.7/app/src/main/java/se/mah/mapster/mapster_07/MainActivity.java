@@ -142,7 +142,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void search(String[] search, int[] dotPosition, String fileName) {
-        MapViewActivity.setMain(this);
         previousSearchListener.addPreviousSearch(search, dotPosition);
         updatePreviousSearch();
 

@@ -62,12 +62,14 @@ public class ClientThread extends Thread {
             Log.d("EVAL", "Image received!");
 
 
-            searchListener.setX(ois.readInt());
-            searchListener.setY(ois.readInt());
+//            searchListener.setX(ois.readInt());
+//            searchListener.setY(ois.readInt());
             Log.d("EVAL", "Coordinates; X " + x + ", Y " + y);
+            searchListener.search();
 
             dos.close();
             ois.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

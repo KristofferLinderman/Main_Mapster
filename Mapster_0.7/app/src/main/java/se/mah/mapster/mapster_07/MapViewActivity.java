@@ -19,7 +19,6 @@ public class MapViewActivity extends AppCompatActivity {
     private final int radius = 10;
     private int[] dotPosition;
     private String[] searchQuery;
-    private static MainActivity main;
     private Button backBtn;
     private Bitmap bitmap, mutableBitmap;
     private Canvas canvas;
@@ -101,10 +100,6 @@ public class MapViewActivity extends AppCompatActivity {
         img.setBackgroundColor(Color.WHITE);
         img.setMaxZoom(4f);
         setContentView(img);
-    }
-
-    public static void setMain(MainActivity main) {
-        MapViewActivity.main = main;
     }
 
     private void initiateBackButton() {

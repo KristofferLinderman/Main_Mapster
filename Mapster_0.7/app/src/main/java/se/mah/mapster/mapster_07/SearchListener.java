@@ -50,10 +50,12 @@ public class SearchListener implements View.OnClickListener {
     }
 
     public void setX(int xPos) {
+        Log.d("EVAL", "" + xPos);
         dotPosition[0] = xPos;
     }
 
     public void setY(int yPos) {
+        Log.d("EVAL", "" + yPos);
         dotPosition[1] = yPos;
     }
 
@@ -71,19 +73,21 @@ public class SearchListener implements View.OnClickListener {
                 Log.d("EVAL", "Map not offline, need to download");
                 clientThread = new ClientThread(ip, 9999, this);
                 clientThread.start();
-
-                try {
-                    Thread.sleep(2000);
-                    Log.d("EVAL", "Sleep brah");
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    Thread.sleep(2000);
+//                    Log.d("EVAL", "Sleep brah");
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
             } else {
                 Log.d("EVAL", "No download needed");
+                search();
             }
-
-            activity.search(search, dotPosition, getFilename());
         }
+    }
+
+    public void search() {
+        activity.search(search, dotPosition, getFilename());
     }
 
     public String getSearch() {
