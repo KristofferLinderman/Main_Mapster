@@ -62,9 +62,14 @@ public class ClientThread extends Thread {
             Log.d("EVAL", "Image received!");
 
 
-//            searchListener.setX(ois.readInt());
-//            searchListener.setY(ois.readInt());
-            Log.d("EVAL", "Coordinates; X " + x + ", Y " + y);
+            x = ois.readInt();
+            y = ois.readInt();
+
+            searchListener.setX(x);
+            searchListener.setY(y);
+
+
+            Log.d("EVAL", "Coordinates; X: " + x + ", Y: " + y);
             searchListener.search();
 
             dos.close();

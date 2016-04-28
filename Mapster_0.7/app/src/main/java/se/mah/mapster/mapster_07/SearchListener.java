@@ -22,11 +22,12 @@ public class SearchListener implements View.OnClickListener {
     private ClientThread clientThread;
     private Bitmap map;
 
-    //    private String ip = "10.2.17.104"; //mah wifi
-    //    private String ip = "192.168.0.104"; //gustav xps
+    private String ip = "10.2.17.104"; //Gustav MAH
+    //    private String ip = "192.168.0.104"; //gustav hemma
+    //    private String ip = "192.168.0.106"; //gustav XPS
     //    private String ip = "178.78.249.239";
     //    private String ip = "10.2.15.25"; //Kristoffer MAH
-    private String ip = "192.168.0.2";//Kristoffer Hemma
+    //    private String ip = "192.168.0.2";//Kristoffer Hemma
 
     public SearchListener(Context context, NumberPicker buildingPicker, NumberPicker sectionPicker, NumberPicker levelPicker, NumberPicker roomPicker) {
         this.context = context;
@@ -81,6 +82,7 @@ public class SearchListener implements View.OnClickListener {
 //                }
             } else {
                 Log.d("EVAL", "No download needed");
+                //TODO: setX & setY så de inte använder de gamla koordinaterna?
                 search();
             }
         }
@@ -96,8 +98,7 @@ public class SearchListener implements View.OnClickListener {
 
     /**
      * Check if the map the user searched for is already downloaded and stored localy
-     *
-     * @return True if the map is localy stored else false.
+     * @return True if the map is locally stored else false.
      */
     private boolean mapOffline() {
         File extStore = Environment.getExternalStorageDirectory();
