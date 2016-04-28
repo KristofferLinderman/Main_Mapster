@@ -3,7 +3,6 @@ package se.mah.mapster.mapster_07;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity
     private NumberPicker buildingPicker, sectionPicker, levelPicker, roomPicker;
     private SearchListener searchListener;
     private PreviousSearchListener previousSearchListener;
-    private Button searchButton, previousSearch1Button, previousSearch2Button, previousSearch3Button, previousSearch4Button, previousSearch5Button;
+    private Button searchButton, previousSearch1Button, previousSearch2Button,
+            previousSearch3Button, previousSearch4Button, previousSearch5Button;
     private ArrayList<Button> previousSearchBtnList;
-    private Bitmap map;
 
 
     @Override
@@ -141,17 +141,21 @@ public class MainActivity extends AppCompatActivity
         searchButton.setOnClickListener(searchListener);
     }
 
-    public void search(String[] search, int[] dotPosition, Bitmap map) {
+    public void search(String[] search, int[] dotPosition, String fileName) {
         MapViewActivity.setMain(this);
-        this.map = map;
         previousSearchListener.addPreviousSearch(search, dotPosition);
         updatePreviousSearch();
 
         Intent mapViewIntent = new Intent(getApplicationContext(), MapViewActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mapViewIntent.putExtra("Positions", dotPosition);
         mapViewIntent.putExtra("Search", search);
-        mapViewIntent.putExtra("Filename", searchListener.getFilename());
+        mapViewIntent.putExtra("Filename", fileName);
+
         startActivity(mapViewIntent);
+    }
+
+    public void search(Search search) {
+        search(search.getSearch(), search.getDotPosition(), search.getFileName());
     }
 
     private void updatePreviousSearch() {
@@ -167,8 +171,14 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    public Bitmap getBitmap() {
-        return map;
+    public void makeToast(String messageToDisplay) {
+        final String message = messageToDisplay;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void addBuildingPicker() {
@@ -226,7 +236,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_about) {
-            startActivity(new Intent("Mapster_0.22.AboutActivity"));
+            startActivity(new Intent("Mapster.AboutActivity"));
         } else if (id == R.id.nav_find) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mah.se/kartor-mah"));
             startActivity(browserIntent);
@@ -234,7 +244,7 @@ public class MainActivity extends AppCompatActivity
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/anton.lagerlof.3?fref=ts"));
             startActivity(browserIntent);
         } else if (id == R.id.maps_settings) {
-            startActivity(new Intent("Mapster_0.22.MapsSettingsActivity"));
+            startActivity(new Intent("Mapster.MapsSettingsActivity"));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

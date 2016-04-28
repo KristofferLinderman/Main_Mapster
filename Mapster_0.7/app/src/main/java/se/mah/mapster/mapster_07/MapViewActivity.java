@@ -1,5 +1,6 @@
 package se.mah.mapster.mapster_07;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -8,9 +9,8 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import java.io.File;
 
@@ -20,11 +20,10 @@ public class MapViewActivity extends AppCompatActivity {
     private int[] dotPosition;
     private String[] searchQuery;
     private static MainActivity main;
-
+    private Button backBtn;
     private Bitmap bitmap, mutableBitmap;
     private Canvas canvas;
     private Paint paint;
-    private File sd = Environment.getExternalStorageDirectory();
     private String filename;
     private File image;
 
@@ -33,7 +32,7 @@ public class MapViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maps_view_activity);
 
-        bitmap = main.getBitmap();
+        initiateBackButton();
 
         //get positions for the dot to indicate choosen room
         dotPosition = getIntent().getIntArrayExtra("Positions");
@@ -42,7 +41,11 @@ public class MapViewActivity extends AppCompatActivity {
         //Get filename
         filename = getIntent().getStringExtra("Filename");
 
-        paint(dotPosition[0], dotPosition[1]);
+        try {
+            paint(dotPosition[0], dotPosition[1]);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         setTitle(createSearchString());
     }
 
@@ -70,6 +73,7 @@ public class MapViewActivity extends AppCompatActivity {
 
         return temp;
     }
+
     public void paint(int x, int y) {
         //Bitmap settings
         BitmapFactory.Options myOptions = new BitmapFactory.Options();
@@ -78,8 +82,8 @@ public class MapViewActivity extends AppCompatActivity {
         myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
         myOptions.inPurgeable = true;
 
-        image = new File(sd + File.separator + "Mapster", filename);
-        bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),myOptions);
+        image = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster", filename);
+        bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), myOptions);
 
         paint = new Paint();
         paint.setAntiAlias(true);
@@ -101,5 +105,16 @@ public class MapViewActivity extends AppCompatActivity {
 
     public static void setMain(MainActivity main) {
         MapViewActivity.main = main;
+    }
+
+    private void initiateBackButton() {
+        backBtn = (Button) findViewById(R.id.back_btn);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent("android.intent.action.MAIN"));
+            }
+        });
     }
 }

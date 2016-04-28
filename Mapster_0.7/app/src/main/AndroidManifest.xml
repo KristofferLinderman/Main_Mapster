@@ -31,7 +31,7 @@
             android:screenOrientation="portrait">
 
             <intent-filter>
-                <action android:name="Mapster_0.22.AboutActivity" />
+                <action android:name="Mapster.AboutActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -43,7 +43,7 @@
             android:screenOrientation="portrait">
 
             <intent-filter>
-                <action android:name="Mapster_0.22.MapsSettingsActivity" />
+                <action android:name="Mapster.MapsSettingsActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -53,7 +53,7 @@
             android:label="@string/search_input"
             android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="Mapster_0.22.MapsViewActivity" />
+                <action android:name="Mapster.MapsViewActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

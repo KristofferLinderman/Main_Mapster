@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFF"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -58,32 +59,24 @@
 
         <NumberPicker
             android:id="@+id/levelPicker"
-            android:layout_width="75dp"
+            android:layout_width="65dp"
             android:layout_height="110dp" />
 
         <NumberPicker
             android:id="@+id/roomPicker"
-            android:layout_width="75dp"
+            android:layout_width="65dp"
             android:layout_height="110dp" />
 
         <Button
             android:id="@+id/search_Button"
-            android:layout_width="55dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
             android:background="#FFF"
             android:drawableStart="@drawable/search_icon" />
     </GridLayout>
-
-    <!--<Button-->
-    <!--android:id="@+id/search_Button"-->
-    <!--android:layout_width="55dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@+id/searchGrid"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_marginTop="5dp"-->
-    <!--android:drawableStart="@drawable/search_icon" />-->
 
     <TextView
         android:layout_width="wrap_content"
@@ -100,7 +93,8 @@
         android:layout_marginBottom="50dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:layout_marginTop="0dp">
+        android:layout_marginTop="0dp"
+        android:fadeScrollbars="false">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -110,27 +104,32 @@
             <Button
                 android:id="@+id/previous_search_1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="#FFF" />
 
             <Button
                 android:id="@+id/previous_search_2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="#EEE" />
 
             <Button
                 android:id="@+id/previous_search_3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:background="#FFF" />
 
             <Button
                 android:id="@+id/previous_search_4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="#EEE" />
 
             <Button
                 android:id="@+id/previous_search_5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="#FFF" />
 
         </LinearLayout>
     </ScrollView>

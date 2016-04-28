@@ -6,12 +6,12 @@ package se.mah.mapster.mapster_07;
 public class Search {
     private String[] search;
     private int[] dotPosition;
-    private String mapDicrectory;
+    private String fileName;
 
-    public Search(String[] search, int[] dotPosition,String mapDirectory) {
+    public Search(String[] search, int[] dotPosition,String fileName) {
         this.search = search;
         this.dotPosition = dotPosition;
-        this.mapDicrectory = mapDirectory;
+        this.fileName = fileName;
     }
 
     public String[] getSearch() {
@@ -22,8 +22,8 @@ public class Search {
         return dotPosition;
     }
 
-    public String getMapDirectory() {
-        return mapDicrectory;
+    public String getFileName() {
+        return fileName;
     }
 
     /**
