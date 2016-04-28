@@ -71,20 +71,15 @@ public class SearchListener implements View.OnClickListener {
                 Log.d("EVAL", "Map not offline, need to download");
                 clientThread = new ClientThread(ip, 9999, this);
                 clientThread.start();
+
+                try {
+                    Thread.sleep(2000);
+                    Log.d("EVAL", "Sleep brah");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             } else {
                 Log.d("EVAL", "No download needed");
-                activity.search(search, dotPosition, getFilename());
-                return;
-            }
-
-//            clientThread = new ClientThread(ip, 9999, this);
-//            clientThread.start();
-
-            try {
-                Thread.sleep(2000);
-                Log.d("EVAL", "Sleep brah");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
 
             activity.search(search, dotPosition, getFilename());
@@ -102,10 +97,10 @@ public class SearchListener implements View.OnClickListener {
      */
     private boolean mapOffline() {
         File extStore = Environment.getExternalStorageDirectory();
-        File myFile = new File(extStore.getAbsolutePath() + File.separator + "Mapster" + getFilename());
+        File myFile = new File(extStore.getAbsolutePath() + File.separator + "Mapster" + File.separator + getFilename());
 
         if (myFile.exists()) {
-            return false;
+            return true;
         } else {
             return false;
         }
