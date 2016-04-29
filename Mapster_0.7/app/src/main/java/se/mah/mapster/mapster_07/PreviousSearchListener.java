@@ -2,6 +2,7 @@ package se.mah.mapster.mapster_07;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -28,23 +29,29 @@ public class PreviousSearchListener implements View.OnClickListener {
 
         switch (id) {
             case R.id.previous_search_1:
-                mainActivity.search(previousSearchList.get(0));
+                if (previousSearchList.size() > 0)
+                    mainActivity.search(previousSearchList.get(0));
+                Log.d("EVAL", "Nothing to search, brah");
                 break;
 
             case R.id.previous_search_2:
-                mainActivity.search(previousSearchList.get(1));
+                if (previousSearchList.size() > 1)
+                    mainActivity.search(previousSearchList.get(1));
                 break;
 
             case R.id.previous_search_3:
-                mainActivity.search(previousSearchList.get(2));
+                if (previousSearchList.size() > 2)
+                    mainActivity.search(previousSearchList.get(2));
                 break;
 
             case R.id.previous_search_4:
-                mainActivity.search(previousSearchList.get(3));
+                if (previousSearchList.size() > 3)
+                    mainActivity.search(previousSearchList.get(3));
                 break;
 
             case R.id.previous_search_5:
-                mainActivity.search(previousSearchList.get(4));
+                if (previousSearchList.size() > 4)
+                    mainActivity.search(previousSearchList.get(4));
                 break;
         }
     }

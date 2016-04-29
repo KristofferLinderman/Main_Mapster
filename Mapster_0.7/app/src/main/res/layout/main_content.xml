@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF"
+    android:background="@color/colorBackground"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -19,6 +19,7 @@
         android:layout_height="150dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
         android:src="@drawable/logo" />
 
     <GridLayout
@@ -32,40 +33,48 @@
 
         <TextView
             android:layout_height="match_parent"
-            android:text="Building" />
+            android:layout_marginLeft="15dp"
+            android:text="Building"
+            android:textSize="10dp" />
 
         <TextView
             android:layout_height="match_parent"
-            android:text="Section" />
+            android:layout_marginLeft="15dp"
+            android:text="Section"
+            android:textSize="10dp" />
 
         <TextView
             android:layout_height="match_parent"
-            android:text="Level" />
+            android:layout_marginLeft="15dp"
+            android:text="Level"
+            android:textSize="10dp" />
 
         <TextView
             android:layout_height="match_parent"
-            android:text="Room" />
+            android:layout_marginLeft="15dp"
+            android:text="Room"
+            android:textSize="10dp" />
 
         <NumberPicker
             android:id="@+id/buildingPicker"
             android:layout_width="75dp"
-            android:layout_height="110dp"
+            android:layout_height="100dp"
             android:layout_column="0" />
 
         <NumberPicker
             android:id="@+id/sectionPicker"
             android:layout_width="75dp"
-            android:layout_height="110dp" />
+            android:layout_height="100dp" />
 
         <NumberPicker
             android:id="@+id/levelPicker"
             android:layout_width="65dp"
-            android:layout_height="110dp" />
+            android:layout_height="100dp" />
 
         <NumberPicker
             android:id="@+id/roomPicker"
             android:layout_width="65dp"
-            android:layout_height="110dp" />
+            android:layout_height="100dp" />
 
         <Button
             android:id="@+id/search_Button"
@@ -73,8 +82,9 @@
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
-            android:background="#FFF"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/colorBackground"
             android:drawableStart="@drawable/search_icon" />
     </GridLayout>
 
@@ -105,31 +115,71 @@
                 android:id="@+id/previous_search_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFF" />
+                android:background="@drawable/prevshape"
+                android:drawableBottom="@drawable/line"
+                android:shadowColor="#A8A8A8"
+
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp" />
 
             <Button
                 android:id="@+id/previous_search_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#EEE" />
+                android:background="@drawable/prevshape"
+                android:drawableBottom="@drawable/line"
+                android:shadowColor="#A8A8A8"
+
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp" />
 
             <Button
                 android:id="@+id/previous_search_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFF" />
+                android:drawableBottom="@drawable/line"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+
+                android:background="@drawable/prevshape"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"/>
 
             <Button
                 android:id="@+id/previous_search_4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#EEE" />
+                android:drawableBottom="@drawable/line"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+
+                android:background="@drawable/prevshape"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"/>
 
             <Button
                 android:id="@+id/previous_search_5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFF" />
+                android:drawableBottom="@drawable/line"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+
+                android:background="@drawable/prevshape"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"/>
 
         </LinearLayout>
     </ScrollView>
