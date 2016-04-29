@@ -61,9 +61,10 @@ public class MapsSettingsActivity extends AppCompatActivity
 
             if (id == R.id.checked_orkanen) {
                 orkanenCheckTV.toggle();
-                if (orkanenCheckTV.isChecked())
+                if (orkanenCheckTV.isChecked()){
                     Toast.makeText(getApplicationContext(), "Downloading...", Toast.LENGTH_SHORT).show();
-                    buildingsOffline.requestBuilding("orkanen");
+                    buildingsOffline.requestBuilding("orkanen");}
+
 
             } else if (id == R.id.checked_gaddan) {
                 gaddanCheckTV.toggle();
