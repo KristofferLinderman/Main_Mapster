@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
+
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -25,8 +26,8 @@ public class ClientThread extends Thread {
     private String search;
     private int x, y;
 
-    File directory;
-    File fileInDir;
+    private File directory;
+    private File fileInDir;
 
     public ClientThread(String ip, int port, SearchListener searchListener) {
         this.ip = ip;
@@ -57,17 +58,22 @@ public class ClientThread extends Thread {
 
             String filename = searchListener.getFilename();
 
-//            while (true) {
-                btm = receiveFile(ois, filename);
-                Log.d("EVAL", "Image received!");
+            btm = receiveFile(ois, filename);
+            Log.d("EVAL", "Image received!");
 
 
+            x = ois.readInt();
+            y = ois.readInt();
 
-                searchListener.setX(ois.readInt());
-                searchListener.setY(ois.readInt());
-                Log.d("EVAL", "Coordinates; X " + x + ", Y " + y);
-//            }
+            searchListener.setX(x);
+            searchListener.setY(y);
 
+
+            Log.d("EVAL", "Coordinates; X: " + x + ", Y: " + y);
+            searchListener.search();
+
+            dos.close();
+            ois.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,8 +81,8 @@ public class ClientThread extends Thread {
     }
 
     private Bitmap receiveFile(ObjectInputStream ois, String fileName) throws Exception {
-        directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
-        fileInDir = new File(directory + File.separator + fileName);
+//        directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
+        fileInDir = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster" + File.separator + fileName);
 
         // read 4 bytes containing the file size
         byte[] bSize = new byte[4];

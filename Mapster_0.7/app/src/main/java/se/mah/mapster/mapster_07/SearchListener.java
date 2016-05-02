@@ -2,10 +2,13 @@ package se.mah.mapster.mapster_07;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.Toast;
+
+import java.io.File;
 
 /**
  * Created by Kristoffer on 02/04/16.
@@ -19,9 +22,12 @@ public class SearchListener implements View.OnClickListener {
     private ClientThread clientThread;
     private Bitmap map;
 
-    private String ip = "10.2.17.104"; //mah wifi
-//    private String ip = "192.168.0.104"; //gustav xps
-//    private String ip = "178.78.249.239";
+    private String ip = "10.2.17.104"; //Gustav MAH
+    //    private String ip = "192.168.0.104"; //gustav hemma
+    //    private String ip = "192.168.0.106"; //gustav XPS
+    //    private String ip = "178.78.249.239";
+    //    private String ip = "10.2.15.25"; //Kristoffer MAH
+    //    private String ip = "192.168.0.2";//Kristoffer Hemma
 
     public SearchListener(Context context, NumberPicker buildingPicker, NumberPicker sectionPicker, NumberPicker levelPicker, NumberPicker roomPicker) {
         this.context = context;
@@ -35,9 +41,6 @@ public class SearchListener implements View.OnClickListener {
         this.activity = activity;
     }
 
-    private void makeToast(String messageToDisplay) {
-        Toast.makeText(context, messageToDisplay, Toast.LENGTH_SHORT).show();
-    }
 
     public void setBitmap(Bitmap map) {
         this.map = map;
@@ -48,10 +51,12 @@ public class SearchListener implements View.OnClickListener {
     }
 
     public void setX(int xPos) {
+        Log.d("EVAL", "" + xPos);
         dotPosition[0] = xPos;
     }
 
     public void setY(int yPos) {
+        Log.d("EVAL", "" + yPos);
         dotPosition[1] = yPos;
     }
 
@@ -60,27 +65,50 @@ public class SearchListener implements View.OnClickListener {
         int id = v.getId();
 
         if (id == R.id.search_Button) {
-            makeToast("Searching for " + getSearch());
             search = new String[4];
-
             getSearchValues();
 
-            clientThread = new ClientThread(ip, 9999, this);
-            clientThread.start();
+            activity.makeToast("Searching for " + getSearch());
 
-            try {
-                Thread.sleep(2000);
-                Log.d("EVAL", "Sleep brah");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (!mapOffline()) {
+                Log.d("EVAL", "Map not offline, need to download");
+                clientThread = new ClientThread(ip, 9999, this);
+                clientThread.start();
+//                try {
+//                    Thread.sleep(2000);
+//                    Log.d("EVAL", "Sleep brah");
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+            } else {
+                Log.d("EVAL", "No download needed");
+                //TODO: setX & setY så de inte använder de gamla koordinaterna?
+                search();
             }
-
-            activity.search(search, dotPosition, map);
         }
+    }
+
+    public void search() {
+        activity.search(search, dotPosition, getFilename());
     }
 
     public String getSearch() {
         return search[0] + ":" + search[1] + search[2] + search[3];
+    }
+
+    /**
+     * Check if the map the user searched for is already downloaded and stored localy
+     * @return True if the map is locally stored else false.
+     */
+    private boolean mapOffline() {
+        File extStore = Environment.getExternalStorageDirectory();
+        File myFile = new File(extStore.getAbsolutePath() + File.separator + "Mapster" + File.separator + getFilename());
+
+        if (myFile.exists()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public String getFilename() {
