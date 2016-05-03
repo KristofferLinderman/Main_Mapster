@@ -31,7 +31,6 @@ public class MapViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maps_view_activity);
 
-        initiateBackButton();
 
         //get positions for the dot to indicate choosen room
         dotPosition = getIntent().getIntArrayExtra("Positions");
@@ -102,14 +101,5 @@ public class MapViewActivity extends AppCompatActivity {
         setContentView(img);
     }
 
-    private void initiateBackButton() {
-        backBtn = (Button) findViewById(R.id.back_btn);
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent("android.intent.action.MAIN"));
-            }
-        });
-    }
 }

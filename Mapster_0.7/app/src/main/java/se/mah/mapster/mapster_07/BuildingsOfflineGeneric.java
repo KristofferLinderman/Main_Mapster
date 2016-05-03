@@ -15,14 +15,14 @@ import java.util.HashMap;
  * Created by Anton on 29/04/2016.
  */
 public class BuildingsOfflineGeneric extends Thread {
-    HashMap<String, String> buildingHashMap = new HashMap<String, String>();
-    ObjectOutputStream oos;
-    ObjectInputStream ois;
-    Socket socket;
-    String ip = "localhost";
-    int port = 3306;
-    String building;
-    Object[] maps;
+    private HashMap<String, String> buildingHashMap = new HashMap<String, String>();
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
+    private Socket socket;
+    private String ip = "10.2.13.227";
+   private int port = 9999;
+    private String building;
+    private Object[] maps;
 
     public BuildingsOfflineGeneric(String building) throws Exception{
         this.building = building;
@@ -62,8 +62,9 @@ public class BuildingsOfflineGeneric extends Thread {
             int nbrOfMaps = ois.readInt();
             //must be changed for test
 
-            //(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
-            String directory = "C:/Users/Anton/Desktop/TestResult";
+            //
+          //  String directory = "C:/Users/Anton/Desktop/TestResult";
+           String directory = (Environment.getExternalStorageDirectory() + File.separator + "Mapster");
 
              for(int i = 1; i<nbrOfMaps; i++){
                  receiveFile(directory, building + i);
@@ -136,15 +137,4 @@ public class BuildingsOfflineGeneric extends Thread {
         bos.close();
 
     }
-
-
-
-
-    public static void main(String[] args) throws Exception {
-        BuildingsOfflineGeneric test = new BuildingsOfflineGeneric("#orkanen");
-
-    }
-
 }
-
-
