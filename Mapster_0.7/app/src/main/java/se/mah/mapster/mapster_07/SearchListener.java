@@ -41,13 +41,16 @@ public class SearchListener implements View.OnClickListener {
         this.activity = activity;
     }
 
-
     public void setBitmap(Bitmap map) {
         this.map = map;
     }
 
     public String getMapName() {
         return search[0] + search[2] + ".png";
+    }
+
+    public void makeToast(String message) {
+        activity.makeToast(message);
     }
 
     public void setX(int xPos) {
@@ -70,21 +73,28 @@ public class SearchListener implements View.OnClickListener {
 
             activity.makeToast("Searching for " + getSearch());
 
+            clientThread = new ClientThread(ip, 9999, this);
+            clientThread.start();
+
             if (!mapOffline()) {
                 Log.d("EVAL", "Map not offline, need to download");
+                clientThread.searchMapAndCoordinates();
 
             } else {
                 Log.d("EVAL", "No download needed");
                 //TODO: setX & setY så de inte använder de gamla koordinaterna?
+                dotPosition = clientThread.searchCoordinates();
                 search();
             }
-            clientThread = new ClientThread(ip, 9999, this);
-            clientThread.start();
         }
     }
 
     public void search() {
         activity.search(search, dotPosition, getFilename());
+    }
+
+    private void searchCoordinates() {
+        activity.searchCoordiantes(search);
     }
 
     public String getSearch() {
@@ -93,6 +103,7 @@ public class SearchListener implements View.OnClickListener {
 
     /**
      * Check if the map the user searched for is already downloaded and stored localy
+     *
      * @return True if the map is locally stored else false.
      */
     private boolean mapOffline() {

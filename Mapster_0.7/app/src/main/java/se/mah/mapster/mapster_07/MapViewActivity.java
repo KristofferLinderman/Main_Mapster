@@ -9,7 +9,6 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 
 import java.io.File;
@@ -30,8 +29,6 @@ public class MapViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maps_view_activity);
-
-        initiateBackButton();
 
         //get positions for the dot to indicate choosen room
         dotPosition = getIntent().getIntArrayExtra("Positions");
@@ -100,16 +97,5 @@ public class MapViewActivity extends AppCompatActivity {
         img.setBackgroundColor(Color.WHITE);
         img.setMaxZoom(4f);
         setContentView(img);
-    }
-
-    private void initiateBackButton() {
-        backBtn = (Button) findViewById(R.id.back_btn);
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent("android.intent.action.MAIN"));
-            }
-        });
     }
 }

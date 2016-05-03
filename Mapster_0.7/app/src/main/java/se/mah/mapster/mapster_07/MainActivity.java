@@ -1,11 +1,15 @@
 package se.mah.mapster.mapster_07;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +25,8 @@ import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
@@ -32,7 +38,9 @@ public class MainActivity extends AppCompatActivity
     private Button searchButton, previousSearch1Button, previousSearch2Button,
             previousSearch3Button, previousSearch4Button, previousSearch5Button;
     private ArrayList<Button> previousSearchBtnList;
-
+    private File fileInDir = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster" + File.separator + "previousSearches");
+    private SharedPreferences prefs;
+    private Editor edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +52,11 @@ public class MainActivity extends AppCompatActivity
             File directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
             directory.mkdirs();
         }
+        prefs = this.getSharedPreferences("savedPreviousSearches", Context.MODE_PRIVATE);
+        edit = prefs.edit();
 
         setContentView(R.layout.main_activity);
-
+        setTitle("");
         verifyStoragePermissions();
 
         addBuildingPicker();
@@ -58,6 +68,54 @@ public class MainActivity extends AppCompatActivity
         initiateSearchButton();
         initiateNavigationDrawer();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+
+    }
+
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        ArrayList<String> toBeSaved = previousSearchListener.getStringList(); // fetch the data
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+//        SharedPreferences.Editor edit = prefs.edit();
+//        edit.putStringSet("SAVEDATA", new HashSet<String>(toBeSaved));
+//        edit.commit();
+//
+////
+////        ArrayList<String> tempStringList = previousSearchListener.getStringList();
+////
+////        if (tempStringList != null) {
+////            Set<String> set = new HashSet<String>();
+////            set.addAll(tempStringList);
+////
+////            edit.putStringSet("previousSearch", set);
+////            edit.commit();
+////        }
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        ArrayList<String> retrieved = new ArrayList<String>(PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getStringSet("SAVEDATA", new HashSet<String>()));
+//        Log.d("EVAL", retrieved.toString());
+//        previousSearchListener.setList(retrieved);
+//        Log.d("EVAL","list set");
+//        updatePreviousSearch();
+//        Log.d("EVAL","list up");
+////        Set<String> set = prefs.getStringSet("previousSearch", null);
+////        if (set != null) {
+////            ArrayList<String> temp = new ArrayList<String>(set);
+////
+////            previousSearchListener.setList(temp);
+////            updatePreviousSearch();
+////            Log.d("EVAL", "Resumed");
+////        }
+//    }
 
     private void initiateNavigationDrawer() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -157,6 +215,10 @@ public class MainActivity extends AppCompatActivity
         search(search.getSearch(), search.getDotPosition(), search.getFileName());
     }
 
+    public void searchCoordiantes(String[] search) {
+
+    }
+
     private void updatePreviousSearch() {
 
         runOnUiThread(new Runnable() {
@@ -250,4 +312,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

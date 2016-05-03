@@ -107,79 +107,89 @@
         android:fadeScrollbars="false">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <Button
                 android:id="@+id/previous_search_1"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
                 android:background="@drawable/prevshape"
-                android:drawableBottom="@drawable/line"
-                android:shadowColor="#A8A8A8"
 
+                android:shadowColor="#A8A8A8"
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="5"
                 android:textColor="#FFFFFF"
-                android:textSize="30sp" />
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/previous_search_2"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
                 android:background="@drawable/prevshape"
-                android:drawableBottom="@drawable/line"
-                android:shadowColor="#A8A8A8"
 
+                android:shadowColor="#A8A8A8"
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="5"
                 android:textColor="#FFFFFF"
-                android:textSize="30sp" />
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/previous_search_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableBottom="@drawable/line"
-                android:textColor="#FFFFFF"
-                android:textSize="30sp"
-
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
                 android:background="@drawable/prevshape"
                 android:shadowColor="#A8A8A8"
                 android:shadowDx="0"
+
                 android:shadowDy="0"
-                android:shadowRadius="5"/>
+                android:shadowRadius="5"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/previous_search_4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableBottom="@drawable/line"
-                android:textColor="#FFFFFF"
-                android:textSize="30sp"
-
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
                 android:background="@drawable/prevshape"
                 android:shadowColor="#A8A8A8"
+
                 android:shadowDx="0"
                 android:shadowDy="0"
-                android:shadowRadius="5"/>
+                android:shadowRadius="5"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/previous_search_5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableBottom="@drawable/line"
-                android:textColor="#FFFFFF"
-                android:textSize="30sp"
-
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
                 android:background="@drawable/prevshape"
+
                 android:shadowColor="#A8A8A8"
                 android:shadowDx="0"
                 android:shadowDy="0"
-                android:shadowRadius="5"/>
+                android:shadowRadius="5"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
 
         </LinearLayout>
     </ScrollView>

@@ -16,7 +16,7 @@
 
         <activity
             android:name="se.mah.mapster.mapster_07.MainActivity"
-            android:label=""
+            android:label="Mapster"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
             <intent-filter>

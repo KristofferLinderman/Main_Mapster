@@ -10,6 +10,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -36,7 +37,6 @@ public class ClientThread extends Thread {
 
     public void run() {
         try {
-
             search = searchListener.getSearch();
             Log.d("EVAL", "Got search string " + search);
             socket = new Socket(ip, 9999);
@@ -45,35 +45,79 @@ public class ClientThread extends Thread {
             dos = new DataOutputStream(socket.getOutputStream());
             Log.d("EVAL", "Got OutputStream");
 
+            ois = new ObjectInputStream(socket.getInputStream());
+            Log.d("EVAL", "Got InputStream");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public int[] searchCoordinates() {
+        int[] result = new int[2];
+        try {
             dos.writeUTF(search);
             Log.d("EVAL", "Wrote search to server");
             dos.flush();
 
-            ois = new ObjectInputStream(socket.getInputStream());
-            Log.d("EVAL", "Got InputStream");
+//            ois = new ObjectInputStream(socket.getInputStream());
+//            Log.d("EVAL", "Got InputStream");
 
+            if (ois.readBoolean()) {
 
-            Log.d("EVAL", "Loading file...");
+                Log.d("EVAL", "Room exists");
 
-            String filename = searchListener.getFilename();
+                result[0] = ois.readInt();
+                result[1] = ois.readInt();
 
-            btm = receiveFile(ois, filename);
-            Log.d("EVAL", "Image received!");
-
-
-            x = ois.readInt();
-            y = ois.readInt();
-
-            searchListener.setX(x);
-            searchListener.setY(y);
-
-
-            Log.d("EVAL", "Coordinates; X: " + x + ", Y: " + y);
-            searchListener.search();
+                Log.d("EVAL", "Coordinates; X: " + x + ", Y: " + y);
+            } else {
+                Log.d("EVAL", "Room doesn't exists!");
+                searchListener.makeToast("Room doesn't exist");
+            }
 
             dos.close();
             ois.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
+    public void searchMapAndCoordinates() {
+        try {
+            dos.writeUTF(search);
+            Log.d("EVAL", "Wrote search to server");
+            dos.flush();
+
+//            ois = new ObjectInputStream(socket.getInputStream());
+//            Log.d("EVAL", "Got InputStream");
+
+            if (ois.readBoolean()) {
+
+                Log.d("EVAL", "Loading file...");
+
+                String filename = searchListener.getFilename();
+                Log.d("EVAL", "Room exists");
+                btm = receiveFile(ois, filename);
+                Log.d("EVAL", "Image received!");
+
+                x = ois.readInt();
+                y = ois.readInt();
+
+                searchListener.setX(x);
+                searchListener.setY(y);
+                Log.d("EVAL", "Coordinates; X: " + x + ", Y: " + y);
+                searchListener.search();
+            } else {
+                Log.d("EVAL", "Room doesn't exists!");
+
+                searchListener.makeToast("Room doesn't exist");
+            }
+
+            dos.close();
+            ois.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -134,4 +178,5 @@ public class ClientThread extends Thread {
             fis.close();
         }
     }
+
 }
