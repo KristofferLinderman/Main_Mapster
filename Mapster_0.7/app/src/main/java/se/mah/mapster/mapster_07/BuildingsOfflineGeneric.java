@@ -2,7 +2,6 @@ package se.mah.mapster.mapster_07;
 
 import android.graphics.Bitmap;
 import android.os.Environment;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,55 +14,64 @@ import java.util.HashMap;
 /**
  * Created by Anton on 29/04/2016.
  */
-public class BuildingsOfflineGeneric {
+public class BuildingsOfflineGeneric extends Thread {
     HashMap<String, String> buildingHashMap = new HashMap<String, String>();
     ObjectOutputStream oos;
     ObjectInputStream ois;
     Socket socket;
-    String ip;
-    int port;
+    String ip = "localhost";
+    int port = 3306;
     String building;
     Object[] maps;
 
-    public BuildingsOfflineGeneric(String building) throws IOException{
+    public BuildingsOfflineGeneric(String building) throws Exception{
         this.building = building;
         socket = new Socket(ip, port);
+        start();
 
     }
 
-        public void activate(){
-            requestBuilding();
-            saveHashMap();
-            floorSaver(); //itererar över recieveFile för sparning av bilder
+        public void run(){
+            try {
+                requestBuilding();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            saveBuilding();
+         //   saveHashMap();
+
 
         }
 
-        public void requestBuilding(){
+        public void requestBuilding() throws Exception {
             try{
                 oos = new ObjectOutputStream(socket.getOutputStream());
                 ois = new ObjectInputStream(socket.getInputStream());
                 oos.writeUTF(building);
                 oos.flush();
 
-                Object o = ois.read();
-                buildingHashMap = (HashMap) o;
-
-
-                try{
-                    int counter = 0;
-                while(o != null){
-                array    o = ois.readObject();
-
-                    counter++;
-
-                }}catch(ClassNotFoundException e){
-                    e.printStackTrace();
-                }
-
             }catch(IOException e ){
                 e.printStackTrace();
             }
         }
+
+    public void saveBuilding(){
+        try{
+            Object o = ois.read();
+          //  buildingHashMap = (HashMap) o;
+            int nbrOfMaps = ois.readInt();
+            //must be changed for test
+
+            //(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
+            String directory = "C:/Users/Anton/Desktop/TestResult";
+
+             for(int i = 1; i<nbrOfMaps; i++){
+                 receiveFile(directory, building + i);
+        }
+
+    }catch(Exception e){
+        e.printStackTrace();}
+    }
 
 
     public void saveHashMap(){
@@ -83,11 +91,7 @@ public class BuildingsOfflineGeneric {
     }
 
 
-    public void floorSaver(){
-
-    }
-
-    private Bitmap receiveFile(String directory, String fileName) throws Exception {
+    private void receiveFile(String directory, String fileName) throws Exception {
 
         File fileInDir = new File(directory + File.separator + fileName);
 
@@ -96,7 +100,7 @@ public class BuildingsOfflineGeneric {
         int offset = 0;
 
         while (offset < bSize.length) {
-            int bRead = ois.read(bSize, offset, bSize.length - offset);
+            int bRead = ois.read(bSize, offset, bSize.length - offset); //här läses fil
             offset += bRead;
         }
 
@@ -133,6 +137,13 @@ public class BuildingsOfflineGeneric {
 
     }
 
+
+
+
+    public static void main(String[] args) throws Exception {
+        BuildingsOfflineGeneric test = new BuildingsOfflineGeneric("#orkanen");
+
+    }
 
 }
 

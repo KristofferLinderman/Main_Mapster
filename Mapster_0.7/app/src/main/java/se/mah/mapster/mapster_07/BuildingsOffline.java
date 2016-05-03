@@ -18,8 +18,8 @@ public class BuildingsOffline {
     ObjectOutputStream oos;
     ObjectInputStream ois;
     Socket socket;
-    String ip = "";
-    int port;
+    String ip = "localhost";
+    int port = 3306;
     ClientThread cThread;
     HashMap<String, String> temporary = new HashMap<String, String>();
     HashMap<String, String> orkanen = new HashMap<String, String>();
@@ -32,7 +32,7 @@ public class BuildingsOffline {
     public BuildingsOffline() throws IOException {
         socket = new Socket(ip, port);
         if (directory.exists()) {
-            readHashmap();
+          //  readHashmap();
         }
 
 
