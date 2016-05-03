@@ -72,19 +72,14 @@ public class SearchListener implements View.OnClickListener {
 
             if (!mapOffline()) {
                 Log.d("EVAL", "Map not offline, need to download");
-                clientThread = new ClientThread(ip, 9999, this);
-                clientThread.start();
-//                try {
-//                    Thread.sleep(2000);
-//                    Log.d("EVAL", "Sleep brah");
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+
             } else {
                 Log.d("EVAL", "No download needed");
                 //TODO: setX & setY så de inte använder de gamla koordinaterna?
                 search();
             }
+            clientThread = new ClientThread(ip, 9999, this);
+            clientThread.start();
         }
     }
 

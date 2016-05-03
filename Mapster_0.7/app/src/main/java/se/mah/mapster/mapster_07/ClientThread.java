@@ -17,7 +17,6 @@ import java.net.Socket;
 public class ClientThread extends Thread {
     private Socket socket;
     private ObjectInputStream ois;
-    private ObjectOutputStream oos;
     private DataOutputStream dos;
     private Bitmap map, btm;
     private String ip;
@@ -122,6 +121,7 @@ public class ClientThread extends Thread {
                 fileSize -= bytesRead;
             }
         }
+
         bos.close();
 
         // Convert the received image to a Bitmap
