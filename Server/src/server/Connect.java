@@ -76,7 +76,6 @@ public class Connect {
 			room = new Room(rs.getString(1), rs.getInt(2), 
 					rs.getString(3), rs.getString(4));
 
-
 //			System.out.println("#" + room.getId() + " Floor: " + room.getFloor()+ " Name: " + room.getName()
 //				+ " X/Y: " + room.getCoor() + " Path: " + room.getPath());
 			
@@ -85,5 +84,19 @@ public class Connect {
 		}
 		
 		return room;
+	}
+
+	public boolean searchExist(String searchFor, String building) {
+		String query = "select * FROM " + building + " WHERE name = '" + searchFor + "'";
+		try {
+			rs = st.executeQuery(query);
+
+			if(rs.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

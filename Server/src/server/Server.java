@@ -3,6 +3,7 @@ package server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 
 /**
  * Starts a server that receives a room and returns an image (map)
@@ -12,6 +13,7 @@ public class Server implements Runnable {
 	private ServerSocket serverSocket;
 	private Thread serverThread;
 	private Connect connect = new Connect();
+//	private Connect connect;
 	private FileFunctions fh = new FileFunctions();
 
 	public Server(int port) {
@@ -48,6 +50,9 @@ public class Server implements Runnable {
 		private Socket socket;
 		private ObjectOutputStream outputStream;
         private DataInputStream inputStream;
+		boolean fileExist = true;
+		private Room room;
+		private String roomString = "", buildingString = "";
 
 		public ClientListener(Socket socket) {
 			this.socket = socket;
@@ -59,27 +64,91 @@ public class Server implements Runnable {
 		 */
 		public void run() {
 			try {
-                inputStream = new DataInputStream(socket.getInputStream());
+				System.out.println();
+				inputStream = new DataInputStream(socket.getInputStream());
+				outputStream = new ObjectOutputStream(socket.getOutputStream());
                 String request = inputStream.readUTF();
 
-				fh.splitRoom(request);
-                System.out.println("Input from client: " + fh.getRoomString() + " " + fh.getBuildingString());
+				if(request.charAt(0) == '&' ) {
+					sendCoor(request);
+				} else if(request.charAt(0) == '#') {
+					//Kartpaket
+				} else {
+					sendMapAndCoor(request);
+				}
 
-                Room room = connect.searchedRoom(fh.getRoomString(), fh.getBuildingString());
-				String strImage = room.getPath();
-
-//				Send file to clientx
-				outputStream = new ObjectOutputStream(socket.getOutputStream());
-				fh.sendFile(outputStream, strImage);
-				System.out.println("Picture sent to " + socket.getInetAddress() + "!" +  " [" + strImage + "]");
-
-				//Get coordinates
-                fh.splitCoor(room.getCoor());
-                System.out.println("X: " + fh.getX() + " Y: " + fh.getY());
-                outputStream.writeInt(fh.getX());
-                outputStream.writeInt(fh.getY());
                 outputStream.flush();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
+		private void sendMapAndCoor (String str) {
+			try {
+				fh.splitRoom(str);
+				roomString = fh.getRoomString();
+				buildingString = fh.getBuildingString();
+
+				System.out.println("Input from client: " + roomString + " " + buildingString);
+
+				fileExist = connect.searchExist(roomString, buildingString);
+				System.out.println("Connectmethod is " + fileExist);
+
+				if(fileExist) {
+					room = connect.searchedRoom(roomString, buildingString);
+					String strImage = room.getPath();
+
+					System.out.println("File = " + fileExist);
+					outputStream.writeBoolean(true);
+					System.out.println("Sent boolean");
+
+					//Send file to clientx
+					fh.sendFile(outputStream, strImage);
+					System.out.println("Picture sent to " + socket.getInetAddress() + "!" + " [" + strImage + "]");
+
+					//Get coordinates
+					fh.splitCoor(room.getCoor());
+					System.out.println("X: " + fh.getX() + " Y: " + fh.getY());
+					outputStream.writeInt(fh.getX());
+					outputStream.writeInt(fh.getY());
+				} else {
+					System.out.println("File = " + fileExist);
+					outputStream.writeBoolean(fileExist);
+					System.out.println("Sent boolean");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		public void sendCoor (String str) {
+			try {
+				fh.splitRoom(str);
+				roomString = fh.getRoomString();
+				buildingString = fh.getBuildingString();
+
+				System.out.println("Input from client: " + roomString + " " + buildingString);
+
+				fileExist = connect.searchExist(roomString, buildingString);
+				System.out.println("Connectmethod is " + fileExist);
+
+				if(fileExist) {
+					room = connect.searchedRoom(roomString, buildingString);
+
+					System.out.println("File = " + fileExist);
+					outputStream.writeBoolean(true);
+					System.out.println("Sent boolean");
+
+					//Get coordinates
+					fh.splitCoor(room.getCoor());
+					System.out.println("X: " + fh.getX() + " Y: " + fh.getY());
+					outputStream.writeInt(fh.getX());
+					outputStream.writeInt(fh.getY());
+				} else {
+					System.out.println("File = " + fileExist);
+					outputStream.writeBoolean(fileExist);
+					System.out.println("Sent boolean");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
