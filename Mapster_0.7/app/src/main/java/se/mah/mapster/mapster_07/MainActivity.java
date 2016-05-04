@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -242,6 +244,7 @@ public class MainActivity extends AppCompatActivity
         buildingPicker.setMinValue(0);
         buildingPicker.setMaxValue(2);
         buildingPicker.setDisplayedValues(new String[]{"OR", "NI", "G8"});
+        setDividerColor(buildingPicker);
 
         //Makes it not ediable
         buildingPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
@@ -253,6 +256,7 @@ public class MainActivity extends AppCompatActivity
         sectionPicker.setMaxValue(5);
         sectionPicker.setDisplayedValues(new String[]{"A", "B", "C", "D", "E", "F"});
         sectionPicker.setWrapSelectorWheel(false);
+        setDividerColor(sectionPicker);
 
         //Makes it not ediable
         sectionPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
@@ -263,6 +267,7 @@ public class MainActivity extends AppCompatActivity
         levelPicker.setMinValue(1);
         levelPicker.setMaxValue(6);
         levelPicker.setWrapSelectorWheel(false);
+        setDividerColor(levelPicker);
 
         //Makes it not ediable
         levelPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
@@ -273,6 +278,7 @@ public class MainActivity extends AppCompatActivity
         roomPicker.setWrapSelectorWheel(false);
         roomPicker.setMinValue(1);
         roomPicker.setMaxValue(41);
+        setDividerColor(roomPicker);
 
 //        roomPicker.setDisplayedValues(new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12",
 //                "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
@@ -280,6 +286,27 @@ public class MainActivity extends AppCompatActivity
 
         //Makes it not ediable
         roomPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+    }
+
+    private void setDividerColor(NumberPicker picker) {
+
+        java.lang.reflect.Field[] pickerFields = NumberPicker.class.getDeclaredFields();
+        for (java.lang.reflect.Field pf : pickerFields) {
+            if (pf.getName().equals("mSelectionDivider")) {
+                pf.setAccessible(true);
+                try {
+                    ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.colorPrimary));
+                    pf.set(picker, colorDrawable);
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                } catch (Resources.NotFoundException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
     }
 
     @Override
