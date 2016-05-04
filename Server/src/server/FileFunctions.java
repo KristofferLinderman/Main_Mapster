@@ -64,39 +64,53 @@ public class FileFunctions {
 		}
 	}
 
+	/**
+	 * Splits the string that contains building and room
+	 * @param str
+     */
 	public void splitRoom (String str) {
 		try {
 			String[] parts = str.split(":");
-
 			String temp = parts[0];
 			room = parts[1];
 
-
-//      *************
-//      TODO: Ändra så att databaserna heter NI, G8 och OR?? då slipper vi konverta strings
-//      *************
-            if(temp.equals("G8")){
+			/*
+			 * Converts the string to correspond to the correct database
+			 * '&' if the map already exist, '#' to download entire map-package
+			 */
+            if(temp.equals("G8")  || temp.equals("&G8")  || temp.equals("#G8")){
                 building = "gaddan";
-            } else if(temp.equals("NI")) {
+            } else if(temp.equals("NI")  || temp.equals("&NI")  || temp.equals("#NI")) {
                 building = "niagara";
-            } else if(temp.equals("OR")){
+            } else if(temp.equals("OR") || temp.equals("&OR") || temp.equals("#OR")){
                 building = "orkanen";
             }
+
 		} catch (ArrayIndexOutOfBoundsException e){
 			System.out.println("Error: " + e);
 		}
 	}
 
+	/**
+	 * Returns the building part of the room string
+	 * @return buildingString
+     */
 	public String getBuildingString() {
 		return building;
     }
 
+	/**
+	 * Returns the room part of the (entire) room string
+	 * @return roomString
+     */
 	public String getRoomString() {
 		return room;
 	}
 
-
-
+	/**
+	 * Splits up the coordinates to two separate x and y strings
+	 * @param str
+     */
 	public void splitCoor(String str) {
 		String[] parts = str.split("\\.");
 
@@ -104,10 +118,18 @@ public class FileFunctions {
 		y = Integer.parseInt(parts[1]);
 	}
 
+	/**
+	 * Returns the X-coordinate
+	 * @return xCoordinates
+     */
     public int getX() {
         return x;
     }
 
+	/**
+	 * Returns the y-coordinate
+	 * @return yCoordinate
+     */
     public int getY() {
         return y;
     }

@@ -75,9 +75,6 @@ public class Connect {
 			
 			room = new Room(rs.getString(1), rs.getInt(2), 
 					rs.getString(3), rs.getString(4));
-
-//			System.out.println("#" + room.getId() + " Floor: " + room.getFloor()+ " Name: " + room.getName()
-//				+ " X/Y: " + room.getCoor() + " Path: " + room.getPath());
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -86,6 +83,12 @@ public class Connect {
 		return room;
 	}
 
+	/**
+	 * Returns true if the room that is searched for exists, else false
+	 * @param searchFor
+	 * @param building
+     * @return ifRoomExist
+     */
 	public boolean searchExist(String searchFor, String building) {
 		String query = "select * FROM " + building + " WHERE name = '" + searchFor + "'";
 		try {

@@ -13,8 +13,8 @@ public class Server implements Runnable {
 	private ServerSocket serverSocket;
 	private Thread serverThread;
 	private Connect connect = new Connect();
-//	private Connect connect;
 	private FileFunctions fh = new FileFunctions();
+
 
 	public Server(int port) {
 		try {
@@ -29,7 +29,7 @@ public class Server implements Runnable {
 	 * Creates a new thread (ClientListener) for each accepted connection made
 	 */
 	public void run() {
-		System.out.println("Server started");
+		System.out.println("Server started...");
 
 		while (true) {
 			try {
@@ -83,8 +83,13 @@ public class Server implements Runnable {
 			}
 		}
 
+		/**
+		 * Sends both the map and coordinates to the client
+		 * @param str
+         */
 		private void sendMapAndCoor (String str) {
 			try {
+				System.out.println("Client doesn't have map, sending map and coordinates.");
 				fh.splitRoom(str);
 				roomString = fh.getRoomString();
 				buildingString = fh.getBuildingString();
@@ -92,13 +97,13 @@ public class Server implements Runnable {
 				System.out.println("Input from client: " + roomString + " " + buildingString);
 
 				fileExist = connect.searchExist(roomString, buildingString);
-				System.out.println("Connectmethod is " + fileExist);
+//				System.out.println("Connectmethod is " + fileExist);
 
 				if(fileExist) {
+					System.out.println("Room exists!");
 					room = connect.searchedRoom(roomString, buildingString);
 					String strImage = room.getPath();
 
-					System.out.println("File = " + fileExist);
 					outputStream.writeBoolean(true);
 					System.out.println("Sent boolean");
 
@@ -112,7 +117,7 @@ public class Server implements Runnable {
 					outputStream.writeInt(fh.getX());
 					outputStream.writeInt(fh.getY());
 				} else {
-					System.out.println("File = " + fileExist);
+					System.out.println("Room doesn't exist!");
 					outputStream.writeBoolean(fileExist);
 					System.out.println("Sent boolean");
 				}
@@ -121,8 +126,13 @@ public class Server implements Runnable {
 			}
 		}
 
+		/**
+		 * Sends only the coordinates to the client
+		 * @param str
+         */
 		public void sendCoor (String str) {
 			try {
+				System.out.println("Client already has map, sending coordinates only");
 				fh.splitRoom(str);
 				roomString = fh.getRoomString();
 				buildingString = fh.getBuildingString();
@@ -130,12 +140,11 @@ public class Server implements Runnable {
 				System.out.println("Input from client: " + roomString + " " + buildingString);
 
 				fileExist = connect.searchExist(roomString, buildingString);
-				System.out.println("Connectmethod is " + fileExist);
 
 				if(fileExist) {
+					System.out.println("Room exists!");
 					room = connect.searchedRoom(roomString, buildingString);
 
-					System.out.println("File = " + fileExist);
 					outputStream.writeBoolean(true);
 					System.out.println("Sent boolean");
 
@@ -145,7 +154,7 @@ public class Server implements Runnable {
 					outputStream.writeInt(fh.getX());
 					outputStream.writeInt(fh.getY());
 				} else {
-					System.out.println("File = " + fileExist);
+					System.out.println("Room doesn't exist!");
 					outputStream.writeBoolean(fileExist);
 					System.out.println("Sent boolean");
 				}
