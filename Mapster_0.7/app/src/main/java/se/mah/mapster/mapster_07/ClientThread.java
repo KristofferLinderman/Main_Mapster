@@ -25,6 +25,7 @@ public class ClientThread extends Thread {
     private SearchListener searchListener;
     private String search;
     private int x, y;
+    private int choice;
 
     private File directory;
     private File fileInDir;
@@ -33,6 +34,15 @@ public class ClientThread extends Thread {
         this.ip = ip;
         this.port = port;
         this.searchListener = searchListener;
+    }
+
+    /**
+     * Select which type of searh to be made.
+     *
+     * @param choice 0 for search Map and Coordinates, 1 for search of only coordinate
+     */
+    public void setAction(int choice) {
+        this.choice = choice;
     }
 
     public void run() {
@@ -48,6 +58,16 @@ public class ClientThread extends Thread {
             ois = new ObjectInputStream(socket.getInputStream());
             Log.d("EVAL", "Got InputStream");
 
+            switch (choice) {
+                case 0:
+                    searchMapAndCoordinates();
+                    break;
+                case 1:
+                    searchCoordinates();
+                    break;
+            }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,7 +77,8 @@ public class ClientThread extends Thread {
     public int[] searchCoordinates() {
         int[] result = new int[2];
         try {
-            dos.writeUTF(search);
+            dos.writeUTF("&" + search);
+            Log.d("EVAL", "Search : " + search);
             Log.d("EVAL", "Wrote search to server");
             dos.flush();
 
@@ -71,7 +92,12 @@ public class ClientThread extends Thread {
                 result[0] = ois.readInt();
                 result[1] = ois.readInt();
 
-                Log.d("EVAL", "Coordinates; X: " + x + ", Y: " + y);
+                searchListener.setX(result[0]);
+                searchListener.setY(result[1]);
+
+                Log.d("EVAL", "Coordinates; X: " + result[0] + ", Y: " + result[1]);
+
+                searchListener.search();
             } else {
                 Log.d("EVAL", "Room doesn't exists!");
                 searchListener.makeToast("Room doesn't exist");
@@ -88,6 +114,7 @@ public class ClientThread extends Thread {
     public void searchMapAndCoordinates() {
         try {
             dos.writeUTF(search);
+            Log.d("EVAL", "Search : " + search);
             Log.d("EVAL", "Wrote search to server");
             dos.flush();
 

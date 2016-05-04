@@ -26,7 +26,6 @@ public class PreviousSearchListener implements View.OnClickListener {
 
     public PreviousSearchListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-
         previousSearchList = new ArrayList<Search>();
     }
 
@@ -67,6 +66,7 @@ public class PreviousSearchListener implements View.OnClickListener {
     public void addPreviousSearch(String[] searchInput, int[] dotPosition) {
         String fileName = searchInput[0] + ":" + searchInput[2] + ".png";
         Log.d("PREV", fileName + " " + searchInput[2]);
+
         Search toAdd = new Search(searchInput, dotPosition, fileName);
         boolean add = true;
 

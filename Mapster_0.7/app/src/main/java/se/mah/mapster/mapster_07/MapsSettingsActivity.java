@@ -43,7 +43,7 @@ public class MapsSettingsActivity extends AppCompatActivity
         createCheckedTextView();
     }
 
-    private void createCheckedTextView(){
+    private void createCheckedTextView() {
         orkanenCheckTV = (CheckedTextView) findViewById(R.id.checked_orkanen);
         niagaraCheckTV = (CheckedTextView) findViewById(R.id.checked_niagara);
         gaddanCheckTV = (CheckedTextView) findViewById(R.id.checked_gaddan);

@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
@@ -25,8 +24,6 @@ import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
@@ -212,11 +209,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void search(Search search) {
-        search(search.getSearch(), search.getDotPosition(), search.getFileName());
-    }
-
-    public void searchCoordiantes(String[] search) {
-
+        int[] temp = search.getDotPosition();
+        Log.d("EVAL", "Previous Search coordinates: " + temp[0] + " " + temp[1]);
+        search(search.getSearch(), temp, search.getFileName());
     }
 
     private void updatePreviousSearch() {
@@ -277,7 +272,11 @@ public class MainActivity extends AppCompatActivity
         roomPicker = (NumberPicker) findViewById(R.id.roomPicker);
         roomPicker.setWrapSelectorWheel(false);
         roomPicker.setMinValue(1);
-        roomPicker.setMaxValue(35);
+        roomPicker.setMaxValue(41);
+
+//        roomPicker.setDisplayedValues(new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12",
+//                "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
+//                "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "72"});
 
         //Makes it not ediable
         roomPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);

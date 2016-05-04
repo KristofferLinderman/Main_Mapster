@@ -40,26 +40,24 @@ public class SearchListener implements View.OnClickListener {
     public void setMainActivity(MainActivity activity) {
         this.activity = activity;
     }
-
-    public void setBitmap(Bitmap map) {
-        this.map = map;
-    }
-
-    public String getMapName() {
-        return search[0] + search[2] + ".png";
-    }
+//
+//    public void setBitmap(Bitmap map) {
+//        this.map = map;
+//    }
+//
+//    public String getMapName() {
+//        return search[0] + search[2] + ".png";
+//    }
 
     public void makeToast(String message) {
         activity.makeToast(message);
     }
 
     public void setX(int xPos) {
-        Log.d("EVAL", "" + xPos);
         dotPosition[0] = xPos;
     }
 
     public void setY(int yPos) {
-        Log.d("EVAL", "" + yPos);
         dotPosition[1] = yPos;
     }
 
@@ -69,33 +67,33 @@ public class SearchListener implements View.OnClickListener {
 
         if (id == R.id.search_Button) {
             search = new String[4];
+            dotPosition = new int[2];
             getSearchValues();
 
             activity.makeToast("Searching for " + getSearch());
 
             clientThread = new ClientThread(ip, 9999, this);
-            clientThread.start();
 
             if (!mapOffline()) {
                 Log.d("EVAL", "Map not offline, need to download");
-                clientThread.searchMapAndCoordinates();
-
+//                clientThread.searchMapAndCoordinates();
+                clientThread.setAction(0);
+                clientThread.start();
             } else {
                 Log.d("EVAL", "No download needed");
                 //TODO: setX & setY så de inte använder de gamla koordinaterna?
-                dotPosition = clientThread.searchCoordinates();
-                search();
+//                dotPosition = clientThread.searchCoordinates();
+                clientThread.setAction(1);
+                clientThread.start();
             }
         }
     }
 
     public void search() {
+        Log.d("EVAL", "" + dotPosition[0] + " " + dotPosition[1]);
         activity.search(search, dotPosition, getFilename());
     }
 
-    private void searchCoordinates() {
-        activity.searchCoordiantes(search);
-    }
 
     public String getSearch() {
         return search[0] + ":" + search[1] + search[2] + search[3];
@@ -142,6 +140,9 @@ public class SearchListener implements View.OnClickListener {
             search[2] = "" + levelPicker.getValue();
         }
 
+//        temp = roomPicker.getDisplayedValues();
+//        search[3] = temp[roomPicker.getValue()];
+
         int room = roomPicker.getValue();
 
         //Format for rooms are 0X for numbers under 10
@@ -150,7 +151,6 @@ public class SearchListener implements View.OnClickListener {
         } else {
             search[3] = "0" + roomPicker.getValue();
         }
-
 
     }
 }
