@@ -1,7 +1,5 @@
 package se.mah.mapster.mapster_07;
 
-import android.graphics.Bitmap;
-import android.os.Environment;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,6 +8,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.HashMap;
+import android.os.Environment;
+import android.util.Log;
 
 /**
  * Created by Anton on 29/04/2016.
@@ -22,7 +22,7 @@ public class BuildingsOfflineGeneric extends Thread {
     private String ip = "10.2.13.227";
    private int port = 9999;
     private String building;
-    private Object[] maps;
+   // private Object[] maps;
 
     public BuildingsOfflineGeneric(String building) throws Exception{
         this.building = building;
