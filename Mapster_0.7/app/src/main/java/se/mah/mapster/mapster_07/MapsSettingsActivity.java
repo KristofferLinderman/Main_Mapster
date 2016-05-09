@@ -1,6 +1,8 @@
 package se.mah.mapster.mapster_07;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -9,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +25,9 @@ public class MapsSettingsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private CheckedTextView orkanenCheckTV, niagaraCheckTV, gaddanCheckTV;
     private Listener listener;
+    private SharedPreferences mPreferences;
+    private boolean nigaraChecked, orkanenChecked, gaddanChecked;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,24 @@ public class MapsSettingsActivity extends AppCompatActivity
 
         listener = new Listener();
         createCheckedTextView();
+
+        mPreferences = getSharedPreferences("BuildingsToggles",
+                MODE_PRIVATE);
+        getCheckBoxState();
+    }
+
+    private void getCheckBoxState() {
+        nigaraChecked = mPreferences.getBoolean("NiagaraChecked", false);
+        orkanenChecked = mPreferences.getBoolean("OrkanenChecked", false);
+        gaddanChecked = mPreferences.getBoolean("GaddanChecked", false);
+
+        Log.d("EVAL", "Niagara: " + nigaraChecked);
+        Log.d("EVAL", "Orkanen: " + orkanenChecked);
+        Log.d("EVAL", "Gäddan: " + gaddanChecked);
+
+        niagaraCheckTV.setChecked(nigaraChecked);
+        orkanenCheckTV.setChecked(orkanenChecked);
+        gaddanCheckTV.setChecked(gaddanChecked);
     }
 
     private void createCheckedTextView() {
@@ -60,18 +84,80 @@ public class MapsSettingsActivity extends AppCompatActivity
 
             if (id == R.id.checked_orkanen) {
                 orkanenCheckTV.toggle();
-                if (orkanenCheckTV.isChecked())
-                    Toast.makeText(getApplicationContext(), "Downloading...", Toast.LENGTH_SHORT).show();
+                if (orkanenCheckTV.isChecked()) {
+                    orkanenChecked = true;
+                    Toast.makeText(getApplicationContext(), "Downloading Maps for Orkanen", Toast.LENGTH_SHORT).show();
+
+                    //Saves the state of the toggle to shared Preferences
+                    SharedPreferences.Editor editor = mPreferences.edit();
+                    editor.putBoolean("OrkanenChecked", orkanenChecked);
+                    editor.commit();
+                    Log.d("EVAL", "Saved the Orkanenstate: " + orkanenChecked);
+                } else {
+                    orkanenChecked = false;
+
+                    Toast.makeText(getApplicationContext(), "Deleting Maps for Orkanen", Toast.LENGTH_SHORT).show();
+
+                    //Saves the state of the toggle to shared Preferences
+                    SharedPreferences.Editor editor = mPreferences.edit();
+                    editor.putBoolean("OrkanenChecked", orkanenChecked);
+                    editor.commit();
+                    Log.d("EVAL", "Saved the Orkanenstate: " + orkanenChecked);
+                }
 
             } else if (id == R.id.checked_gaddan) {
                 gaddanCheckTV.toggle();
-                if (gaddanCheckTV.isChecked())
-                    Toast.makeText(getApplicationContext(), "Downloading...", Toast.LENGTH_SHORT).show();
+                if (gaddanCheckTV.isChecked()) {
+                    gaddanChecked = true;
+                    Toast.makeText(getApplicationContext(), "Downloading Maps for Gäddan", Toast.LENGTH_SHORT).show();
+
+                    //Saves the state of the toggle to shared Preferences
+                    SharedPreferences.Editor editor = mPreferences.edit();
+                    editor.putBoolean("GaddanChecked", gaddanChecked);
+                    editor.commit();
+                    Log.d("EVAL", "Saved the Gäddanstate: " + gaddanChecked);
+                } else {
+                    gaddanChecked = false;
+
+                    Toast.makeText(getApplicationContext(), "Deleting Maps for Gäddan", Toast.LENGTH_SHORT).show();
+
+                    //Saves the state of the toggle to shared Preferences
+                    SharedPreferences.Editor editor = mPreferences.edit();
+                    editor.putBoolean("GaddanChecked", gaddanChecked);
+                    editor.commit();
+                    Log.d("EVAL", "Saved the Gäddanstate: " + gaddanChecked);
+                }
 
             } else if (id == R.id.checked_niagara) {
                 niagaraCheckTV.toggle();
-                if (niagaraCheckTV.isChecked())
-                    Toast.makeText(getApplicationContext(), "Downloading...", Toast.LENGTH_SHORT).show();
+                if (niagaraCheckTV.isChecked()) {
+                    nigaraChecked = true;
+                    Toast.makeText(getApplicationContext(), "Downloading Maps for Niagara", Toast.LENGTH_SHORT).show();
+
+                    try {
+//                        Log.d("EVAL", "Pre Building offline");
+//                        new OfflineHandler("#niagara");
+//                        Log.d("EVAL", "Buildingoffline initiated");
+
+                        //Saves the state of the toggle to shared Preferences
+                        SharedPreferences.Editor editor = mPreferences.edit();
+                        editor.putBoolean("NiagaraChecked", nigaraChecked);
+                        editor.commit();
+                        Log.d("EVAL", "Saved the state: " + nigaraChecked);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    //Saves the state of the toggle to shared Preferences
+                    nigaraChecked = false;
+
+                    Toast.makeText(getApplicationContext(), "Deleting Maps for Niagara", Toast.LENGTH_SHORT).show();
+
+                    SharedPreferences.Editor editor = mPreferences.edit();
+                    editor.putBoolean("NiagaraChecked", nigaraChecked);
+                    editor.commit();
+                    Log.d("EVAL", "Saved the state: " + nigaraChecked);
+                }
             }
         }
     }
