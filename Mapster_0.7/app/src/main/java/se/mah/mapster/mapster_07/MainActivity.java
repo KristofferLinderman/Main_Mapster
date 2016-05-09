@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity
         edit = prefs.edit();
 
         setContentView(R.layout.main_activity);
-        setTitle("");
+        setTitle("Mapster");
         verifyStoragePermissions();
 
         addBuildingPicker();
@@ -327,10 +327,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_find) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mah.se/kartor-mah"));
             startActivity(browserIntent);
-        } else if (id == R.id.nav_dumb) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/anton.lagerlof.3?fref=ts"));
-            startActivity(browserIntent);
-        } else if (id == R.id.maps_settings) {
+        }  else if (id == R.id.maps_settings) {
             startActivity(new Intent("Mapster.MapsSettingsActivity"));
         }
 

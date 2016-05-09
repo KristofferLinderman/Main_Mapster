@@ -14,20 +14,76 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/logo"/>
+        android:src="@drawable/logo" />
 
-    <TextView
+
+    <GridLayout
+        android:id="@+id/buttonGrid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mapster is a app for finding you way here at MAH. It's easy, unless you are a Dumb Fuck! But don't be sad, there's an app for you! THIS ONE! :D"
-        android:id="@+id/textView"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/imageView"
-        android:layout_marginBottom="156dp"
-        android:layout_alignStart="@+id/imageView" />
+        android:layout_below="@+id/aboutUsText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:columnCount="3"
+        android:rowCount="1">
+
+        <Button
+            android:id="@+id/visitUsBtn"
+            android:layout_marginRight="15dp"
+            android:background="@color/aboutUsColor"
+            android:drawableStart="@drawable/location_icon"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Visit Us" />
+
+        <Button
+            android:id="@+id/callUsBtn"
+            android:layout_marginRight="15dp"
+            android:background="@color/aboutUsColor"
+            android:drawableStart="@drawable/phone_icon"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Call Us" />
+
+        <Button
+            android:id="@+id/mailUsBtn"
+            android:layout_marginRight="15dp"
+            android:background="@color/aboutUsColor"
+            android:drawableStart="@drawable/mail_icon"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Mail Us" />
+    </GridLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/aboutUsText"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/line" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageView"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/line" />
+
+
+    <TextView
+        android:id="@+id/aboutUsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:layout_below="@+id/imageView"
+        android:layout_marginTop="25dp"
+        android:text="@string/aboutUsText"
+        android:textAlignment="center"
+        android:textSize="15dp" />
 
 </RelativeLayout>

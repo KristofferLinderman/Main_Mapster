@@ -100,7 +100,6 @@ public class PreviousSearchListener implements View.OnClickListener {
         for (Search search : previousSearchList) {
             resultValue.add(search.toString());
         }
-
         return resultValue;
     }
 

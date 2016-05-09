@@ -26,10 +26,6 @@
                     android:id="@+id/nav_find"
                     android:title="Find Buildings" />
 
-                <item
-                    android:id="@+id/nav_dumb"
-                    android:title="Drunk Fuck" />
-
             </menu>
         </item>
 

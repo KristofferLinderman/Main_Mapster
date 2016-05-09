@@ -9,11 +9,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 public class AboutActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    Button callBtn, mailBtn, visitBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,46 @@ public class AboutActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // text2 has links specified by putting <a> tags in the string
+        // resource.  By default these links will appear but not
+        // respond to user input.  To make them active, you need to
+        // call setMovementMethod() on the TextView object.
+
+        initiateButton();
+    }
+
+    private void initiateButton() {
+        callBtn = (Button) findViewById(R.id.callUsBtn);
+        visitBtn = (Button) findViewById(R.id.visitUsBtn);
+        mailBtn = (Button) findViewById(R.id.mailUsBtn);
+
+        mailBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto", "", null));
+                startActivity(intent);
+            }
+        });
+
+        callBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                callIntent.setData(Uri.parse("tel:0730788668"));
+                startActivity(callIntent);
+            }
+        });
+
+        visitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.se/maps/place/Vita+huset/@38.8977523,-77.0371251,18.88z/data=!4m5!3m4!1s0x89b7b7bcdecbb1df:0x715969d86d0b76bf!8m2!3d38.8976763!4d-77.0365298"));
+                startActivity(browserIntent);
+            }
+        });
+
     }
 
     @Override
@@ -60,9 +105,6 @@ public class AboutActivity extends AppCompatActivity
             startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         } else if (id == R.id.nav_find) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mah.se/kartor-mah"));
-            startActivity(browserIntent);
-        } else if (id == R.id.nav_dumb) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/anton.lagerlof.3?fref=ts"));
             startActivity(browserIntent);
         } else if (id == R.id.maps_settings) {
             startActivity(new Intent(this, MapsSettingsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));

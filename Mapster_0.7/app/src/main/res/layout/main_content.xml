@@ -33,25 +33,25 @@
 
         <TextView
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="25dp"
             android:text="Building"
             android:textSize="10dp" />
 
         <TextView
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="30dp"
             android:text="Section"
             android:textSize="10dp" />
 
         <TextView
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="30dp"
             android:text="Level"
             android:textSize="10dp" />
 
         <TextView
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="30dp"
             android:text="Room"
             android:textSize="10dp" />
 
@@ -75,23 +75,29 @@
             android:id="@+id/roomPicker"
             android:layout_width="85dp"
             android:layout_height="100dp" />
-
     </GridLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/search_Button"
+        android:layout_centerHorizontal="true"
+        android:elevation="10dp"
+        android:text="Find Room"
+        android:textColor="#FFF"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/search_Button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/searchGrid"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/searchbutton"
+        android:background="@color/colorPrimary"
 
-        android:text="Search"
-        android:textColor="#3e3e3e"
+        android:drawableStart="@drawable/white_search"
+        android:paddingLeft="10dp" />
 
-        android:textSize="20sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -118,14 +124,11 @@
                 android:id="@+id/previous_search_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
-                android:paddingRight="10dp"
-                android:background="@drawable/prevshape"
 
-                android:gravity="left"
                 android:paddingLeft="15dp"
+                android:paddingRight="10dp"
                 android:paddingTop="10dp"
                 android:textColor="#3e3e3e"
                 android:textSize="20sp" />
@@ -134,10 +137,8 @@
                 android:id="@+id/previous_search_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
-                android:background="@drawable/prevshape"
 
                 android:textColor="#3e3e3e"
                 android:textSize="20sp" />
@@ -146,10 +147,8 @@
                 android:id="@+id/previous_search_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
-                android:background="@drawable/prevshape"
 
                 android:textColor="#3e3e3e"
                 android:textSize="20sp" />
@@ -158,12 +157,9 @@
                 android:id="@+id/previous_search_4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
-                android:background="@drawable/prevshape"
 
-                android:gravity="left"
                 android:textColor="#3e3e3e"
                 android:textSize="20sp" />
 
@@ -171,10 +167,8 @@
                 android:id="@+id/previous_search_5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
-                android:background="@drawable/prevshape"
 
                 android:textColor="#3e3e3e"
                 android:textSize="20sp" />

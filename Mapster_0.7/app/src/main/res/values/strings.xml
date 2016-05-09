@@ -12,6 +12,14 @@
     <string name="previous_search_4">Fourth</string>
     <string name="previous_search_5">Fifth</string>
 
+    <string name="aboutUsText">In 2016, Mapster was founded by five students at Malmö
+        Högskola.
+        We are a group of software developers that focuses on programming and applications, and the
+        idea is simple.
+        We want to make sure that you\'ll find the room you\'re looking for.\n\n
+        We always aim for simplicity and creativity in our products. The main focus is to make the
+        user understand the product without a major introduction.
+    </string>
 
     <string name="search_input">OR:D131</string>
 

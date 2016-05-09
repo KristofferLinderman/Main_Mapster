@@ -104,9 +104,6 @@ public class MapsSettingsActivity extends AppCompatActivity
         } else if (id == R.id.nav_find) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mah.se/kartor-mah"));
             startActivity(browserIntent);
-        } else if (id == R.id.nav_dumb) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/anton.lagerlof.3?fref=ts"));
-            startActivity(browserIntent);
         } else if (id == R.id.nav_about) {
             startActivity(new Intent(this, AboutActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         }
