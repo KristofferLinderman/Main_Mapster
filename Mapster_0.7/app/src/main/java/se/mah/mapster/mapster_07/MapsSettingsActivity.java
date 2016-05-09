@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import android.widget.Toast;
 public class MapsSettingsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private CheckedTextView orkanenCheckTV, niagaraCheckTV, gaddanCheckTV;
+    private Button testButton;
     private Listener listener;
 
     @Override
@@ -47,21 +49,37 @@ public class MapsSettingsActivity extends AppCompatActivity
         orkanenCheckTV = (CheckedTextView) findViewById(R.id.checked_orkanen);
         niagaraCheckTV = (CheckedTextView) findViewById(R.id.checked_niagara);
         gaddanCheckTV = (CheckedTextView) findViewById(R.id.checked_gaddan);
+        testButton = (Button) findViewById(R.id.testButton9);
 
         orkanenCheckTV.setOnClickListener(listener);
         niagaraCheckTV.setOnClickListener(listener);
         gaddanCheckTV.setOnClickListener(listener);
+        testButton.setOnClickListener(listener);
     }
 
-    private class Listener implements View.OnClickListener {
+
+    private class Listener implements View.OnClickListener  {
         @Override
         public void onClick(View v) {
             int id = v.getId();
 
-            if (id == R.id.checked_orkanen) {
-                orkanenCheckTV.toggle();
-                if (orkanenCheckTV.isChecked())
+            if(id == R.id.testButton9){
                     Toast.makeText(getApplicationContext(), "Downloading...", Toast.LENGTH_SHORT).show();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                new OfflineHandler("#niagara");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+            }
+             else if (id == R.id.checked_orkanen) {
+                orkanenCheckTV.toggle();
+                if (orkanenCheckTV.isChecked());
+
 
             } else if (id == R.id.checked_gaddan) {
                 gaddanCheckTV.toggle();
@@ -72,6 +90,16 @@ public class MapsSettingsActivity extends AppCompatActivity
                 niagaraCheckTV.toggle();
                 if (niagaraCheckTV.isChecked())
                     Toast.makeText(getApplicationContext(), "Downloading...", Toast.LENGTH_SHORT).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            new OfflineHandler("#niagara");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
             }
         }
     }

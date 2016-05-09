@@ -14,6 +14,7 @@ public class Server implements Runnable {
 	private Thread serverThread;
 	private Connect connect = new Connect();
 	private FileFunctions fh = new FileFunctions();
+	private ArrayList<String> recievedBuildings = new ArrayList<String>();
 
 
 	public Server(int port) {
@@ -72,7 +73,23 @@ public class Server implements Runnable {
 				if(request.charAt(0) == '&' ) {
 					sendCoor(request);
 				} else if(request.charAt(0) == '#') {
-					//Kartpaket
+					connect.whichBuilding(request);
+
+
+					recievedBuildings = connect.getDistinctFloors();
+					int howManyFloors = recievedBuildings.size();
+					System.out.println(howManyFloors);
+					String afloor = recievedBuildings.get(0);
+					System.out.println(afloor);
+					outputStream.writeInt(howManyFloors);
+					outputStream.flush();
+					System.out.print("howManyFloors skickat: " + howManyFloors);
+
+					for (int i = 0; i < recievedBuildings.size(); i++) {
+						fh.sendFile(outputStream, recievedBuildings.get(i));
+					}
+					outputStream.writeObject(connect.getHashMap()); //HASHMAP GETS SENT HERE
+					outputStream.flush();
 				} else {
 					sendMapAndCoor(request);
 				}
