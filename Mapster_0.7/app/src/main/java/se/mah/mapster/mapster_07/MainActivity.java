@@ -38,22 +38,18 @@ public class MainActivity extends AppCompatActivity
             previousSearch3Button, previousSearch4Button, previousSearch5Button;
     private ArrayList<Button> previousSearchBtnList;
     private File fileInDir = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster" + File.separator + "previousSearches");
-    private SharedPreferences prefs;
-    private Editor edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Check if the folder Mapster is availible or if the external storage isn't mounted.
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             Log.d("MAPSTER", "No SDCARD");
         } else {
             File directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
             directory.mkdirs();
         }
-        prefs = this.getSharedPreferences("savedPreviousSearches", Context.MODE_PRIVATE);
-        edit = prefs.edit();
-
         setContentView(R.layout.main_activity);
         setTitle("Mapster");
         verifyStoragePermissions();
@@ -67,54 +63,6 @@ public class MainActivity extends AppCompatActivity
         initiateSearchButton();
         initiateNavigationDrawer();
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-
-    }
-
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        ArrayList<String> toBeSaved = previousSearchListener.getStringList(); // fetch the data
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-//        SharedPreferences.Editor edit = prefs.edit();
-//        edit.putStringSet("SAVEDATA", new HashSet<String>(toBeSaved));
-//        edit.commit();
-//
-////
-////        ArrayList<String> tempStringList = previousSearchListener.getStringList();
-////
-////        if (tempStringList != null) {
-////            Set<String> set = new HashSet<String>();
-////            set.addAll(tempStringList);
-////
-////            edit.putStringSet("previousSearch", set);
-////            edit.commit();
-////        }
-//    }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        ArrayList<String> retrieved = new ArrayList<String>(PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getStringSet("SAVEDATA", new HashSet<String>()));
-//        Log.d("EVAL", retrieved.toString());
-//        previousSearchListener.setList(retrieved);
-//        Log.d("EVAL","list set");
-//        updatePreviousSearch();
-//        Log.d("EVAL","list up");
-////        Set<String> set = prefs.getStringSet("previousSearch", null);
-////        if (set != null) {
-////            ArrayList<String> temp = new ArrayList<String>(set);
-////
-////            previousSearchListener.setList(temp);
-////            updatePreviousSearch();
-////            Log.d("EVAL", "Resumed");
-////        }
-//    }
 
     private void initiateNavigationDrawer() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -327,7 +275,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_find) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mah.se/kartor-mah"));
             startActivity(browserIntent);
-        }  else if (id == R.id.maps_settings) {
+        } else if (id == R.id.maps_settings) {
             startActivity(new Intent("Mapster.MapsSettingsActivity"));
         }
 

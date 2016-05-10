@@ -2,6 +2,8 @@ package se.mah.mapster.mapster_07;
 
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,9 +22,10 @@ public class OfflineHandler extends Thread {
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     private Socket socket;
-    //private String ip = "10.2.13.227";  //"10.2.17.104"
+    private String ip = "10.2.13.227";  //"10.2.17.104"
+    //    private String ip = "10.2.17.104"; //Gustav MAH
     //localhost för emulator
-    private String ip = "10.0.2.2";
+//    private String ip = "10.0.2.2";
     private int port = 9999;
     private String building;
     private File fileInDirBuildings;
@@ -31,10 +34,10 @@ public class OfflineHandler extends Thread {
 
     // private Object[] maps;
 
-    public OfflineHandler(String building) throws Exception{
+    public OfflineHandler(String building) throws Exception {
         this.building = building;
-        Log.d("TESTER","before creating the socket");
-        socket = new Socket(ip,  port);
+        Log.d("TESTER", "before creating the socket");
+        socket = new Socket(ip, port);
         Log.d("TESTER", "socket is now created");
         activate();
         Log.d("TESTER", " requestBuilding() started");
@@ -43,34 +46,35 @@ public class OfflineHandler extends Thread {
     }
 
 
-
-    public void activate(){
+    public void activate() {
         try {
             requestBuilding();
             Log.d("TESTER", "Requested Buildings");
-            saveBuilding();
-            saveHashMap();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 
     }
+
     public void requestBuilding() throws Exception {
-        try{
+        try {
             oos = new ObjectOutputStream(socket.getOutputStream());
             ois = new ObjectInputStream(socket.getInputStream());
-            Log.d("TESTER","streams created ");
+            Log.d("TESTER", "streams created ");
             oos.writeUTF(building);
             oos.flush();
-            Log.d("TESTER","Written to server");
-        }catch(IOException e ){
+            Log.d("TESTER", "Written to server");
+            saveBuilding();
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void saveBuilding(){
-        try{
+    public void saveBuilding() {
+        try {
             //   Object o = ois.read();
             Log.d("TESTER", "SaveBuilding started");
             //  buildingHashMap = (HashMap) o;
@@ -79,27 +83,27 @@ public class OfflineHandler extends Thread {
             directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
             directory.mkdirs();
 
-            for(int i = 1; i<=nbrOfMaps; i++){
-                Log.d("LOOP","NI:0"+i);
+            for (int i = 1; i <= nbrOfMaps; i++) {
+                Log.d("LOOP", "NI:0" + i);
                 receiveFile("NI:0" + i + ".png");
                 System.out.println("after recieveFile");
             }
-
-        }catch(Exception e){
-            e.printStackTrace();}
+            saveHashMap();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
     public void saveHashMap() throws ClassNotFoundException {
         try {
             fileInDirHashMap = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster" + File.separator + "HashMap" + building);
-            buildingHashMap = (HashMap)ois.readObject();
+            buildingHashMap = (HashMap) ois.readObject();
             FileOutputStream fos = new FileOutputStream(fileInDirHashMap);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(buildingHashMap);
             oos.flush();
-
-        }catch(IOException e ){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -129,18 +133,18 @@ public class OfflineHandler extends Thread {
                 | (int) (bSize[1] & 0xff) << 16
                 | (int) (bSize[2] & 0xff) << 8
                 | (int) (bSize[3] & 0xff);
-        Log.d("Logg", "fileSize" );
+        Log.d("Logg", "fileSize");
         // buffer to read from the socket
         // 8k buffer is good enough
         byte[] data = new byte[8 * 1024];
-        Log.d("Logg", " after fileSize" );
+        Log.d("Logg", " after fileSize");
         int bToRead;
         FileOutputStream fos = new FileOutputStream(fileInDirBuildings);
         BufferedOutputStream bos = new BufferedOutputStream(fos);
-        Log.d("Logg", " after FileOutputStream" );
+        Log.d("Logg", " after FileOutputStream");
 
         while (fileSize > 0) {
-            Log.d("Logg", " while (fileSize > 0)" + fileSize );
+            Log.d("Logg", " while (fileSize > 0)" + fileSize);
             // make sure not to read more bytes than filesize
             if (fileSize > data.length) {
                 bToRead = data.length;

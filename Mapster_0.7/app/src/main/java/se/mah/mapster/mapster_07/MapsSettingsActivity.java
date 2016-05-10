@@ -1,6 +1,5 @@
 package se.mah.mapster.mapster_07;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -134,19 +133,25 @@ public class MapsSettingsActivity extends AppCompatActivity
                     nigaraChecked = true;
                     Toast.makeText(getApplicationContext(), "Downloading Maps for Niagara", Toast.LENGTH_SHORT).show();
 
-                    try {
-//                        Log.d("EVAL", "Pre Building offline");
-//                        new OfflineHandler("#niagara");
-//                        Log.d("EVAL", "Buildingoffline initiated");
+                    Log.d("EVAL", "Pre Building offline");
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                new OfflineHandler("#niagara");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                    Log.d("EVAL", "Buildingoffline initiated");
 
-                        //Saves the state of the toggle to shared Preferences
-                        SharedPreferences.Editor editor = mPreferences.edit();
-                        editor.putBoolean("NiagaraChecked", nigaraChecked);
-                        editor.commit();
-                        Log.d("EVAL", "Saved the state: " + nigaraChecked);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    //Saves the state of the toggle to shared Preferences
+                    SharedPreferences.Editor editor = mPreferences.edit();
+                    editor.putBoolean("NiagaraChecked", nigaraChecked);
+                    editor.commit();
+                    Log.d("EVAL", "Saved the state: " + nigaraChecked);
+                Toast.makeText(getApplicationContext(), "Download Complete", Toast.LENGTH_SHORT).show();
                 } else {
                     //Saves the state of the toggle to shared Preferences
                     nigaraChecked = false;
@@ -198,5 +203,4 @@ public class MapsSettingsActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 }
