@@ -88,11 +88,15 @@ public class OfflineHandler extends Thread {
             directory.mkdirs();
 
             for (int i = 1; i <= nbrOfMaps; i++) {
-                Log.d("LOOP", "NI:0" + i);
+                Log.d("LOOP", "Receiving image: " + i);
                 receiveFile("NI:0" + i + ".png");
-                System.out.println("after recieveFile");
+//                System.out.println("after recieveFile");
             }
             saveHashMap();
+
+            Log.d("EVAL", "Sent all images!");
+//            TODO: Toast here; doesn't work
+//            Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -117,7 +121,7 @@ public class OfflineHandler extends Thread {
         fileInDirBuildings = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster" + File.separator + fileName);
 
 
-        Log.d("Logg", "after fileInDir is created" + fileInDirBuildings);
+//        Log.d("Logg", "after fileInDir is created" + fileInDirBuildings);
 
 
         // read 4 bytes containing the file size
@@ -137,31 +141,31 @@ public class OfflineHandler extends Thread {
                 | (int) (bSize[1] & 0xff) << 16
                 | (int) (bSize[2] & 0xff) << 8
                 | (int) (bSize[3] & 0xff);
-        Log.d("Logg", "fileSize");
+//        Log.d("Logg", "fileSize");
         // buffer to read from the socket
         // 8k buffer is good enough
         byte[] data = new byte[8 * 1024];
-        Log.d("Logg", " after fileSize");
+//        Log.d("Logg", " after fileSize");
         int bToRead;
         FileOutputStream fos = new FileOutputStream(fileInDirBuildings);
         BufferedOutputStream bos = new BufferedOutputStream(fos);
-        Log.d("Logg", " after FileOutputStream");
+//        Log.d("Logg", " after FileOutputStream");
 
         while (fileSize > 0) {
-            Log.d("Logg", " while (fileSize > 0)" + fileSize);
+//            Log.d("Logg", " while (fileSize > 0)" + fileSize);
             // make sure not to read more bytes than filesize
             if (fileSize > data.length) {
                 bToRead = data.length;
             } else {
                 bToRead = fileSize;
             }
-            Log.d("Logg", "before writing to file");
+//            Log.d("Logg", "before writing to file");
             int bytesRead = ois.read(data, 0, bToRead);
 
             if (bytesRead > 0) {
                 bos.write(data, 0, bytesRead);
                 fileSize -= bytesRead;
-                Log.d("Logg", "after writing to file " + bytesRead);
+//                Log.d("Logg", "after writing to file " + bytesRead);
             }
         }
         bos.close();

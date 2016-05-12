@@ -175,16 +175,16 @@ public class Server implements Runnable {
 
                 recievedBuildings = connect.getDistinctFloors();
                 int howManyFloors = recievedBuildings.size();
-                System.out.println(howManyFloors);
-                String afloor = recievedBuildings.get(0);
-                System.out.println(afloor);
+                System.out.println("Number of floors: " + howManyFloors);
+//                String afloor = recievedBuildings.get(0);
+//                System.out.println(afloor);
                 outputStream.writeInt(howManyFloors);
                 outputStream.flush();
-                System.out.print("howManyFloors skickat: " + howManyFloors);
 
-                for (int i = 1; i <= recievedBuildings.size(); i++) {
+                for (int i = 0; i < recievedBuildings.size(); i++) {
+                    System.out.println("Sending image: " + recievedBuildings.get(i));
                     fh.sendFile(outputStream, recievedBuildings.get(i));
-                }
+				}
                 outputStream.writeObject(connect.getHashMap()); //HASHMAP GETS SENT HERE
             } catch(Exception e) {
                 e.printStackTrace();
