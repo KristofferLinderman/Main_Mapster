@@ -30,8 +30,8 @@ public class Connect {
 			Class.forName("com.mysql.jdbc.Driver");
 //			conn = DriverManager.getConnection("jdbc:mysql://10.2.13.227:3306/mapster", "Gustav1993", "password");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mapster", "Guest", "mapster");
-//			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mapster", "root", "");
-			conn = DriverManager.getConnection("jdbc:mysql://84.219.169.69/mapster", "gustav", "1234");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mapster", "root", "");
+//			conn = DriverManager.getConnection("jdbc:mysql://84.219.169.69/mapster", "gustav", "1234");
 			st = conn.createStatement();
 
 		} catch (Exception e) {

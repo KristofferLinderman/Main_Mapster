@@ -25,8 +25,8 @@ public class OfflineHandler extends Thread {
     private Socket socket;
 //    private String ip = "10.2.13.227";  //"10.2.17.104"
     //    private String ip = "10.2.17.104"; //Gustav MAH
-//        private String ip = "192.168.0.104"; //gustav hemma
-        private String ip = "192.168.0.106"; //gustav XPS
+        private String ip = "192.168.0.104"; //gustav hemma
+//        private String ip = "192.168.0.106"; //gustav XPS
     //    private String ip = "178.78.249.239";
     //    private String ip = "10.2.15.25"; //Kristoffer MAH
     //    private String ip = "192.168.0.2";//Kristoffer Hemma
