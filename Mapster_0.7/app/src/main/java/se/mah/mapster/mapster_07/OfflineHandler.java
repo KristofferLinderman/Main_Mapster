@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,13 +20,16 @@ import java.util.HashMap;
  */
 public class OfflineHandler extends Thread {
     private HashMap<String, String> buildingHashMap = new HashMap<String, String>();
-    private ObjectOutputStream oos;
+    private DataOutputStream oos;
     private ObjectInputStream ois;
     private Socket socket;
-    private String ip = "10.2.13.227";  //"10.2.17.104"
+//    private String ip = "10.2.13.227";  //"10.2.17.104"
     //    private String ip = "10.2.17.104"; //Gustav MAH
-    //localhost för emulator
-//    private String ip = "10.0.2.2";
+//        private String ip = "192.168.0.104"; //gustav hemma
+        private String ip = "192.168.0.106"; //gustav XPS
+    //    private String ip = "178.78.249.239";
+    //    private String ip = "10.2.15.25"; //Kristoffer MAH
+    //    private String ip = "192.168.0.2";//Kristoffer Hemma
     private int port = 9999;
     private String building;
     private File fileInDirBuildings;
@@ -60,7 +64,7 @@ public class OfflineHandler extends Thread {
 
     public void requestBuilding() throws Exception {
         try {
-            oos = new ObjectOutputStream(socket.getOutputStream());
+            oos = new DataOutputStream(socket.getOutputStream());
             ois = new ObjectInputStream(socket.getInputStream());
             Log.d("TESTER", "streams created ");
             oos.writeUTF(building);

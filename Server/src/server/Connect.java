@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Class for connecting to a database and get information
@@ -16,6 +18,8 @@ public class Connect {
 	private Statement st;
 	private ResultSet rs;
 	private Room room;
+    private HashMap<String, String> coordinatesHash = new HashMap<String, String>();
+    private ArrayList<String> distinctFloors = new ArrayList<String>();
 
 	/**
 	 * Connects to the given database
@@ -102,4 +106,96 @@ public class Connect {
 		}
 		return false;
 	}
+
+	public void requestFloors(String building) {
+		String query = null;
+
+		switch (building) {
+
+			case "orkanen":
+				query = "SELECT path FROM downloadable LIMIT 5;";
+				break;
+
+			case "niagara":
+				query = "SELECT path FROM downloadable LIMIT 7;"; // should be 5,6. Changed for test
+				break;
+
+			case "gaddan":
+				query = "SELECT path FROM downloadable LIMIT 11, 4;";
+				break;
+
+		}
+
+		try {
+			rs = st.executeQuery(query);
+			System.out.println("After query is executed" + query);
+			distinctFloors.clear();
+			while (rs.next()) {
+				distinctFloors.add(rs.getString("path"));
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+    public HashMap<String, String> getHashMap() {
+        return coordinatesHash;
+    }
+
+    public ArrayList<String> getDistinctFloors() {
+        return distinctFloors;
+    }
+
+    public void whichBuilding(String building) throws SQLException {
+
+        switch (building) {
+
+            case "#orkanen":
+                getBuilding("orkanen");
+                break;
+
+            case "#niagara":
+                getBuilding("niagara");
+                //requestFloors("niagara");
+                break;
+
+            case "#gaddan":
+                getBuilding("gaddan");
+                break;
+        }
+
+    }
+
+    // Retrieves name and coordinates for all rooms of a building
+    public void getBuilding(String building) throws SQLException {
+        String name, coordinates;
+
+        String query = "SELECT name, coordinates FROM " + building;
+        rs = st.executeQuery(query);
+        coordinatesHash.clear();
+        while (rs.next()) {
+            name = rs.getString("name");
+            coordinates = rs.getString("coordinates");
+            coordinatesHash.put(name, coordinates);
+            System.out.println("hash klar");
+//			File file = new File(building);
+//			try {
+//				BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+//				for (String p : combo.keySet()) {
+//					bw.write(p + "," + combo.get(p));
+//					bw.newLine();
+//				}
+//				bw.flush();
+//				bw.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+
+        }
+        requestFloors(building);
+        System.out.println("skickat vidare str�ngen buildning");
+    }
 }
