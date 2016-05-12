@@ -178,7 +178,7 @@ public class Server implements Runnable {
                 outputStream.flush();
                 System.out.print("howManyFloors skickat: " + howManyFloors);
 
-                for (int i = 0; i < recievedBuildings.size(); i++) {
+                for (int i = 1; i <= recievedBuildings.size(); i++) {
                     fh.sendFile(outputStream, recievedBuildings.get(i));
                 }
                 outputStream.writeObject(connect.getHashMap()); //HASHMAP GETS SENT HERE
