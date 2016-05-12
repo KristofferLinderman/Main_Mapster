@@ -37,7 +37,6 @@ public class Connect {
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
-
 	}
 
 	/**
@@ -107,6 +106,11 @@ public class Connect {
 		return false;
 	}
 
+	/**
+	 * Requests the floors (paths from the database) for the map-package depending on
+     * what building is searched for
+	 * @param building
+     */
 	public void requestFloors(String building) {
 		String query = null;
 
@@ -128,11 +132,10 @@ public class Connect {
 
 		try {
 			rs = st.executeQuery(query);
-			System.out.println("After query is executed" + query);
+			System.out.println("After query is executed: [" + query + "]");
 			distinctFloors.clear();
 			while (rs.next()) {
 				distinctFloors.add(rs.getString("path"));
-
 			}
 
 		} catch (SQLException e) {
@@ -141,14 +144,27 @@ public class Connect {
 
 	}
 
+    /**
+     * Returns a hashmap with all the coordinates for the given building
+     * @return coordinatesHashmap
+     */
     public HashMap<String, String> getHashMap() {
         return coordinatesHash;
     }
 
+    /**
+     * ?
+     * @return distinctFloors
+     */
     public ArrayList<String> getDistinctFloors() {
         return distinctFloors;
     }
 
+    /**
+     *
+     * @param building
+     * @throws SQLException
+     */
     public void whichBuilding(String building) throws SQLException {
 
         switch (building) {
@@ -169,7 +185,11 @@ public class Connect {
 
     }
 
-    // Retrieves name and coordinates for all rooms of a building
+    /**
+     * Retrieves name and coordinates for all rooms of a building
+     * @param building
+     * @throws SQLException
+     */
     public void getBuilding(String building) throws SQLException {
         String name, coordinates;
 
@@ -180,22 +200,9 @@ public class Connect {
             name = rs.getString("name");
             coordinates = rs.getString("coordinates");
             coordinatesHash.put(name, coordinates);
-            System.out.println("hash klar");
-//			File file = new File(building);
-//			try {
-//				BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-//				for (String p : combo.keySet()) {
-//					bw.write(p + "," + combo.get(p));
-//					bw.newLine();
-//				}
-//				bw.flush();
-//				bw.close();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-
+            System.out.println("Hash done");
         }
         requestFloors(building);
-        System.out.println("skickat vidare str�ngen buildning");
+        System.out.println("Building string sent");
     }
 }

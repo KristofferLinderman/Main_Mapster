@@ -165,6 +165,10 @@ public class Server implements Runnable {
 			}
 		}
 
+		/**
+		 * Sends all the maps of the searched building
+		 * @param str Searchstring
+         */
 		public void sendMapPackage(String str) {
             try {
                 connect.whichBuilding(str);
