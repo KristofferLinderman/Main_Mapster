@@ -45,7 +45,7 @@
 
         <TextView
             android:layout_height="match_parent"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="25dp"
             android:text="Level"
             android:textSize="10dp" />
 
@@ -68,7 +68,7 @@
 
         <NumberPicker
             android:id="@+id/levelPicker"
-            android:layout_width="85dp"
+            android:layout_width="75dp"
             android:layout_height="100dp" />
 
         <NumberPicker

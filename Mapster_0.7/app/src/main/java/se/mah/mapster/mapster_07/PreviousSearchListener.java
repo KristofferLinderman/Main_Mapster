@@ -1,17 +1,10 @@
 package se.mah.mapster.mapster_07;
 
-import android.os.Environment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -94,46 +87,50 @@ public class PreviousSearchListener implements View.OnClickListener {
         return previousSearchList;
     }
 
-    public ArrayList<String> getStringList() {
-        ArrayList<String> resultValue = new ArrayList<>();
-
-        for (Search search : previousSearchList) {
-            resultValue.add(search.toString());
-        }
-        return resultValue;
+    public void setList(ArrayList<Search> input) {
+        this.previousSearchList = input;
     }
 
-    /**
-     * Converts an ArrayList of strings to an ArrayList of Searches.
-     *
-     * @param input ArrayList with strings made by PreviousSearchListener.getStringList()
-     * @return ArrayList with search objects.
-     */
-    private ArrayList<Search> convertList(ArrayList<String> input) {
+//    public ArrayList<String> getStringList() {
+//        ArrayList<String> resultValue = new ArrayList<>();
+//
+//        for (Search search : previousSearchList) {
+//            resultValue.add(search.toString());
+//        }
+//        return resultValue;
+//    }
 
-        ArrayList<Search> convertedList = new ArrayList<>();
-
-        for (String str : input) {
-
-            String[] strArray = str.split(",");
-            String[] searchArray = new String[4];
-
-            for (int i = 0; i < 4; i++) {
-                searchArray[i] = strArray[i];
-            }
-
-            int[] dotsPos = new int[2];
-            dotsPos[0] = Integer.parseInt(strArray[4]);
-            dotsPos[1] = Integer.parseInt(strArray[5]);
-
-            convertedList.add(new Search(searchArray, dotsPos, strArray[6]));
-        }
-
-        return convertedList;
-    }
-
-    public void setList(ArrayList inputList) {
-        this.previousSearchList = convertList(inputList);
-        Log.d("EVAL", "List set");
-    }
+//    /**
+//     * Converts an ArrayList of strings to an ArrayList of Searches.
+//     *
+//     * @param input ArrayList with strings made by PreviousSearchListener.getStringList()
+//     * @return ArrayList with search objects.
+//     */
+//    private ArrayList<Search> convertList(ArrayList<String> input) {
+//
+//        ArrayList<Search> convertedList = new ArrayList<>();
+//
+//        for (String str : input) {
+//
+//            String[] strArray = str.split(",");
+//            String[] searchArray = new String[4];
+//
+//            for (int i = 0; i < 4; i++) {
+//                searchArray[i] = strArray[i];
+//            }
+//
+//            int[] dotsPos = new int[2];
+//            dotsPos[0] = Integer.parseInt(strArray[4]);
+//            dotsPos[1] = Integer.parseInt(strArray[5]);
+//
+//            convertedList.add(new Search(searchArray, dotsPos, strArray[6]));
+//        }
+//
+//        return convertedList;
+//    }
+//
+//    public void setList(ArrayList inputList) {
+//        this.previousSearchList = convertList(inputList);
+//        Log.d("EVAL", "List set");
+//    }
 }

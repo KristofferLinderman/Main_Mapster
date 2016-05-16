@@ -1,6 +1,5 @@
 package se.mah.mapster.mapster_07;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;

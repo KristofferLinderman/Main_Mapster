@@ -2,7 +2,6 @@ package se.mah.mapster.mapster_07;
 
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

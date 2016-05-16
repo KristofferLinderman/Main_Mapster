@@ -6,7 +6,6 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import java.io.File;
 
@@ -40,14 +39,6 @@ public class SearchListener implements View.OnClickListener {
     public void setMainActivity(MainActivity activity) {
         this.activity = activity;
     }
-//
-//    public void setBitmap(Bitmap map) {
-//        this.map = map;
-//    }
-//
-//    public String getMapName() {
-//        return search[0] + search[2] + ".png";
-//    }
 
     public void makeToast(String message) {
         activity.makeToast(message);
@@ -76,13 +67,10 @@ public class SearchListener implements View.OnClickListener {
 
             if (!mapOffline()) {
                 Log.d("EVAL", "Map not offline, need to download");
-//                clientThread.searchMapAndCoordinates();
                 clientThread.setAction(0);
                 clientThread.start();
             } else {
                 Log.d("EVAL", "No download needed");
-                //TODO: setX & setY så de inte använder de gamla koordinaterna?
-//                dotPosition = clientThread.searchCoordinates();
                 clientThread.setAction(1);
                 clientThread.start();
             }
@@ -139,9 +127,6 @@ public class SearchListener implements View.OnClickListener {
         } else {
             search[2] = "" + levelPicker.getValue();
         }
-
-//        temp = roomPicker.getDisplayedValues();
-//        search[3] = temp[roomPicker.getValue()];
 
         int room = roomPicker.getValue();
 

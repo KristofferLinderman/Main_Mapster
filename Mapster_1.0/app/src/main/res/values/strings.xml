@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Mapster</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="previous_search_1">First</string>
+    <string name="previous_search_2">Second</string>
+    <string name="previous_search_3">Thirds</string>
+    <string name="previous_search_4">Fourth</string>
+    <string name="previous_search_5">Fifth</string>
+
+    <string name="aboutUsText">In 2016, Mapster was founded by five students at Malmö
+        Högskola.
+        We are a group of software developers that focuses on programming and applications, and the
+        idea is simple.
+        We want to make sure that you\'ll find the room you\'re looking for.\n\n
+        We always aim for simplicity and creativity in our products. The main focus is to make the
+        user understand the product without a major introduction.
+    </string>
+
+    <string name="search_input">OR:D131</string>
+
+    <string-array name="levels">
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+    </string-array>
+
+</resources>

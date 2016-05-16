@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
@@ -25,6 +24,8 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity
             previousSearch3Button, previousSearch4Button, previousSearch5Button;
     private ArrayList<Button> previousSearchBtnList;
     private File fileInDir = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster" + File.separator + "previousSearches");
+    private SharedPreferences prevSearches;
+    private SharedPreferences.Editor prevSearchesEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,20 @@ public class MainActivity extends AppCompatActivity
             File directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
             directory.mkdirs();
         }
+
+        SharedPreferences sp = getSharedPreferences("FirstBoot", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+
+        if (!sp.getBoolean("first", false)) {
+            editor.putBoolean("first", true);
+            editor.commit();
+            Intent intent = new Intent(this, MyIntro.class);
+            startActivity(intent);
+        }
+
+        prevSearches = getSharedPreferences("Previous Searches", Context.MODE_PRIVATE);
+        prevSearchesEditor = prevSearches.edit();
+
         setContentView(R.layout.main_activity);
         setTitle("Mapster");
         verifyStoragePermissions();
@@ -88,7 +105,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Checks if the app has permission to write to device storage (API 23+)
-     * <p/>
+     * <p>
      * If the app does not has permission then the user will be prompted to grant permissions
      */
     private void verifyStoragePermissions() {
@@ -144,6 +161,30 @@ public class MainActivity extends AppCompatActivity
 
         searchButton = (Button) findViewById(R.id.search_Button);
         searchButton.setOnClickListener(searchListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Gson gson = new Gson();
+        String json = gson.toJson(previousSearchListener.getList());
+        prevSearchesEditor.putString("Previous Search List", json);
+        prevSearchesEditor.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Gson gson = new Gson();
+        String json = prevSearches.getString("Previous Search List", "");
+        ArrayList<Search> temp = gson.fromJson(json, ArrayList.class);
+
+        if (temp != null)
+            for (Search s : temp) {
+                Log.d("RESUME", s.toString());
+            }
     }
 
     public void search(String[] search, int[] dotPosition, String fileName) {
@@ -226,11 +267,13 @@ public class MainActivity extends AppCompatActivity
         roomPicker.setWrapSelectorWheel(false);
         roomPicker.setMinValue(1);
         roomPicker.setMaxValue(41);
+        roomPicker.setFormatter(new NumberPicker.Formatter() {
+            @Override
+            public String format(int i) {
+                return String.format("%02d", i);
+            }
+        });
         setDividerColor(roomPicker);
-
-//        roomPicker.setDisplayedValues(new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12",
-//                "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
-//                "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "72"});
 
         //Makes it not ediable
         roomPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);

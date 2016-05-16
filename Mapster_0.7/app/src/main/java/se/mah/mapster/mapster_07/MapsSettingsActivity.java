@@ -87,6 +87,18 @@ public class MapsSettingsActivity extends AppCompatActivity
                     orkanenChecked = true;
                     Toast.makeText(getApplicationContext(), "Downloading Maps for Orkanen", Toast.LENGTH_SHORT).show();
 
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                //The string sent to server
+                                new OfflineHandler("#gaddan");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+
                     //Saves the state of the toggle to shared Preferences
                     SharedPreferences.Editor editor = mPreferences.edit();
                     editor.putBoolean("OrkanenChecked", orkanenChecked);
@@ -109,6 +121,18 @@ public class MapsSettingsActivity extends AppCompatActivity
                 if (gaddanCheckTV.isChecked()) {
                     gaddanChecked = true;
                     Toast.makeText(getApplicationContext(), "Downloading Maps for Gäddan", Toast.LENGTH_SHORT).show();
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                //The string sent to server
+                                new OfflineHandler("#gaddan");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
 
                     //Saves the state of the toggle to shared Preferences
                     SharedPreferences.Editor editor = mPreferences.edit();
@@ -138,6 +162,7 @@ public class MapsSettingsActivity extends AppCompatActivity
                         @Override
                         public void run() {
                             try {
+                                //The string sent to server
                                 new OfflineHandler("#niagara");
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -151,7 +176,7 @@ public class MapsSettingsActivity extends AppCompatActivity
                     editor.putBoolean("NiagaraChecked", nigaraChecked);
                     editor.commit();
                     Log.d("EVAL", "Saved the state: " + nigaraChecked);
-                Toast.makeText(getApplicationContext(), "Download Complete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Download Complete", Toast.LENGTH_SHORT).show();
                 } else {
                     //Saves the state of the toggle to shared Preferences
                     nigaraChecked = false;
