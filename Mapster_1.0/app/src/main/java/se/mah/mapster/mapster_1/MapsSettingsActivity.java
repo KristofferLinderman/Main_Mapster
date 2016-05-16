@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.Toast;
+
+import java.io.File;
 
 /**
  * Created by Kristoffer on 31/03/16.
@@ -87,18 +90,6 @@ public class MapsSettingsActivity extends AppCompatActivity
                     orkanenChecked = true;
                     Toast.makeText(getApplicationContext(), "Downloading Maps for Orkanen", Toast.LENGTH_SHORT).show();
 
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                //The string sent to server
-                                new OfflineHandler("#gaddan");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }).start();
-
                     //Saves the state of the toggle to shared Preferences
                     SharedPreferences.Editor editor = mPreferences.edit();
                     editor.putBoolean("OrkanenChecked", orkanenChecked);
@@ -108,6 +99,7 @@ public class MapsSettingsActivity extends AppCompatActivity
                     orkanenChecked = false;
 
                     Toast.makeText(getApplicationContext(), "Deleting Maps for Orkanen", Toast.LENGTH_SHORT).show();
+                    deleteMaps("OR");
 
                     //Saves the state of the toggle to shared Preferences
                     SharedPreferences.Editor editor = mPreferences.edit();
@@ -122,18 +114,6 @@ public class MapsSettingsActivity extends AppCompatActivity
                     gaddanChecked = true;
                     Toast.makeText(getApplicationContext(), "Downloading Maps for Gäddan", Toast.LENGTH_SHORT).show();
 
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                //The string sent to server
-                                new OfflineHandler("#gaddan");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }).start();
-
                     //Saves the state of the toggle to shared Preferences
                     SharedPreferences.Editor editor = mPreferences.edit();
                     editor.putBoolean("GaddanChecked", gaddanChecked);
@@ -143,6 +123,7 @@ public class MapsSettingsActivity extends AppCompatActivity
                     gaddanChecked = false;
 
                     Toast.makeText(getApplicationContext(), "Deleting Maps for Gäddan", Toast.LENGTH_SHORT).show();
+                    deleteMaps("G8");
 
                     //Saves the state of the toggle to shared Preferences
                     SharedPreferences.Editor editor = mPreferences.edit();
@@ -162,7 +143,6 @@ public class MapsSettingsActivity extends AppCompatActivity
                         @Override
                         public void run() {
                             try {
-                                //The string sent to server
                                 new OfflineHandler("#niagara");
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -176,12 +156,15 @@ public class MapsSettingsActivity extends AppCompatActivity
                     editor.putBoolean("NiagaraChecked", nigaraChecked);
                     editor.commit();
                     Log.d("EVAL", "Saved the state: " + nigaraChecked);
+
+//                  TODO: Move toast to OfflineHandler. Toast shows up before the download is complete
                     Toast.makeText(getApplicationContext(), "Download Complete", Toast.LENGTH_SHORT).show();
                 } else {
                     //Saves the state of the toggle to shared Preferences
                     nigaraChecked = false;
 
                     Toast.makeText(getApplicationContext(), "Deleting Maps for Niagara", Toast.LENGTH_SHORT).show();
+                    deleteMaps("NI");
 
                     SharedPreferences.Editor editor = mPreferences.edit();
                     editor.putBoolean("NiagaraChecked", nigaraChecked);
@@ -227,5 +210,22 @@ public class MapsSettingsActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void deleteMaps(String str) {
+        File dir = new File(Environment.getExternalStorageDirectory()+ File.separator + "Mapster");
+        if (dir.isDirectory()){
+            Log.d("EVAL", "Deleting '" + str + "' files in " + dir);
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++){
+                Log.d("EVAL", children[i]);
+                String[] split = children[i].split(":");
+                Log.d("EVAL", "Split string: " + split[0]);
+                if(split[0].equals(str)) {
+                    Log.d("EVAL", "Deleting file: " + children[i]);
+                    new File(dir, children[i]).delete();
+                }
+            }
+        }
     }
 }
