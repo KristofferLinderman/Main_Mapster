@@ -19,6 +19,7 @@ import android.widget.CheckedTextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.sql.SQLException;
 
 /**
  * Created by Kristoffer on 31/03/16.
@@ -236,6 +237,20 @@ public class MapsSettingsActivity extends AppCompatActivity
                     Log.d("EVAL", "Deleting file: " + children[i]);
                     new File(dir, children[i]).delete();
                 }
+            }
+            switch (str) {
+
+                case "OR":
+                    new File(dir, "HashMap#orkanen").delete();
+                    break;
+
+                case "NI":
+                    new File(dir, "HashMap#niagara").delete();
+                    break;
+
+                case "G8":
+                    new File(dir, "HashMap#gaddan").delete();
+                    break;
             }
         }
     }
