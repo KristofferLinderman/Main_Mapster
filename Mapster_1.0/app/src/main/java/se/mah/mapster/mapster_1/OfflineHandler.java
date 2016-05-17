@@ -22,27 +22,22 @@ public class OfflineHandler extends Thread {
     private DataOutputStream oos;
     private ObjectInputStream ois;
     private Socket socket;
+
+    private String ip = "84.219.169.69"; //MAIN
     //    private String ip = "10.2.13.227";  //"10.2.17.104"
-    private String ip = "10.2.17.104"; //Gustav MAH
+//    private String ip = "10.2.17.104"; //Gustav MAH
     //    private String ip = "192.168.0.104"; //gustav hemma
     //    private String ip = "192.168.0.106"; //gustav XPS
     //    private String ip = "178.78.249.239";
-    private int port = 9999;
+    private int port = 3450;
     private String building;
     private File fileInDirBuildings;
     private File fileInDirHashMap;
     private File directory;
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
     private String fileString = "";
-
     // private Object[] maps;
 
->>>>>>> origin/master
     public OfflineHandler(String building) throws Exception {
         this.building = building;
         socket = new Socket(ip, port);
