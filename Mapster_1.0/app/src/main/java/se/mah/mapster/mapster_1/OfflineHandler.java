@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
@@ -24,7 +25,7 @@ public class OfflineHandler extends Thread {
     //    private String ip = "10.2.13.227";  //"10.2.17.104"
     private String ip = "10.2.17.104"; //Gustav MAH
     //    private String ip = "192.168.0.104"; //gustav hemma
-    //        private String ip = "192.168.0.106"; //gustav XPS
+    //    private String ip = "192.168.0.106"; //gustav XPS
     //    private String ip = "178.78.249.239";
     //    private String ip = "10.2.15.25"; //Kristoffer MAH
     //    private String ip = "192.168.0.2";//Kristoffer Hemma
@@ -33,6 +34,8 @@ public class OfflineHandler extends Thread {
     private File fileInDirBuildings;
     private File fileInDirHashMap;
     private File directory;
+
+    private String fileString = "";
 
     // private Object[] maps;
 
@@ -50,8 +53,6 @@ public class OfflineHandler extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void requestBuilding() throws Exception {
@@ -67,14 +68,37 @@ public class OfflineHandler extends Thread {
         }
     }
 
+    public void whichBuilding() {
+
+        switch (building) {
+
+            case "#orkanen":
+                fileString = "OR:0";
+                break;
+
+            case "#niagara":
+                fileString = "NI:0";
+                break;
+
+            case "#gaddan":
+                fileString = "G8:0";
+                break;
+        }
+
+    }
+
     public void saveBuilding() {
         try {
             int nbrOfMaps = ois.readInt();
             directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
             directory.mkdirs();
 
+            Log.d("EVAL", "Building string: " + building);
+            whichBuilding();
+            Log.d("EVAL", "fileString: " + fileString);
+
             for (int i = 1; i <= nbrOfMaps; i++) {
-                receiveFile("NI:0" + i + ".png");
+                receiveFile(fileString + i + ".png");
             }
             saveHashMap();
 

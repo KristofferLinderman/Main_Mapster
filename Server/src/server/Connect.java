@@ -74,8 +74,6 @@ public class Connect {
      */
 	public Room searchedRoom(String searchFor, String building) {
 
-        System.out.println("searchFor: " + searchFor + " building: " + building);
-//		String query = "select * FROM " + building + " WHERE name = '" + searchFor + "'";
         String floor = fileFunctions.splitFloor(searchFor);
 
 		String query = "SELECT " + building + ".name, " + building + ".floor, " + building + ".coordinates, paths" + building + ".path FROM " + building + " JOIN paths" + building + " ON " +
@@ -105,12 +103,11 @@ public class Connect {
 	public boolean searchExist(String searchFor, String building) {
         String floor = fileFunctions.splitFloor(searchFor);
 
-//		String query = "select * FROM " + building + " WHERE name = '" + searchFor + "'";
 		String query = "SELECT " + building + ".name, " + building + ".floor, " + building + ".coordinates, paths" + building + ".path FROM " + building + " JOIN paths" + building + " ON " +
 				building + ".floor=paths" + building + ".floor WHERE " + building + ".name = '" +
 				searchFor + "' AND " + building + ".floor = '" + floor + "'";
 
-        System.out.println(query);
+        System.out.println("Query: " + query);
 
 		try {
 			rs = st.executeQuery(query);
@@ -135,15 +132,15 @@ public class Connect {
 		switch (building) {
 
 			case "orkanen":
-				query = "SELECT path FROM paths" + building + " LIMIT 5;";
+				query = "SELECT path FROM paths" + building + ";";
 				break;
 
 			case "niagara":
-				query = "SELECT path FROM paths" + building + " LIMIT 6;"; // should be 5,6. Changed for test
+				query = "SELECT path FROM paths" + building + ";";
 				break;
 
 			case "gaddan":
-				query = "SELECT path FROM paths" + building + " LIMIT 11, 4;";
+				query = "SELECT path FROM paths" + building + ";";
 				break;
 		}
 
@@ -191,7 +188,6 @@ public class Connect {
 
             case "#niagara":
                 getBuilding("niagara");
-                //requestFloors("niagara");
                 break;
 
             case "#gaddan":
@@ -212,13 +208,23 @@ public class Connect {
         String query = "SELECT name, coordinates FROM " + building;
         rs = st.executeQuery(query);
         coordinatesHash.clear();
-        while (rs.next()) {
+		System.out.println("Writing hash: ");
+		int i = 0;
+		int j = 0;
+		while (rs.next()) {
             name = rs.getString("name");
             coordinates = rs.getString("coordinates");
             coordinatesHash.put(name, coordinates);
-            System.out.println("Hash done");
+            System.out.print(i + ", ");
+			i++;
+			j++;
+			if(j == 10) {
+				System.out.println();
+				j = 0;
+			}
         }
-        requestFloors(building);
+		System.out.println("\n\nHash done!");
+		requestFloors(building);
         System.out.println("Building string sent");
     }
 }

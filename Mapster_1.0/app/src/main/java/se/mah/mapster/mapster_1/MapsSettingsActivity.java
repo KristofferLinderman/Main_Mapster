@@ -90,6 +90,17 @@ public class MapsSettingsActivity extends AppCompatActivity
                     orkanenChecked = true;
                     Toast.makeText(getApplicationContext(), "Downloading Maps for Orkanen", Toast.LENGTH_SHORT).show();
 
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                new OfflineHandler("#orkanen");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+
                     //Saves the state of the toggle to shared Preferences
                     SharedPreferences.Editor editor = mPreferences.edit();
                     editor.putBoolean("OrkanenChecked", orkanenChecked);

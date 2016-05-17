@@ -97,10 +97,7 @@ public class FileFunctions {
         Matcher matcher = Pattern.compile("\\d+").matcher(str);
         matcher.find();
         String index = ""+Integer.valueOf(matcher.group());
-        System.out.println("ints: " + index);
-
         String floor = index.substring(0, 1);
-        System.out.println("floor: " + floor);
 
         return floor;
     }

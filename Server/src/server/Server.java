@@ -124,8 +124,6 @@ public class Server implements Runnable {
 					System.out.println("Sent boolean");
 				}
 
-				System.out.println("Print room: " + room.getName() + " " + room.getFloor() + " " + room.getCoor() + " " + room.getPath());
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -164,9 +162,6 @@ public class Server implements Runnable {
 					System.out.println("Sent boolean");
 				}
 
-				System.out.println("Print room: " + room.getName() + " " + room.getFloor() + " " + room.getCoor() + " " + room.getPath());
-
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -183,8 +178,6 @@ public class Server implements Runnable {
                 recievedBuildings = connect.getDistinctFloors();
                 int howManyFloors = recievedBuildings.size();
                 System.out.println("Number of floors: " + howManyFloors);
-//                String afloor = recievedBuildings.get(0);
-//                System.out.println(afloor);
                 outputStream.writeInt(howManyFloors);
                 outputStream.flush();
 

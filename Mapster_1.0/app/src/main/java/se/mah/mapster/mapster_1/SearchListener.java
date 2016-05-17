@@ -88,8 +88,7 @@ public class SearchListener implements View.OnClickListener {
     }
 
     /**
-     * Check if the map the user searched for is already downloaded and stored localy
-     *
+     * Check if the map the user searched for is already downloaded and stored locally
      * @return True if the map is locally stored else false.
      */
     private boolean mapOffline() {
