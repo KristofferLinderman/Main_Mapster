@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Class with functions for sending files and splitting string
@@ -90,6 +92,18 @@ public class FileFunctions {
 			System.out.println("Error: " + e);
 		}
 	}
+
+	public String splitFloor(String str) {
+        Matcher matcher = Pattern.compile("\\d+").matcher(str);
+        matcher.find();
+        String index = ""+Integer.valueOf(matcher.group());
+        System.out.println("ints: " + index);
+
+        String floor = index.substring(0, 1);
+        System.out.println("floor: " + floor);
+
+        return floor;
+    }
 
 	/**
 	 * Returns the building part of the room string
