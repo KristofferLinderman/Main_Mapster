@@ -1,5 +1,6 @@
 package server;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -7,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Class for connecting to a database and get information
@@ -18,6 +21,7 @@ public class Connect {
 	private Statement st;
 	private ResultSet rs;
 	private Room room;
+    private FileFunctions fileFunctions = new FileFunctions();
     private HashMap<String, String> coordinatesHash = new HashMap<String, String>();
     private ArrayList<String> distinctFloors = new ArrayList<String>();
 
@@ -30,8 +34,8 @@ public class Connect {
 			Class.forName("com.mysql.jdbc.Driver");
 //			conn = DriverManager.getConnection("jdbc:mysql://10.2.13.227:3306/mapster", "Gustav1993", "password");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mapster", "Guest", "mapster");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mapster", "root", "");
-//			conn = DriverManager.getConnection("jdbc:mysql://84.219.169.69/mapster", "gustav", "1234");
+//			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mapster", "root", "");
+			conn = DriverManager.getConnection("jdbc:mysql://84.219.169.69/mapster", "gustav", "1234");
 			st = conn.createStatement();
 
 		} catch (Exception e) {
@@ -70,9 +74,15 @@ public class Connect {
      */
 	public Room searchedRoom(String searchFor, String building) {
 
-		String query = "select * FROM " + building + " WHERE name = '" + searchFor + "'";
-		
-		try {
+        System.out.println("searchFor: " + searchFor + " building: " + building);
+//		String query = "select * FROM " + building + " WHERE name = '" + searchFor + "'";
+        String floor = fileFunctions.splitFloor(searchFor);
+
+        String query = "SELECT name, " + building + ".floor, coordinates, paths" + building + ".path FROM " + building + " JOIN paths" + building + " ON " +
+                building + ".floor=paths" + building + ".floor WHERE " + building + ".floor = '" +
+                floor + "'";
+
+        try {
 			rs = st.executeQuery(query);
 			rs.next();
 			
@@ -93,7 +103,15 @@ public class Connect {
      * @return ifRoomExist
      */
 	public boolean searchExist(String searchFor, String building) {
-		String query = "select * FROM " + building + " WHERE name = '" + searchFor + "'";
+        String floor = fileFunctions.splitFloor(searchFor);
+
+//		String query = "select * FROM " + building + " WHERE name = '" + searchFor + "'";
+        String query = "SELECT name, " + building + ".floor, paths" + building + ".path coordinates FROM " + building + " JOIN paths" + building + " ON " +
+                building + ".floor=paths" + building + ".floor WHERE " + building + ".floor = '" +
+                floor + "'";
+
+        System.out.println(query);
+
 		try {
 			rs = st.executeQuery(query);
 
@@ -117,15 +135,15 @@ public class Connect {
 		switch (building) {
 
 			case "orkanen":
-				query = "SELECT path FROM downloadable LIMIT 5;";
+				query = "SELECT path FROM " + building + " LIMIT 5;";
 				break;
 
 			case "niagara":
-				query = "SELECT path FROM downloadable LIMIT 7;"; // should be 5,6. Changed for test
+				query = "SELECT path FROM " + building + " LIMIT 7;"; // should be 5,6. Changed for test
 				break;
 
 			case "gaddan":
-				query = "SELECT path FROM downloadable LIMIT 11, 4;";
+				query = "SELECT path FROM " + building + " LIMIT 11, 4;";
 				break;
 
 		}

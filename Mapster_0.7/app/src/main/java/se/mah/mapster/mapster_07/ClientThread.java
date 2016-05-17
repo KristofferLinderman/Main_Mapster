@@ -21,7 +21,6 @@ public class ClientThread extends Thread {
     private DataOutputStream dos;
     private Bitmap map, btm;
     private String ip;
-    private int port;
     private SearchListener searchListener;
     private String search;
     private int x, y;
@@ -29,6 +28,9 @@ public class ClientThread extends Thread {
 
     private File directory;
     private File fileInDir;
+
+//    private int port = 3450;
+    private int port = 9999;
 
     public ClientThread(String ip, int port, SearchListener searchListener) {
         this.ip = ip;
@@ -49,7 +51,7 @@ public class ClientThread extends Thread {
         try {
             search = searchListener.getSearch();
             Log.d("EVAL", "Got search string " + search);
-            socket = new Socket(ip, 9999);
+            socket = new Socket(ip, port);
             Log.d("EVAL", "Connected to server " + socket.getInetAddress());
 
             dos = new DataOutputStream(socket.getOutputStream());
