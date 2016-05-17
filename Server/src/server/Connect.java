@@ -34,8 +34,8 @@ public class Connect {
 			Class.forName("com.mysql.jdbc.Driver");
 //			conn = DriverManager.getConnection("jdbc:mysql://10.2.13.227:3306/mapster", "Gustav1993", "password");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mapster", "Guest", "mapster");
-//			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mapster", "root", "");
-			conn = DriverManager.getConnection("jdbc:mysql://84.219.169.69/mapster", "gustav", "1234");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mapster", "root", "");
+//			conn = DriverManager.getConnection("jdbc:mysql://84.219.169.69/mapster", "gustav", "1234");
 			st = conn.createStatement();
 
 		} catch (Exception e) {
@@ -78,9 +78,9 @@ public class Connect {
 //		String query = "select * FROM " + building + " WHERE name = '" + searchFor + "'";
         String floor = fileFunctions.splitFloor(searchFor);
 
-        String query = "SELECT name, " + building + ".floor, coordinates, paths" + building + ".path FROM " + building + " JOIN paths" + building + " ON " +
-                building + ".floor=paths" + building + ".floor WHERE " + building + ".floor = '" +
-                floor + "'";
+		String query = "SELECT " + building + ".name, " + building + ".floor, " + building + ".coordinates, paths" + building + ".path FROM " + building + " JOIN paths" + building + " ON " +
+				building + ".floor=paths" + building + ".floor WHERE " + building + ".name = '" +
+				searchFor + "' AND " + building + ".floor = '" + floor + "'";
 
         try {
 			rs = st.executeQuery(query);
@@ -106,9 +106,9 @@ public class Connect {
         String floor = fileFunctions.splitFloor(searchFor);
 
 //		String query = "select * FROM " + building + " WHERE name = '" + searchFor + "'";
-        String query = "SELECT name, " + building + ".floor, paths" + building + ".path coordinates FROM " + building + " JOIN paths" + building + " ON " +
-                building + ".floor=paths" + building + ".floor WHERE " + building + ".floor = '" +
-                floor + "'";
+		String query = "SELECT " + building + ".name, " + building + ".floor, " + building + ".coordinates, paths" + building + ".path FROM " + building + " JOIN paths" + building + " ON " +
+				building + ".floor=paths" + building + ".floor WHERE " + building + ".name = '" +
+				searchFor + "' AND " + building + ".floor = '" + floor + "'";
 
         System.out.println(query);
 
@@ -135,17 +135,16 @@ public class Connect {
 		switch (building) {
 
 			case "orkanen":
-				query = "SELECT path FROM " + building + " LIMIT 5;";
+				query = "SELECT path FROM paths" + building + " LIMIT 5;";
 				break;
 
 			case "niagara":
-				query = "SELECT path FROM " + building + " LIMIT 7;"; // should be 5,6. Changed for test
+				query = "SELECT path FROM paths" + building + " LIMIT 6;"; // should be 5,6. Changed for test
 				break;
 
 			case "gaddan":
-				query = "SELECT path FROM " + building + " LIMIT 11, 4;";
+				query = "SELECT path FROM paths" + building + " LIMIT 11, 4;";
 				break;
-
 		}
 
 		try {
@@ -159,7 +158,6 @@ public class Connect {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
     /**
