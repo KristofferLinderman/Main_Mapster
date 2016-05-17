@@ -47,7 +47,7 @@ public class ClientThread extends Thread {
         try {
             search = searchListener.getSearch();
             Log.d("EVAL", "Got search string " + search);
-            socket = new Socket(ip, 9999);
+            socket = new Socket(ip, port);
             Log.d("EVAL", "Connected to server " + socket.getInetAddress());
 
             dos = new DataOutputStream(socket.getOutputStream());

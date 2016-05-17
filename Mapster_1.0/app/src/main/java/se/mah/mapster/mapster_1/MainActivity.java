@@ -25,9 +25,12 @@ import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NumberPicker.OnValueChangeListener {
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     private File fileInDir = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster" + File.separator + "previousSearches");
     private SharedPreferences prevSearches;
     private SharedPreferences.Editor prevSearchesEditor;
+    private boolean saveState = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,15 +61,16 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences sp = getSharedPreferences("FirstBoot", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 
-//        if (!sp.getBoolean("first", false)) {
-//            editor.putBoolean("first", true);
-//            editor.commit();
-//            Intent intent = new Intent(this, MyIntro.class);
-//            startActivity(intent);
-//        }
+        if (!sp.getBoolean("first", false)) {
+            editor.putBoolean("first", true);
+            editor.commit();
+            Intent intent = new Intent(this, MyIntro.class);
+            startActivity(intent);
+        }
 
-        Intent intent = new Intent(this, MyIntro.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MyIntro.class);
+//        startActivity(intent);
+
 
         prevSearches = getSharedPreferences("Previous Searches", Context.MODE_PRIVATE);
         prevSearchesEditor = prevSearches.edit();
@@ -82,8 +87,6 @@ public class MainActivity extends AppCompatActivity
         initiatePreviousSearch();
         initiateSearchButton();
         initiateNavigationDrawer();
-
-//        startPickerMonotor();
     }
 
     private void initiateNavigationDrawer() {
@@ -168,29 +171,42 @@ public class MainActivity extends AppCompatActivity
         searchButton.setOnClickListener(searchListener);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        Gson gson = new Gson();
-        String json = gson.toJson(previousSearchListener.getList());
-        prevSearchesEditor.putString("Previous Search List", json);
-        prevSearchesEditor.commit();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        Gson gson = new Gson();
-        String json = prevSearches.getString("Previous Search List", "");
-        ArrayList<Search> temp = gson.fromJson(json, ArrayList.class);
-
-        if (temp != null)
-            for (Search s : temp) {
-                Log.d("RESUME", s.toString());
-            }
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//
+//        Gson gson = new Gson();
+//        String json = gson.toJson(previousSearchListener.getList());
+//        prevSearchesEditor.putString("Previous Search List", json);
+//        prevSearchesEditor.commit();
+//
+//        saveState = true;
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        Gson gson = new Gson();
+//        String json = prevSearches.getString("Previous Search List", "");
+////        ArrayList<Search> temp = gson.fromJson(json, ArrayList.class);
+////        if (temp != null)
+////            for (Search s : temp) {
+////                Log.d("RESUME", s.toString());
+////            }
+//
+//        if (saveState) {
+//            HashMap<String, Search> featuresFromJson = new Gson().fromJson(json, new TypeToken<Map<String, Search>>() {
+//            }.getType());
+//            ArrayList<Search> temp = new ArrayList<>();
+//
+//            for (Map.Entry<String, Search> entry : featuresFromJson.entrySet()) {
+//                Search search = entry.getValue();
+//                temp.add(search);
+//            }
+//            previousSearchListener.setList(temp);
+//        }
+//    }
 
     public void search(String[] search, int[] dotPosition, String fileName) {
         previousSearchListener.addPreviousSearch(search, dotPosition);
@@ -384,12 +400,10 @@ public class MainActivity extends AppCompatActivity
     //Change the values depending on the selected building
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-        Log.d("EVAL", "changed");
         String[] temp;
         temp = picker.getDisplayedValues();
 
         if (temp[picker.getValue()] == "NI") {
-            Log.d("EVAL", "niagara selcted");
             sectionPicker.setValue(0);
             sectionPicker.setMaxValue(2);
             sectionPicker.setDisplayedValues(new String[]{"A", "B", "C"});

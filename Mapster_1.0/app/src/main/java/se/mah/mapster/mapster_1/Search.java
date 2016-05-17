@@ -1,9 +1,11 @@
 package se.mah.mapster.mapster_1;
 
+import java.io.Serializable;
+
 /**
  * Created by Kristoffer on 25/04/16.
  */
-public class Search {
+public class Search implements Serializable {
     private String[] search;
     private int[] dotPosition;
     private String fileName;
