@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -36,24 +38,20 @@ public class MainActivity extends AppCompatActivity
             previousSearch3Button, previousSearch4Button, previousSearch5Button;
     private ArrayList<Button> previousSearchBtnList;
     private File fileInDir = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster" + File.separator + "previousSearches");
-    private SharedPreferences prefs;
-    private Editor edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Check if the folder Mapster is availible or if the external storage isn't mounted.
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             Log.d("MAPSTER", "No SDCARD");
         } else {
             File directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Mapster");
             directory.mkdirs();
         }
-        prefs = this.getSharedPreferences("savedPreviousSearches", Context.MODE_PRIVATE);
-        edit = prefs.edit();
-
         setContentView(R.layout.main_activity);
-        setTitle("");
+        setTitle("Mapster");
         verifyStoragePermissions();
 
         addBuildingPicker();
@@ -65,54 +63,6 @@ public class MainActivity extends AppCompatActivity
         initiateSearchButton();
         initiateNavigationDrawer();
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-
-    }
-
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        ArrayList<String> toBeSaved = previousSearchListener.getStringList(); // fetch the data
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-//        SharedPreferences.Editor edit = prefs.edit();
-//        edit.putStringSet("SAVEDATA", new HashSet<String>(toBeSaved));
-//        edit.commit();
-//
-////
-////        ArrayList<String> tempStringList = previousSearchListener.getStringList();
-////
-////        if (tempStringList != null) {
-////            Set<String> set = new HashSet<String>();
-////            set.addAll(tempStringList);
-////
-////            edit.putStringSet("previousSearch", set);
-////            edit.commit();
-////        }
-//    }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        ArrayList<String> retrieved = new ArrayList<String>(PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getStringSet("SAVEDATA", new HashSet<String>()));
-//        Log.d("EVAL", retrieved.toString());
-//        previousSearchListener.setList(retrieved);
-//        Log.d("EVAL","list set");
-//        updatePreviousSearch();
-//        Log.d("EVAL","list up");
-////        Set<String> set = prefs.getStringSet("previousSearch", null);
-////        if (set != null) {
-////            ArrayList<String> temp = new ArrayList<String>(set);
-////
-////            previousSearchListener.setList(temp);
-////            updatePreviousSearch();
-////            Log.d("EVAL", "Resumed");
-////        }
-//    }
 
     private void initiateNavigationDrawer() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -242,6 +192,7 @@ public class MainActivity extends AppCompatActivity
         buildingPicker.setMinValue(0);
         buildingPicker.setMaxValue(2);
         buildingPicker.setDisplayedValues(new String[]{"OR", "NI", "G8"});
+        setDividerColor(buildingPicker);
 
         //Makes it not ediable
         buildingPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
@@ -253,6 +204,7 @@ public class MainActivity extends AppCompatActivity
         sectionPicker.setMaxValue(5);
         sectionPicker.setDisplayedValues(new String[]{"A", "B", "C", "D", "E", "F"});
         sectionPicker.setWrapSelectorWheel(false);
+        setDividerColor(sectionPicker);
 
         //Makes it not ediable
         sectionPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
@@ -263,6 +215,7 @@ public class MainActivity extends AppCompatActivity
         levelPicker.setMinValue(1);
         levelPicker.setMaxValue(6);
         levelPicker.setWrapSelectorWheel(false);
+        setDividerColor(levelPicker);
 
         //Makes it not ediable
         levelPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
@@ -273,6 +226,7 @@ public class MainActivity extends AppCompatActivity
         roomPicker.setWrapSelectorWheel(false);
         roomPicker.setMinValue(1);
         roomPicker.setMaxValue(41);
+        setDividerColor(roomPicker);
 
 //        roomPicker.setDisplayedValues(new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12",
 //                "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
@@ -280,6 +234,27 @@ public class MainActivity extends AppCompatActivity
 
         //Makes it not ediable
         roomPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+    }
+
+    private void setDividerColor(NumberPicker picker) {
+
+        java.lang.reflect.Field[] pickerFields = NumberPicker.class.getDeclaredFields();
+        for (java.lang.reflect.Field pf : pickerFields) {
+            if (pf.getName().equals("mSelectionDivider")) {
+                pf.setAccessible(true);
+                try {
+                    ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.colorPrimary));
+                    pf.set(picker, colorDrawable);
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                } catch (Resources.NotFoundException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
     }
 
     @Override
@@ -299,9 +274,6 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent("Mapster.AboutActivity"));
         } else if (id == R.id.nav_find) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mah.se/kartor-mah"));
-            startActivity(browserIntent);
-        } else if (id == R.id.nav_dumb) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/anton.lagerlof.3?fref=ts"));
             startActivity(browserIntent);
         } else if (id == R.id.maps_settings) {
             startActivity(new Intent("Mapster.MapsSettingsActivity"));

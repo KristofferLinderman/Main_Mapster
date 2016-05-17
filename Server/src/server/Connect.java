@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Class for connecting to a database and get information
@@ -16,6 +18,8 @@ public class Connect {
 	private Statement st;
 	private ResultSet rs;
 	private Room room;
+    private HashMap<String, String> coordinatesHash = new HashMap<String, String>();
+    private ArrayList<String> distinctFloors = new ArrayList<String>();
 
 	/**
 	 * Connects to the given database
@@ -26,14 +30,13 @@ public class Connect {
 			Class.forName("com.mysql.jdbc.Driver");
 //			conn = DriverManager.getConnection("jdbc:mysql://10.2.13.227:3306/mapster", "Gustav1993", "password");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mapster", "Guest", "mapster");
-//			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mapster", "root", "");
-			conn = DriverManager.getConnection("jdbc:mysql://84.219.169.69/mapster", "gustav", "1234");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mapster", "root", "");
+//			conn = DriverManager.getConnection("jdbc:mysql://84.219.169.69/mapster", "gustav", "1234");
 			st = conn.createStatement();
 
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
-
 	}
 
 	/**
@@ -102,4 +105,104 @@ public class Connect {
 		}
 		return false;
 	}
+
+	/**
+	 * Requests the floors (paths from the database) for the map-package depending on
+     * what building is searched for
+	 * @param building
+     */
+	public void requestFloors(String building) {
+		String query = null;
+
+		switch (building) {
+
+			case "orkanen":
+				query = "SELECT path FROM downloadable LIMIT 5;";
+				break;
+
+			case "niagara":
+				query = "SELECT path FROM downloadable LIMIT 7;"; // should be 5,6. Changed for test
+				break;
+
+			case "gaddan":
+				query = "SELECT path FROM downloadable LIMIT 11, 4;";
+				break;
+
+		}
+
+		try {
+			rs = st.executeQuery(query);
+			System.out.println("After query is executed: [" + query + "]");
+			distinctFloors.clear();
+			while (rs.next()) {
+				distinctFloors.add(rs.getString("path"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+    /**
+     * Returns a hashmap with all the coordinates for the given building
+     * @return coordinatesHashmap
+     */
+    public HashMap<String, String> getHashMap() {
+        return coordinatesHash;
+    }
+
+    /**
+     * ?
+     * @return distinctFloors
+     */
+    public ArrayList<String> getDistinctFloors() {
+        return distinctFloors;
+    }
+
+    /**
+     *
+     * @param building
+     * @throws SQLException
+     */
+    public void whichBuilding(String building) throws SQLException {
+
+        switch (building) {
+
+            case "#orkanen":
+                getBuilding("orkanen");
+                break;
+
+            case "#niagara":
+                getBuilding("niagara");
+                //requestFloors("niagara");
+                break;
+
+            case "#gaddan":
+                getBuilding("gaddan");
+                break;
+        }
+
+    }
+
+    /**
+     * Retrieves name and coordinates for all rooms of a building
+     * @param building
+     * @throws SQLException
+     */
+    public void getBuilding(String building) throws SQLException {
+        String name, coordinates;
+
+        String query = "SELECT name, coordinates FROM " + building;
+        rs = st.executeQuery(query);
+        coordinatesHash.clear();
+        while (rs.next()) {
+            name = rs.getString("name");
+            coordinates = rs.getString("coordinates");
+            coordinatesHash.put(name, coordinates);
+            System.out.println("Hash done");
+        }
+        requestFloors(building);
+        System.out.println("Building string sent");
+    }
 }

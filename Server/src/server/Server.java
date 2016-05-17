@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Starts a server that receives a room and returns an image (map)
@@ -14,6 +15,7 @@ public class Server implements Runnable {
 	private Thread serverThread;
 	private Connect connect = new Connect();
 	private FileFunctions fh = new FileFunctions();
+	private ArrayList<String> recievedBuildings = new ArrayList<String>();
 
 
 	public Server(int port) {
@@ -48,8 +50,8 @@ public class Server implements Runnable {
 	 */
 	private class ClientListener extends Thread {
 		private Socket socket;
-		private ObjectOutputStream outputStream;
         private DataInputStream inputStream;
+        private ObjectOutputStream outputStream;
 		boolean fileExist = true;
 		private Room room;
 		private String roomString = "", buildingString = "";
@@ -72,7 +74,7 @@ public class Server implements Runnable {
 				if(request.charAt(0) == '&' ) {
 					sendCoor(request);
 				} else if(request.charAt(0) == '#') {
-					//Kartpaket
+					sendMapPackage(request);
 				} else {
 					sendMapAndCoor(request);
 				}
@@ -162,5 +164,31 @@ public class Server implements Runnable {
 				e.printStackTrace();
 			}
 		}
+
+		/**
+		 * Sends all the maps of the searched building
+		 * @param str Searchstring
+         */
+		public void sendMapPackage(String str) {
+            try {
+                connect.whichBuilding(str);
+
+                recievedBuildings = connect.getDistinctFloors();
+                int howManyFloors = recievedBuildings.size();
+                System.out.println("Number of floors: " + howManyFloors);
+//                String afloor = recievedBuildings.get(0);
+//                System.out.println(afloor);
+                outputStream.writeInt(howManyFloors);
+                outputStream.flush();
+
+                for (int i = 0; i < recievedBuildings.size(); i++) {
+                    System.out.println("Sending image: " + recievedBuildings.get(i));
+                    fh.sendFile(outputStream, recievedBuildings.get(i));
+				}
+                outputStream.writeObject(connect.getHashMap()); //HASHMAP GETS SENT HERE
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
 	}
 }
